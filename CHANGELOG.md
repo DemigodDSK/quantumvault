@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Dashboard honesty: Risk Analysis subtitle no longer says "ML-weighted".** The
+  risk model is a transparent, tunable 5-factor weighted heuristic — not machine
+  learning — and every other surface (README, the dashboard's own Risk Model card)
+  already said so. The subtitle now reads "Transparent 5-factor scoring". Live demo
+  bundle rebuilt with the corrected copy.
+
 ### Benchmark — full label coverage (no product/runtime change)
 
 - **Public-repo precision corpus re-adjudicated to 100% label coverage.** The

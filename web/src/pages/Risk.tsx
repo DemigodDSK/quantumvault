@@ -29,7 +29,7 @@ export default function Risk() {
       <header>
         <h1 className="text-2xl font-bold text-white">Risk Analysis</h1>
         <p className="text-sm text-slate-400">
-          ML-weighted 5-factor scoring · prioritized migration roadmap
+          Transparent 5-factor scoring · prioritized migration roadmap
         </p>
       </header>
 
