@@ -34,6 +34,7 @@ function runCorpus(cases: QCase[]): Map<string, string[]> {
     const actionableByFile = new Map<string, string[]>();
     for (const a of assets) {
       if (a.confidence === "low") continue; // possible mentions are not exposure
+      if (!a.quantumVulnerable) continue; // quantum-SAFE inventory (a parsed PQC cert) is not exposure
       const list = actionableByFile.get(a.file) ?? [];
       list.push(a.patternId);
       actionableByFile.set(a.file, list);

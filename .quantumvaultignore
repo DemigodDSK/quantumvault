@@ -7,6 +7,10 @@
 server/src/discovery/patterns.ts
 server/src/discovery/cryptoRef.ts
 server/src/discovery/context.ts
+# x509.ts is the DER certificate READER: its OID tables and algorithm-name
+# vocabulary (RSA/ECDSA/ML-DSA OIDs, curve names) are detection reference data,
+# not cryptographic usage — same precedent as patterns.ts / cryptoRef.ts.
+server/src/discovery/x509.ts
 server/src/compliance/reporter.ts
 server/src/report/assessment.ts
 server/src/cli.ts

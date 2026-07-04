@@ -9,6 +9,74 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _Nothing unreleased._
 
+## [0.7.0] - 2026-07-03
+
+### Added
+
+- **X.509 certificate discovery (ENG-02, part 1).** A minimal, zero-dependency
+  DER/ASN.1 reader in pure TypeScript (`server/src/discovery/x509.ts`) — bounded,
+  total (malformed input returns a typed failure, never throws or hangs), no
+  native/WASM dependency, so the air-gapped posture is intact. Every
+  `-----BEGIN CERTIFICATE-----` block (including chains — one asset per
+  certificate, and certs embedded in source string literals) and every binary
+  `.der`/`.crt`/`.cer` file is parsed into an enriched asset: key algorithm with
+  exact modulus bits (sign-byte aware) or named curve (P-256/P-384/P-521/
+  secp256k1), signature algorithm (including the RSA-PSS params hash),
+  subject/issuer CN, validity window, and an expiry flag — carried as new
+  optional `cert*` fields on `CryptoAsset`. **Post-quantum certificates are
+  recognized as SAFE**: ML-DSA-44/65/87, SLH-DSA (all 12 parameter sets), and
+  ML-KEM OIDs parse to `quantumVulnerable: false` and never gate a build or
+  count against a compliance control.
+- **TLS/SSH configuration posture (ENG-02, part 2).** Six new patterns (53 → 59):
+  nginx `ssl_protocols`/`ssl_ciphers`, Apache `SSLProtocol`/`SSLCipherSuite`,
+  HAProxy `ssl-default-bind-options`/`-ciphers`, and OpenSSH `KexAlgorithms`.
+  They fire only on lines that ENABLE legacy crypto — SSLv3/TLS 1.0/1.1, RC4/
+  DES/3DES suites, static-RSA (`TLS_RSA_`) key exchange, or a classical-only SSH
+  kex list with no PQC hybrid. Disabling forms are recognized and stay clean:
+  `SSLProtocol all -SSLv3 -TLSv1 -TLSv1.1`, OpenSSL kill syntax (`!RC4`, killed
+  compound suite names), HAProxy `no-sslv3`, `KexAlgorithms -…` removals, and a
+  kex list that includes `sntrup761x25519`/`mlkem768x25519`. `sshd_config`/
+  `ssh_config` (extensionless) now scan as config.
+- **CBOM certificate & protocol asset types.** Certificate findings emit
+  CycloneDX 1.6 `assetType: "certificate"` with `certificateProperties`
+  (subjectName, issuerName, notValidBefore/After, certificateFormat); posture
+  findings emit `assetType: "protocol"` with `protocolProperties` (type tls/ssh,
+  version where a single one is knowable). Conformance against the official
+  CycloneDX 1.6 schema is proven in CI for all three asset shapes.
+
+### Fixed
+
+- **Dedupe (the v0.3.7 rule, extended):** a parsed certificate REPLACES the
+  generic `x509-cert-body` header finding for its block — one certificate, one
+  asset — and a `KexAlgorithms …diffie-hellman-…` line fires only
+  `ssh-classical-kex`, not `dh-keyexchange` too. Proven by qbench cases.
+- **No silent skips:** binary DER under ANY certificate/key extension —
+  `.der`/`.crt`/`.cer` and the common mislabeled exports `.pem`/`.key`
+  (`openssl x509 -outform DER -out cert.pem`) — was previously dropped by the
+  binary-file check; it is now parsed, and a file that fails to parse surfaces
+  as a low-confidence "unparseable certificate — review manually" finding (fail
+  closed: quantum-vulnerable until a human clears it). The same fail-closed rule
+  covers a cert/key file the scanner cannot READ (permission/I-O error) and a
+  text `.der`/`.cer`/`.crt` holding headerless base64 DER (parsed) or
+  unrecognizable cert-shaped content (surfaced). A PEM block whose parse fails
+  keeps the generic medium-confidence finding.
+- **Killed static-RSA suites are remediation, not exposure:** the OpenSSL
+  kill-syntax lookbehind now also guards the `TLS_RSA_WITH_` arm of all three
+  cipher patterns — `ssl_ciphers HIGH:!TLS_RSA_WITH_AES_128_CBC_SHA` (and the
+  `-` removal form, Apache and HAProxy alike) no longer fires as a
+  high-confidence weak-cipher finding.
+- **Long-KexAlgorithms dedupe:** the `dh-keyexchange` yield-to-`ssh-classical-kex`
+  lookbehind bound was raised from 500 to 1000 chars to match the scanner's
+  line-length gate, so an unusually long (but legal) kex list can no longer
+  double-count one directive line as two findings.
+
+qbench is now **136 cases at 1.0/1.0** (23 new: posture positives incl. the
+HAProxy ciphers/ssl-min-ver arms and Apache/HAProxy static-RSA suites,
+disabled/modern/prose/comment guards incl. killed-TLS_RSA exclusions for all
+three cipher patterns, the parse-dedupe case, and the long-kex dedupe case).
+`SSLProtocol all` (version-dependent SSLv3 enablement on old builds) is
+documented in KNOWN_GAPS as a deliberate lexical scope boundary.
+
 ## [0.6.1] - 2026-07-01
 
 ### Changed

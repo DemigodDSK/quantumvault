@@ -173,6 +173,19 @@ function recommendationFor(asset: CryptoAsset, priority: Severity): string {
 
 export function scoreAsset(asset: CryptoAsset): RiskScore {
   const ctx = deploymentContext(asset.file);
+  // A quantum-SAFE asset (e.g. a parsed ML-DSA certificate) is inventory, not
+  // exposure — zero risk, no migration effort, and it must never gate a build.
+  if (!asset.quantumVulnerable) {
+    return {
+      score: 0,
+      priority: "low",
+      factors: { dataSensitivity: 0, retentionExposure: 0, hndlExposure: 0, complianceImpact: 0, businessImpact: 0 },
+      recommendation: `${asset.algorithm} at ${asset.file}:${asset.line} is already post-quantum — no migration required.`,
+      migrationEffortDays: 0,
+      contextMultiplier: ctx.multiplier,
+      deploymentContext: ctx.label,
+    };
+  }
   // Apply the deployment-context discount to each factor so the reported
   // factors remain consistent with the final score (score = weighted sum).
   const factors: RiskFactorBreakdown = {

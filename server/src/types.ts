@@ -8,7 +8,12 @@ export type CryptoFamily =
   // we don't assert a specific algorithm we can't see.
   | "Asymmetric"
   | "SymmetricLegacy"
-  | "HashLegacy";
+  | "HashLegacy"
+  // A NIST post-quantum algorithm (ML-DSA / ML-KEM / SLH-DSA), recognized so a
+  // PQC X.509 certificate is inventoried as SAFE (quantumVulnerable: false)
+  // rather than flagged. Only parsed-certificate assets carry this family —
+  // no regex pattern emits it.
+  | "PQC";
 
 export type Severity = "critical" | "high" | "medium" | "low";
 
@@ -64,6 +69,16 @@ export interface CryptoAsset {
   status: AssetStatus;
   /** Filled in by the risk scoring service. */
   risk?: RiskScore;
+  // ── X.509 certificate metadata (ENG-02) — present only on parsed-certificate
+  //    assets; optional and additive so existing consumers are untouched. ──
+  certSubject?: string;
+  certIssuer?: string;
+  /** ISO-8601 validity bounds, when the certificate's Time fields parsed. */
+  certNotBefore?: string;
+  certNotAfter?: string;
+  certExpired?: boolean;
+  certKeyAlgorithm?: string;
+  certSignatureAlgorithm?: string;
 }
 
 export interface RiskFactorBreakdown {

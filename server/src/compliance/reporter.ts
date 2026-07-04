@@ -268,8 +268,11 @@ export function generateReport(
   assets: CryptoAsset[],
   scanId: string,
 ): ComplianceReport {
+  // Quantum-SAFE inventory (e.g. a parsed ML-DSA certificate) never counts
+  // against a control — only quantum-vulnerable findings are compliance gaps.
+  const vulnerable = assets.filter((a) => a.quantumVulnerable);
   const controls: ComplianceControl[] = CATALOGS[framework].map((def) => {
-    const affectedAssets = assets.filter(def.applies).length;
+    const affectedAssets = vulnerable.filter(def.applies).length;
     // Inventory controls are satisfied by the existence of this report: a report
     // is only generated from a completed scan, so a cryptographic inventory
     // exists — even when the scan is clean (zero findings). A clean codebase must

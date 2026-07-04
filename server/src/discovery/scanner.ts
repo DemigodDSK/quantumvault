@@ -3,6 +3,15 @@ import { basename, extname, join, relative, sep } from "node:path";
 import type { CryptoAsset, ScanJob } from "../types.js";
 import { PATTERNS, extractKeyBits, resolveConfidence, PEM_HEADER } from "./patterns.js";
 import {
+  parseCertificate,
+  extractPemCertificates,
+  certificateAssetFacts,
+  X509_PARSED_PATTERN_ID,
+  X509_UNPARSEABLE_PATTERN_ID,
+  PEM_CERT_BEGIN,
+  type ParsedCertificate,
+} from "./x509.js";
+import {
   C_STYLE,
   HASH_STYLE,
   TRIPLE_QUOTE,
@@ -98,6 +107,8 @@ const EXT_LANG: Record<string, string> = {
   ".ini": "config",
   ".pem": "pem",
   ".crt": "pem",
+  ".cer": "pem",
+  ".der": "pem",
   ".key": "pem",
   ".env": "config",
   ".tf": "terraform",
@@ -137,16 +148,28 @@ function isNonProductionDir(name: string): boolean {
 const MAX_FILE_BYTES = 2_000_000;
 const NULL_BYTE = "\x00";
 
+// Extensions that CLAIM to be a certificate. A text file under one of these
+// with no PEM armor is either headerless base64 DER (keytool/config-management
+// pipelines emit this) or unrecognizable cert-shaped content — parse or surface,
+// never report it clean. (.pem/.key are NOT here: a text .pem/.key without armor
+// is handled by the normal pattern path, which knows key material shapes.)
+const CERT_EXTS = new Set([".der", ".cer", ".crt"]);
+
 // Well-known SSH key files have NO extension, so they'd be skipped by the
 // extension map — but they hold real ssh-rsa/ecdsa key material.
 const SSH_KEY_FILES = new Set([
   "authorized_keys", "known_hosts", "id_rsa.pub", "id_dsa.pub", "id_ecdsa.pub", "id_ed25519.pub",
 ]);
 
+// OpenSSH daemon/client configuration also has NO extension; it carries the
+// KexAlgorithms posture line (ENG-02), so it must scan as config.
+const SSH_CONFIG_FILES = new Set(["sshd_config", "ssh_config"]);
+
 function languageFor(file: string): string | null {
   const ext = extname(file).toLowerCase();
   if (ext in EXT_LANG) return EXT_LANG[ext];
   if (SSH_KEY_FILES.has(basename(file))) return "config";
+  if (SSH_CONFIG_FILES.has(basename(file))) return "config";
   if (file.endsWith("Dockerfile") || file.endsWith(".dockerfile")) return "config";
   return null;
 }
@@ -181,6 +204,50 @@ let assetSeq = 0;
 function nextAssetId(): string {
   assetSeq += 1;
   return `asset_${assetSeq.toString(36)}_${Date.now().toString(36)}`;
+}
+
+/** A fully parsed X.509 certificate as one enriched, high-confidence asset. A
+ *  parsed cert is not a mention — the DER structure IS the artifact. */
+function parsedCertAsset(
+  cert: ParsedCertificate,
+  scanId: string, rel: string, line: number, language: string, snippet: string,
+): CryptoAsset {
+  const facts = certificateAssetFacts(cert);
+  return {
+    id: nextAssetId(),
+    scanId,
+    file: rel,
+    line,
+    language,
+    snippet: snippet.trim().slice(0, 240),
+    patternId: X509_PARSED_PATTERN_ID,
+    confidence: "high",
+    status: "open",
+    ...facts,
+  };
+}
+
+/** Honesty invariant — no silent skips: a certificate-shaped file whose parse
+ *  fails surfaces as a low-confidence "review manually" finding (per the
+ *  ambiguous-PKCS#8 precedent: quantum-vulnerable, algorithm unasserted). */
+function unparseableCertAsset(scanId: string, rel: string, language: string, reason: string): CryptoAsset {
+  return {
+    id: nextAssetId(),
+    scanId,
+    file: rel,
+    line: 1,
+    family: "Asymmetric",
+    algorithm: "Unparseable certificate — review manually",
+    keyBits: null,
+    language,
+    snippet: `certificate parse failed: ${reason}`.slice(0, 240),
+    patternId: X509_UNPARSEABLE_PATTERN_ID,
+    quantumVulnerable: true,
+    confidence: "low",
+    pqcReplacement:
+      "Inspect the certificate manually; re-issue as a hybrid or PQC (ML-DSA) X.509 certificate if classical",
+    status: "open",
+  };
 }
 
 /**
@@ -270,6 +337,56 @@ export function scanDirectory(target: string, scanId: string): ScanResult {
   const isIgnored = makeIgnoreMatcher(loadIgnorePatterns(target));
 
   for (const file of walk(target, target, isIgnored)) {
+    // Certificate/key-material pre-check for EVERY pem-language extension
+    // (.pem/.crt/.cer/.der/.key). Binary DER under any of them — mislabeled
+    // exports are common (`openssl x509 -outform DER -out cert.pem`) — would
+    // fail the NULL_BYTE text gate and vanish from the inventory. Attempt a
+    // DER certificate parse first; a binary file that does NOT parse is still
+    // surfaced (unparseable — review manually), never silently skipped.
+    const ext = extname(file).toLowerCase();
+    if (EXT_LANG[ext] === "pem") {
+      const rel = relative(target, file) || file;
+      let buf: Buffer;
+      try {
+        buf = readFileSync(file);
+      } catch {
+        // Fail closed on read errors too: a permission-denied certificate/key
+        // file reported as if it did not exist is a silent false clean.
+        filesScanned += 1;
+        assets.push(unparseableCertAsset(scanId, rel, "pem", "file unreadable (permission or I/O error)"));
+        continue;
+      }
+      if (buf.includes(0)) {
+        filesScanned += 1;
+        const res = parseCertificate(buf);
+        assets.push(
+          res.ok
+            ? parsedCertAsset(res.cert, scanId, rel, 1, "der", `binary DER certificate (${res.cert.keyAlgorithm})`)
+            : unparseableCertAsset(scanId, rel, "der", res.reason),
+        );
+        continue;
+      }
+      // Headerless base64 DER: a text file under a CERTIFICATE extension with
+      // no PEM armor holds either a decodable certificate (base64 of the DER,
+      // no BEGIN/END markers) or unrecognizable cert-shaped content. Parse or
+      // surface — a certificate artifact in a certificate extension must not
+      // scan clean just because the armor is missing.
+      if (CERT_EXTS.has(ext) && !buf.includes("-----BEGIN")) {
+        filesScanned += 1;
+        const body = buf.toString("utf8").replace(/\s+/g, "");
+        const der = body.length > 0 && /^[A-Za-z0-9+/]+={0,2}$/.test(body) ? Buffer.from(body, "base64") : null;
+        const res = der ? parseCertificate(der) : null;
+        assets.push(
+          res?.ok
+            ? parsedCertAsset(res.cert, scanId, rel, 1, "pem", `headerless base64 DER certificate (${res.cert.keyAlgorithm})`)
+            : unparseableCertAsset(scanId, rel, "pem", res ? res.reason : "no PEM armor and not base64 DER"),
+        );
+        continue;
+      }
+      // Text .pem/.key (any content) and armored .crt/.cer/.der fall through
+      // to the normal PEM text path.
+    }
+
     const language = languageFor(file);
     if (!language) continue;
     filesScanned += 1;
@@ -308,6 +425,25 @@ export function scanDirectory(target: string, scanId: string): ScanResult {
       off += lines[i].length + 1;
     }
 
+    // X.509 PEM certificate blocks: parse each block's DER (a chain = one asset
+    // per certificate). A parsed cert REPLACES the generic x509-cert-body regex
+    // finding on the same header line — one certificate, one asset (the v0.3.7
+    // dedupe rule). A block whose parse FAILS keeps the generic regex finding,
+    // so a malformed-but-present cert is surfaced, never silently dropped; an
+    // EMPTY block stays with the isEmptyPemBlockAt placeholder downgrade.
+    const parsedCertLines = new Set<number>();
+    if (normalized.includes(PEM_CERT_BEGIN) && !localeFile) {
+      for (const block of extractPemCertificates(normalized)) {
+        if (!block.der) continue;
+        const res = parseCertificate(block.der);
+        if (!res.ok) continue;
+        parsedCertLines.add(block.line);
+        assets.push(
+          parsedCertAsset(res.cert, scanId, rel, block.line, language, lines[block.line - 1] ?? ""),
+        );
+      }
+    }
+
     for (const pattern of PATTERNS) {
       const langOk =
         pattern.languages.includes(language) ||
@@ -316,6 +452,9 @@ export function scanDirectory(target: string, scanId: string): ScanResult {
       if (!langOk) continue;
 
       for (let i = 0; i < lines.length; i++) {
+        // Dedupe: this block's certificate was fully parsed into an enriched
+        // asset — the generic header finding would double-count it.
+        if (pattern.id === "x509-cert-body" && parsedCertLines.has(i + 1)) continue;
         const line = lines[i];
         const codeLine = codeLines[i] ?? line;
         if (line.length > 1000) continue;

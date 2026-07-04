@@ -83,14 +83,19 @@ function parseArgs(argv: string[]): Args {
 
 function printTable(job: ScanJob, assets: CryptoAsset[]): void {
   // Low-confidence findings are possible mentions (a crypto name in a string,
-  // enum, or doc) — reported separately, not counted as hard exposure.
-  const actionable = assets.filter((a) => a.confidence !== "low");
-  const mentions = assets.length - actionable.length;
+  // enum, or doc) — reported separately, not counted as hard exposure. A
+  // quantum-SAFE asset (a parsed PQC certificate) is inventory, not exposure,
+  // so it never inflates the headline vulnerable count.
+  const confident = assets.filter((a) => a.confidence !== "low");
+  const mentions = assets.length - confident.length;
+  const actionable = confident.filter((a) => a.quantumVulnerable);
+  const safeAssets = confident.length - actionable.length;
   const byPriority: Record<Severity, number> = { critical: 0, high: 0, medium: 0, low: 0 };
   for (const a of actionable) byPriority[a.risk?.priority ?? "low"] += 1;
 
   process.stdout.write(
     `\nUniQueS — ${job.filesScanned} files scanned, ${actionable.length} quantum-vulnerable assets` +
+      (safeAssets ? ` · ${safeAssets} post-quantum (safe)` : "") +
       (mentions ? ` · ${mentions} possible mention${mentions === 1 ? "" : "s"} (low confidence)` : "") +
       ` (${job.durationMs}ms)\n`,
   );
@@ -168,9 +173,10 @@ function main(): void {
   }
 
   // Gating operates on actionable findings — low-confidence "possible mentions"
-  // are never exposure and never fail a build. With --baseline, only findings
-  // that are NEW since the accepted baseline are gated.
-  let gated = assets.filter((a) => a.confidence !== "low");
+  // are never exposure and never fail a build, and neither is a quantum-SAFE
+  // asset (a parsed PQC certificate is inventory, not exposure). With
+  // --baseline, only findings that are NEW since the accepted baseline are gated.
+  let gated = assets.filter((a) => a.confidence !== "low" && a.quantumVulnerable);
   if (args.baseline) {
     if (!existsSync(args.baseline)) {
       process.stderr.write(`error: baseline not found: ${args.baseline} (create it with --write-baseline)\n`);

@@ -203,7 +203,12 @@ export const PATTERNS: CryptoPattern[] = [
     family: "DH",
     algorithm: "Diffie-Hellman",
     description: "Classical Diffie-Hellman key exchange",
-    regex: /\b(?:createDiffieHellman|dh\.generate|DHParameterSpec|diffie[-_ ]?hellman)\b/i,
+    // The lookbehind excludes a `diffie-hellman-*` token on an OpenSSH
+    // KexAlgorithms line — that posture is owned by ssh-classical-kex (ENG-02),
+    // and firing both would double-count one line (the v0.3.7 dedupe rule).
+    // The {0,1000} bound matches the scanner's 1000-char line gate, so no
+    // scannable line can push the token past the lookbehind's reach.
+    regex: /\b(?:createDiffieHellman|dh\.generate|DHParameterSpec|(?<!KexAlgorithms[^\n]{0,1000})diffie[-_ ]?hellman)\b/i,
     quantumVulnerable: true,
     baseSeverity: "high",
     // Includes config languages (yaml/json/terraform/conf): a key-exchange config
@@ -658,6 +663,102 @@ export const PATTERNS: CryptoPattern[] = [
     languages: ["pem", "config", "any"],
     pqcReplacement: "Re-issue as a hybrid or PQC (ML-DSA) X.509 certificate per NIST PQC migration",
   },
+  // ------------------------------------------------ TLS / SSH posture (ENG-02)
+  // Configuration lines that ENABLE a legacy protocol, a weak cipher family, or
+  // a classical-only key exchange. Each regex is anchored to its directive so a
+  // bare protocol/cipher token elsewhere never fires; disabling forms (`-SSLv3`,
+  // `!RC4`, `KexAlgorithms -…`) are remediation and must NOT fire — every arm
+  // below has a qbench guard proving the modern/disabled form stays clean.
+  {
+    id: "tls-legacy-protocol-nginx",
+    family: "Asymmetric",
+    algorithm: "Legacy TLS protocol (SSLv3/TLS 1.0/1.1)",
+    description: "nginx ssl_protocols enabling SSLv3, TLSv1, or TLSv1.1",
+    // `TLSv1(?:\.[01])?(?![.\d])` matches TLSv1 / TLSv1.0 / TLSv1.1 but is a
+    // dead end on TLSv1.2 / TLSv1.3 (the trailing lookahead rejects the dot).
+    regex: /\bssl_protocols\b[^\n]*\b(?:SSLv3|TLSv1(?:\.[01])?)(?![.\d])/,
+    quantumVulnerable: true,
+    baseSeverity: "high",
+    languages: ["config", "yaml"],
+    pqcReplacement: "TLS 1.3 (hybrid PQC key exchange, e.g. X25519MLKEM768, where supported); TLS 1.2 + ECDHE as the transitional floor",
+  },
+  {
+    id: "tls-weak-cipher-nginx",
+    family: "SymmetricLegacy",
+    algorithm: "Weak TLS cipher suite (RC4/DES/3DES or static-RSA key exchange)",
+    description: "nginx ssl_ciphers enabling RC4, DES/3DES, or TLS_RSA_ (static RSA) suites",
+    // A weak token counts only when ENABLED: at a component start (`RC4-SHA`,
+    // `:DES-CBC3-SHA`) or mid-cipher-name after a word char (`ECDHE-RSA-RC4-SHA`,
+    // via `(?<=\w-)`). OpenSSL kill syntax is an exclusion and must not fire — both
+    // the family kill (`!RC4`, `:-3DES`) and a killed compound suite name
+    // (`!EDH-RSA-DES-CBC3-SHA`), which the variable-length lookbehind rejects by
+    // scanning back to the component start for a leading `!`/`-`. The SAME kill
+    // lookbehind guards the TLS_RSA_ arm: `!TLS_RSA_WITH_…` / `-TLS_RSA_WITH_…`
+    // explicitly EXCLUDES the static-RSA suite and is remediation, not exposure.
+    regex: /\bssl_ciphers\b[^\n]*(?:(?<!(?:^|[\s:,"'=])[!-][\w-]{0,64})(?:(?<![!\w-])|(?<=\w-))(?:RC4|3?DES)\b|(?<!(?:^|[\s:,"'=])[!-][\w-]{0,64})\bTLS_RSA_WITH_)/,
+    quantumVulnerable: true,
+    baseSeverity: "high",
+    languages: ["config", "yaml"],
+    pqcReplacement: "AES-256-GCM suites with ECDHE today; hybrid PQC key exchange (ML-KEM) as it lands in TLS stacks",
+  },
+  {
+    id: "tls-legacy-protocol-apache",
+    family: "Asymmetric",
+    algorithm: "Legacy TLS protocol (SSLv3/TLS 1.0/1.1)",
+    description: "Apache SSLProtocol enabling SSLv3, TLSv1, or TLSv1.1",
+    // Apache's +/- syntax: `-SSLv3` REMOVES a protocol, so the canonical hardening
+    // line `SSLProtocol all -SSLv3 -TLSv1 -TLSv1.1` must not fire — the lookbehind
+    // rejects a token preceded by `-`. A bare or `+`-prefixed legacy token enables.
+    regex: /\bSSLProtocol\b[^\n]*(?<![-\w])\+?(?:SSLv3|TLSv1(?:\.[01])?)(?![.\d])/,
+    quantumVulnerable: true,
+    baseSeverity: "high",
+    languages: ["config", "yaml"],
+    pqcReplacement: "TLS 1.3 (hybrid PQC key exchange, e.g. X25519MLKEM768, where supported); TLS 1.2 + ECDHE as the transitional floor",
+  },
+  {
+    id: "tls-weak-cipher-apache",
+    family: "SymmetricLegacy",
+    algorithm: "Weak TLS cipher suite (RC4/DES/3DES or static-RSA key exchange)",
+    description: "Apache SSLCipherSuite enabling RC4, DES/3DES, or TLS_RSA_ (static RSA) suites",
+    // Same enabled-vs-killed component logic as tls-weak-cipher-nginx (the kill
+    // lookbehind covers the TLS_RSA_ arm too).
+    regex: /\bSSLCipherSuite\b[^\n]*(?:(?<!(?:^|[\s:,"'=])[!-][\w-]{0,64})(?:(?<![!\w-])|(?<=\w-))(?:RC4|3?DES)\b|(?<!(?:^|[\s:,"'=])[!-][\w-]{0,64})\bTLS_RSA_WITH_)/,
+    quantumVulnerable: true,
+    baseSeverity: "high",
+    languages: ["config", "yaml"],
+    pqcReplacement: "AES-256-GCM suites with ECDHE today; hybrid PQC key exchange (ML-KEM) as it lands in TLS stacks",
+  },
+  {
+    id: "tls-legacy-haproxy",
+    family: "Asymmetric",
+    algorithm: "Legacy TLS protocol or weak cipher (HAProxy bind defaults)",
+    description: "HAProxy ssl-default-bind-options/-ciphers enabling legacy TLS or weak suites",
+    // `no-sslv3` / `no-tlsv10` DISABLE and must not fire; only `force-*` pins to a
+    // legacy version and `ssl-min-ver` set to a legacy floor count as exposure.
+    // The ciphers arm shares the tls-weak-cipher-nginx kill-lookbehind logic,
+    // including on the TLS_RSA_ (static-RSA suite) alternative.
+    regex: /\bssl-default-bind-(?:options\b[^\n]*\b(?:force-sslv3|force-tlsv1[01]\b|ssl-min-ver\s+(?:SSLv3|TLSv1(?:\.[01])?(?![.\d])))|ciphers\b[^\n]*(?:(?<!(?:^|[\s:,"'=])[!-][\w-]{0,64})(?:(?<![!\w-])|(?<=\w-))(?:RC4|3?DES)\b|(?<!(?:^|[\s:,"'=])[!-][\w-]{0,64})\bTLS_RSA_WITH_))/,
+    quantumVulnerable: true,
+    baseSeverity: "high",
+    languages: ["config", "yaml"],
+    pqcReplacement: "ssl-min-ver TLSv1.2 (prefer TLSv1.3) with AES-256-GCM/ECDHE suites; hybrid PQC key exchange as it lands",
+  },
+  {
+    id: "ssh-classical-kex",
+    family: "DH",
+    algorithm: "Classical SSH key exchange (no PQC hybrid)",
+    description: "OpenSSH KexAlgorithms restricted to classical key exchange (ecdh-*/diffie-hellman-*) with no PQC hybrid",
+    // Three conditions in one line-shape: (1) the value is not a removal
+    // (`KexAlgorithms -…` deletes algorithms — remediation); (2) NO PQC hybrid
+    // (sntrup*/mlkem*) appears anywhere in the value — a hybrid-first list is the
+    // fixed posture and must not fire; (3) a classical kex family is present.
+    regex: /\bKexAlgorithms\b(?!\s*=?\s*-)(?![^\n]*\b(?:sntrup|mlkem))[^\n]*\b(?:ecdh-sha2-|diffie-hellman-)/i,
+    quantumVulnerable: true,
+    baseSeverity: "high",
+    languages: ["config", "yaml"],
+    pqcReplacement: "Enable a PQC hybrid key exchange first in the list (sntrup761x25519-sha512 or mlkem768x25519-sha256, OpenSSH 9.x+)",
+  },
+
   // PKCS#12 keystore (.pfx/.p12) — bundles an RSA/EC private key + cert chain.
   // The library/API token or a quoted keystore path; trailing \b on `pkcs12`
   // keeps it off identifiers like `pkcs12Loader`.

@@ -4,10 +4,14 @@ import { VERSION } from "../version.js";
 import {
   algorithmDetails,
   quantumCategory,
+  isCertificateAsset,
+  protocolTypeFor,
+  protocolVersionFor,
   CDX_ASSET_TYPES,
   CDX_CRYPTO_FUNCTIONS,
   CDX_EXECUTION_ENVIRONMENTS,
   CDX_PRIMITIVES,
+  CDX_PROTOCOL_TYPES,
 } from "./cryptoRef.js";
 
 const SPEC_VERSION = "1.6";
@@ -73,12 +77,37 @@ export function assetsToCbom(assets: CryptoAsset[], meta: CbomMeta = {}): Record
   }
 
   const components = sorted.map((a) => {
-    const d = algorithmDetails(a);
-    return {
-      type: "cryptographic-asset",
-      "bom-ref": refOf.get(a)!,
-      name: a.algorithm,
-      cryptoProperties: {
+    // Three CycloneDX asset shapes (ENG-02): a parsed/unparseable X.509
+    // certificate carries certificateProperties; a TLS/SSH configuration
+    // posture finding carries protocolProperties; everything else is an
+    // algorithm asset as before. The certificate's key/signature algorithm
+    // detail lives in the quantumvault:cert* properties — we do not fabricate a
+    // separate algorithm component just to satisfy signatureAlgorithmRef.
+    let cryptoProperties: Record<string, unknown>;
+    const protocolType = protocolTypeFor(a);
+    if (isCertificateAsset(a)) {
+      cryptoProperties = {
+        assetType: "certificate",
+        certificateProperties: {
+          ...(a.certSubject != null ? { subjectName: a.certSubject } : {}),
+          ...(a.certIssuer != null ? { issuerName: a.certIssuer } : {}),
+          ...(a.certNotBefore != null ? { notValidBefore: a.certNotBefore } : {}),
+          ...(a.certNotAfter != null ? { notValidAfter: a.certNotAfter } : {}),
+          certificateFormat: "X.509",
+        },
+      };
+    } else if (protocolType) {
+      const version = protocolVersionFor(a);
+      cryptoProperties = {
+        assetType: "protocol",
+        protocolProperties: {
+          type: protocolType,
+          ...(version != null ? { version } : {}),
+        },
+      };
+    } else {
+      const d = algorithmDetails(a);
+      cryptoProperties = {
         assetType: "algorithm",
         ...(d.oid ? { oid: d.oid } : {}),
         algorithmProperties: {
@@ -92,14 +121,26 @@ export function assetsToCbom(assets: CryptoAsset[], meta: CbomMeta = {}): Record
             : {}),
           nistQuantumSecurityLevel: quantumCategory(a),
         },
-      },
+      };
+    }
+    return {
+      type: "cryptographic-asset",
+      "bom-ref": refOf.get(a)!,
+      name: a.algorithm,
+      cryptoProperties,
       evidence: { occurrences: [{ location: a.file, line: a.line }] },
       properties: [
         { name: "quantumvault:family", value: a.family },
         { name: "quantumvault:patternId", value: a.patternId },
         { name: "quantumvault:confidence", value: a.confidence },
+        { name: "quantumvault:quantumVulnerable", value: String(a.quantumVulnerable) },
         { name: "quantumvault:pqcReplacement", value: a.pqcReplacement },
         { name: "quantumvault:remediationStatus", value: a.status },
+        ...(a.certKeyAlgorithm ? [{ name: "quantumvault:certKeyAlgorithm", value: a.certKeyAlgorithm }] : []),
+        ...(a.certSignatureAlgorithm
+          ? [{ name: "quantumvault:certSignatureAlgorithm", value: a.certSignatureAlgorithm }]
+          : []),
+        ...(a.certExpired != null ? [{ name: "quantumvault:certExpired", value: String(a.certExpired) }] : []),
         ...(a.risk ? [{ name: "quantumvault:riskScore", value: String(a.risk.score) }] : []),
       ],
     };
@@ -178,6 +219,21 @@ export function validateCbom(doc: unknown): CbomValidation {
     }
     if (!inEnum(CDX_ASSET_TYPES, cp.assetType)) fail(`${at}.cryptoProperties.assetType invalid: ${cp.assetType}`);
     if (cp.oid != null && typeof cp.oid !== "string") fail(`${at}.cryptoProperties.oid must be a string`);
+
+    if (cp.assetType === "certificate") {
+      // Certificate assets carry certificateProperties (all fields optional in
+      // 1.6); validity bounds must be strings when present.
+      const certp = cp.certificateProperties ?? {};
+      for (const f of ["subjectName", "issuerName", "notValidBefore", "notValidAfter", "certificateFormat"])
+        if (certp[f] != null && typeof certp[f] !== "string") fail(`${at} certificateProperties.${f} must be a string`);
+      return;
+    }
+    if (cp.assetType === "protocol") {
+      const pp = cp.protocolProperties ?? {};
+      if (!inEnum(CDX_PROTOCOL_TYPES, pp.type)) fail(`${at} protocolProperties.type invalid: ${pp.type}`);
+      if (pp.version != null && typeof pp.version !== "string") fail(`${at} protocolProperties.version must be a string`);
+      return;
+    }
 
     const ap = cp.algorithmProperties ?? {};
     if (!inEnum(CDX_PRIMITIVES, ap.primitive)) fail(`${at} primitive invalid: ${ap.primitive}`);

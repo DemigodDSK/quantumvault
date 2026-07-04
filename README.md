@@ -24,7 +24,7 @@ source never leaves your network.
 
 ## Features
 
-- **Cryptographic asset discovery** — a 53-pattern, language-agnostic scanner
+- **Cryptographic asset discovery** — a 59-pattern, language-agnostic scanner
   detects RSA, ECC (incl. Ed25519/X25519), DSA, Diffie-Hellman, legacy symmetric
   (DES/3DES/AES-128), broken hashes (MD5/SHA-1), RSA/EC/DSA private-key PEMs (incl.
   PGP key blocks), JWT/JOSE signing algorithms (RS/ES/PS), Web Crypto RSA, SSH key
@@ -33,6 +33,22 @@ source never leaves your network.
   shallow-clones a **public or private Git repo** (GitHub/GitLab/Bitbucket;
   private via an access token sent as an auth header, kept out of the URL and
   never logged).
+- **Certificate & TLS configuration discovery** — a built-in, zero-dependency
+  DER/ASN.1 parser reads every X.509 certificate it finds (PEM blocks and chains,
+  binary DER under any cert/key extension — including mislabeled `.pem`/`.key`
+  exports — headerless base64 `.der`, certs embedded in source strings) and
+  reports the key algorithm and size/curve, signature algorithm (incl. RSA-PSS),
+  subject/issuer, and expiry — **post-quantum certificates (ML-DSA / SLH-DSA)
+  are recognized as already safe**, and a certificate file that fails to parse
+  (or cannot even be read) is surfaced for manual review, never silently
+  skipped. TLS/SSH posture checks
+  flag configurations that *enable* legacy crypto — nginx/Apache/HAProxy
+  SSLv3/TLS 1.0/1.1, RC4/DES/3DES and static-RSA (`TLS_RSA_`) cipher suites, and
+  OpenSSH `KexAlgorithms` lists with no PQC hybrid key exchange — while
+  hardening lines (`SSLProtocol all -SSLv3 -TLSv1`, `!RC4`, `no-sslv3`,
+  hybrid-first kex lists) correctly stay clean. Certificates and protocol
+  findings export with their proper CycloneDX 1.6 asset types
+  (`certificate` with validity metadata, `protocol` with type/version).
 - **Risk scoring & prioritization** — a 5-factor weighted model (data sensitivity,
   retention exposure, harvest-now-decrypt-later exposure, compliance impact,
   business impact) yields a **priority tier** and a 0–100 score from **transparent,

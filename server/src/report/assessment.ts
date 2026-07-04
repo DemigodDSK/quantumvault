@@ -32,6 +32,7 @@ const FAMILY_LABEL: Record<CryptoFamily, string> = {
   Asymmetric: "Asymmetric (PKCS#8, unspecified)",
   SymmetricLegacy: "Symmetric (legacy)",
   HashLegacy: "Legacy hash (MD5/SHA-1)",
+  PQC: "Post-quantum (safe)",
 };
 
 const FAMILY_REPLACEMENT: Record<CryptoFamily, string> = {
@@ -42,6 +43,7 @@ const FAMILY_REPLACEMENT: Record<CryptoFamily, string> = {
   Asymmetric: "Identify & replace",
   SymmetricLegacy: "AES-256",
   HashLegacy: "SHA-256 / SHA-3",
+  PQC: "None — already post-quantum",
 };
 
 const PRIORITY_MEANING: Record<Severity, string> = {

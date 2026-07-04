@@ -34,6 +34,10 @@ export const CDX_ASSET_TYPES = [
   "algorithm", "certificate", "protocol", "related-crypto-material",
 ] as const;
 
+export const CDX_PROTOCOL_TYPES = [
+  "tls", "ssh", "ipsec", "ike", "sstp", "wpa", "other", "unknown",
+] as const;
+
 type Primitive = (typeof CDX_PRIMITIVES)[number];
 type CryptoFunction = (typeof CDX_CRYPTO_FUNCTIONS)[number];
 
@@ -112,9 +116,55 @@ export function algorithmDetails(a: CryptoAsset): AlgorithmDetails {
     case "HashLegacy":
       // MD5 and SHA-1 are both collision-broken → 0-bit effective for signatures.
       return { primitive: "hash", cryptoFunctions: ["digest"], classicalSecurityLevel: 0 };
+    case "PQC":
+      // Only parsed X.509 certificates carry this family; the algorithm label
+      // names the exact parameter set (ML-DSA-65, ML-KEM-768, SLH-DSA-…).
+      return /ML-KEM/.test(alg)
+        ? { primitive: "kem", cryptoFunctions: ["encapsulate", "decapsulate"] }
+        : { primitive: "signature", cryptoFunctions: ["sign", "verify"] };
     default:
       return { primitive: "unknown", cryptoFunctions: [] };
   }
+}
+
+// ── ENG-02: certificate / protocol asset classification for the CBOM ─────────
+
+/** patternIds whose finding is a TLS or SSH configuration POSTURE, emitted as a
+ *  CycloneDX `protocol` asset (not an `algorithm`). */
+const PROTOCOL_PATTERNS: Record<string, "tls" | "ssh"> = {
+  "tls-legacy-protocol-nginx": "tls",
+  "tls-weak-cipher-nginx": "tls",
+  "tls-legacy-protocol-apache": "tls",
+  "tls-weak-cipher-apache": "tls",
+  "tls-legacy-haproxy": "tls",
+  "ssh-classical-kex": "ssh",
+};
+
+export function protocolTypeFor(a: CryptoAsset): "tls" | "ssh" | null {
+  return PROTOCOL_PATTERNS[a.patternId] ?? null;
+}
+
+/**
+ * Best-effort protocol VERSION from the matched line. Only asserted when the
+ * snippet names exactly one legacy version — a directive enabling several
+ * (`ssl_protocols TLSv1 TLSv1.1`) gets no single version rather than a guess.
+ * SSH posture lines are always protocol 2 (KexAlgorithms exists only there).
+ */
+export function protocolVersionFor(a: CryptoAsset): string | null {
+  const kind = protocolTypeFor(a);
+  if (kind === "ssh") return "2";
+  if (kind !== "tls") return null;
+  const s = a.snippet;
+  const found = new Set<string>();
+  if (/\bSSLv3\b|force-sslv3/.test(s)) found.add("3.0");
+  if (/\bTLSv1(?:\.0)?(?![.\d])/.test(s) || /force-tlsv10/.test(s)) found.add("1.0");
+  if (/\bTLSv1\.1(?![.\d])/.test(s) || /force-tlsv11/.test(s)) found.add("1.1");
+  return found.size === 1 ? [...found][0] : null;
+}
+
+/** Is this asset a parsed or unparseable X.509 certificate finding (ENG-02)? */
+export function isCertificateAsset(a: CryptoAsset): boolean {
+  return a.patternId === "x509-certificate" || a.patternId === "x509-cert-unparseable";
 }
 
 /**
@@ -155,6 +205,16 @@ export function quantumCategory(a: CryptoAsset): number {
       return 0;
     case "SymmetricLegacy":
       return /AES/.test(a.algorithm) ? 1 : 0; // ← AES-128 posture lives here
+    case "PQC": {
+      // FIPS 203/204/205 claimed categories by parameter set. The algorithm
+      // label always names the set (it came from the OID), so the fallback of 1
+      // (the weakest passing category) is a floor, never an overclaim.
+      const alg = a.algorithm;
+      if (/ML-DSA-87|ML-KEM-1024|SLH-DSA-\w+-256/.test(alg)) return 5;
+      if (/ML-DSA-65|ML-KEM-768|SLH-DSA-\w+-192/.test(alg)) return 3;
+      if (/ML-DSA-44/.test(alg)) return 2;
+      return 1;
+    }
     default:
       return 0;
   }

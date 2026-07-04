@@ -309,6 +309,63 @@ export const QBENCH: QCase[] = [
     code: `-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n` },
   { id: "guard-real-pem-cert", ext: "pem", expect: ["x509-cert-body"], why: "a PEM block WITH a base64 body is real certificate material and still fires — the empty-block downgrade requires the absence of any base64 body",
     code: `-----BEGIN CERTIFICATE-----\nMIIBkTCB+wIJAKZ7D5Yb0zzKMA0GCSqGSIb3DQEBCwUAMBQxEjAQBgNVBAMMCWxv\nY2FsaG9zdDAeFw0yMDA1MDEwMDAwMDBaFw0zMDA1MDEwMDAwMDBaMBQ=\n-----END CERTIFICATE-----\n` },
+
+  // ── ENG-02 (v0.7.0): X.509 certificate parsing — a block whose DER parses
+  //    yields ONE enriched x509-certificate asset that REPLACES the generic
+  //    x509-cert-body header finding (the v0.3.7 one-artifact-one-asset rule).
+  //    The truncated-body cases above (x509-cert / guard-real-pem-cert) prove a
+  //    FAILED parse keeps the generic finding — surfaced, never silent. ──
+  { id: "x509-parsed-cert-dedupe", ext: "pem", expect: ["x509-certificate"], why: "a fully parseable certificate becomes one enriched cert asset; the generic x509-cert-body finding on the same header line is suppressed — one certificate, one asset",
+    code: `-----BEGIN CERTIFICATE-----\nMIIBjjCCATWgAwIBAgIUJLfJ4xSveLlhVfIfz4CZLeFe2fcwCgYIKoZIzj0EAwIw\nHTEbMBkGA1UEAwwSZWNkc2EudW5pcXVlcy50ZXN0MB4XDTI2MDcwNDAxNDczMloX\nDTM2MDcwMTAxNDczMlowHTEbMBkGA1UEAwwSZWNkc2EudW5pcXVlcy50ZXN0MFkw\nEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEx9GL51CuPkB6Yb5D6ax0RnvqVOCLG450\nzexi9thcb5S9rDFB4SaPgHY2m16jbLOk6QWC8SkyFuMUlsu1PP+W8qNTMFEwHQYD\nVR0OBBYEFEFhv2WVt07ZuFkzouaLD4YdZa1AMB8GA1UdIwQYMBaAFEFhv2WVt07Z\nuFkzouaLD4YdZa1AMA8GA1UdEwEB/wQFMAMBAf8wCgYIKoZIzj0EAwIDRwAwRAIg\nJrxtlXpRDDGIFCLqCxckqKtrIdVZ4P/AJJupfPkmZ2sCIBgvz0ZBk3SZu0e8RNix\nkR+GA14k9FFCdiC3TvQYw65b\n-----END CERTIFICATE-----\n` },
+
+  // ── ENG-02 (v0.7.0): TLS/SSH configuration posture. Each directive pattern
+  //    fires only on a line that ENABLES legacy crypto; the guards prove the
+  //    modern/disabled/prose forms stay clean. ──
+  { id: "nginx-legacy-protocols", ext: "conf", expect: ["tls-legacy-protocol-nginx"], why: "an nginx ssl_protocols line enabling TLSv1/TLSv1.1 is a live legacy-TLS posture",
+    code: `ssl_protocols TLSv1 TLSv1.1 TLSv1.2;\n` },
+  { id: "nginx-weak-ciphers", ext: "conf", expect: ["tls-weak-cipher-nginx"], why: "ssl_ciphers enabling RC4/3DES suites (incl. mid-name tokens like ECDHE-RSA-RC4-SHA) is weak-cipher exposure",
+    code: `ssl_ciphers ECDHE-RSA-RC4-SHA:DES-CBC3-SHA:HIGH;\n` },
+  { id: "nginx-static-rsa-kx", ext: "conf", expect: ["tls-weak-cipher-nginx"], why: "a TLS_RSA_ suite is static-RSA key exchange — no forward secrecy, prime harvest-now-decrypt-later exposure",
+    code: `ssl_ciphers TLS_RSA_WITH_AES_128_CBC_SHA;\n` },
+  { id: "apache-legacy-protocol", ext: "conf", expect: ["tls-legacy-protocol-apache"], why: "Apache SSLProtocol with a bare/+ legacy token ENABLES it",
+    code: `SSLProtocol +SSLv3 +TLSv1\n` },
+  { id: "apache-weak-ciphersuite", ext: "conf", expect: ["tls-weak-cipher-apache"], why: "Apache SSLCipherSuite enabling an RC4 suite",
+    code: `SSLCipherSuite HIGH:RC4-SHA\n` },
+  { id: "haproxy-legacy-bind", ext: "cfg", expect: ["tls-legacy-haproxy"], why: "HAProxy force-tlsv10 pins the bind to TLS 1.0",
+    code: `ssl-default-bind-options force-tlsv10\n` },
+  { id: "haproxy-legacy-min-ver", ext: "cfg", expect: ["tls-legacy-haproxy"], why: "HAProxy ssl-min-ver set to a LEGACY floor (TLSv1.0) admits legacy TLS — the ssl-min-ver arm, distinct from force-*",
+    code: `ssl-default-bind-options ssl-min-ver TLSv1.0\n` },
+  { id: "haproxy-weak-ciphers", ext: "cfg", expect: ["tls-legacy-haproxy"], why: "HAProxy ssl-default-bind-ciphers enabling an RC4 suite — the ciphers arm, distinct from the options arms",
+    code: `ssl-default-bind-ciphers ECDHE-RSA-RC4-SHA:HIGH\n` },
+  { id: "haproxy-static-rsa-kx", ext: "cfg", expect: ["tls-legacy-haproxy"], why: "an ENABLED TLS_RSA_ suite in HAProxy bind ciphers is static-RSA key exchange exposure",
+    code: `ssl-default-bind-ciphers TLS_RSA_WITH_AES_128_GCM_SHA256\n` },
+  { id: "apache-static-rsa-kx", ext: "conf", expect: ["tls-weak-cipher-apache"], why: "an ENABLED TLS_RSA_ suite in Apache SSLCipherSuite is static-RSA key exchange exposure",
+    code: `SSLCipherSuite HIGH:TLS_RSA_WITH_AES_128_CBC_SHA\n` },
+  { id: "sshd-classical-kex", ext: "conf", expect: ["ssh-classical-kex"], why: "a KexAlgorithms list with ONLY classical kex (ecdh-*/diffie-hellman-*) and no PQC hybrid is quantum-vulnerable key exchange — and fires ONCE (dh-keyexchange yields the line to ssh-classical-kex, no double count)",
+    code: `KexAlgorithms ecdh-sha2-nistp256,diffie-hellman-group14-sha256\n` },
+  { id: "sshd-long-kex-dedupe", ext: "conf", expect: ["ssh-classical-kex"], why: "the one-line-one-asset dedupe must hold even when the first diffie-hellman token sits >500 chars into a legal (<1000 char) KexAlgorithms line — the dh-keyexchange lookbehind now reaches the scanner's full 1000-char line gate",
+    code: `KexAlgorithms ${"curve25519-sha256@libssh.org,".repeat(20)}diffie-hellman-group14-sha256\n` },
+  // recall/precision guards for the posture patterns
+  { id: "guard-nginx-modern-protocols", ext: "conf", expect: [], why: "a modern-only ssl_protocols line (TLSv1.2/1.3) must NOT fire — TLSv1 is not a prefix-match of TLSv1.2",
+    code: `ssl_protocols TLSv1.2 TLSv1.3;\n` },
+  { id: "guard-nginx-cipher-exclusions", ext: "conf", expect: [], why: "OpenSSL kill syntax (!RC4, !3DES, a killed compound name, a killed/removed TLS_RSA_ suite) EXCLUDES the suite — remediation, not exposure",
+    code: `ssl_ciphers HIGH:!aNULL:!RC4:!3DES:!EDH-RSA-DES-CBC3-SHA:!TLS_RSA_WITH_AES_128_CBC_SHA:-TLS_RSA_WITH_AES_256_CBC_SHA;\n` },
+  { id: "guard-apache-cipher-exclusions", ext: "conf", expect: [], why: "Apache SSLCipherSuite using OpenSSL kill syntax (incl. a killed TLS_RSA_ suite) is hardening, not exposure",
+    code: `SSLCipherSuite HIGH:!aNULL:!RC4:!3DES:!TLS_RSA_WITH_AES_128_CBC_SHA\n` },
+  { id: "guard-haproxy-cipher-exclusions", ext: "cfg", expect: [], why: "HAProxy bind ciphers using OpenSSL kill syntax (incl. a killed TLS_RSA_ suite) is hardening, not exposure",
+    code: `ssl-default-bind-ciphers HIGH:!RC4:!3DES:!TLS_RSA_WITH_AES_128_CBC_SHA\n` },
+  { id: "guard-apache-disable-legacy", ext: "conf", expect: [], why: "the canonical hardening line 'SSLProtocol all -SSLv3 -TLSv1 -TLSv1.1' DISABLES legacy protocols and must not fire",
+    code: `SSLProtocol all -SSLv3 -TLSv1 -TLSv1.1\n` },
+  { id: "guard-haproxy-modern", ext: "cfg", expect: [], why: "no-sslv3/no-tlsv10 disable, and ssl-min-ver TLSv1.2 is a modern floor — not exposure",
+    code: `ssl-default-bind-options no-sslv3 no-tlsv10 ssl-min-ver TLSv1.2\n` },
+  { id: "guard-sshd-pqc-hybrid", ext: "conf", expect: [], why: "a KexAlgorithms list that INCLUDES a PQC hybrid (sntrup761x25519/mlkem768x25519) is the fixed posture and must not fire",
+    code: `KexAlgorithms sntrup761x25519-sha512,mlkem768x25519-sha256,ecdh-sha2-nistp256\n` },
+  { id: "guard-sshd-kex-removal", ext: "conf", expect: [], why: "'KexAlgorithms -…' REMOVES algorithms from the default set — remediation, not an enablement",
+    code: `KexAlgorithms -diffie-hellman-group1-sha1\n` },
+  { id: "guard-nginx-commented-legacy", ext: "conf", expect: [], why: "a commented-out legacy ssl_protocols line is masked; the live line is modern-only",
+    code: `# ssl_protocols TLSv1 TLSv1.1;\nssl_protocols TLSv1.2 TLSv1.3;\n` },
+  { id: "guard-tls-prose-mention", ext: "yaml", expect: [], why: "a prose string RECOUNTING an ssl_protocols change is a mention, not a live directive",
+    code: `note: "we removed the ssl_protocols TLSv1 line and disabled SSLv3 everywhere"\n` },
 ];
 
 /**
@@ -353,6 +410,9 @@ export const KNOWN_GAPS: QCase[] = [
   { id: "gap-denylist-removal-call", ext: "c", gapKind: "fp", expect: [],
     why: "an algorithm name passed to a REMOVAL/denylist function (match_filter_denylist(list, \"diffie-hellman-group1-sha1\")) is a disable in disguise — the line removes the algorithm for old-client compat, it does not use it. The openssh FP class; needs knowing which callees are denylist sinks (data flow).",
     code: `match_filter_denylist(list, "diffie-hellman-group1-sha1");\n` },
+  { id: "gap-apache-sslprotocol-all", ext: "conf", gapKind: "fn", expect: ["tls-legacy-protocol-apache"],
+    why: "a bare `SSLProtocol all` enables every protocol the SERVER BUILD supports — on old Apache/OpenSSL builds that includes SSLv3/TLS 1.0, on modern builds it does not. Whether it is exposure depends on the deployed binary's version, which a source scan cannot see; flagging every `all` would FP on every modern deployment. Held as a documented scope boundary of the lexical posture check (ENG-02).",
+    code: `SSLProtocol all\n` },
   // Smaller benchmark FP classes, context-dependent and not reproduced as isolated
   // cases (tracked in bench/REPORT.md): a Rust `pub mod pkcs12;` / `use …::pkcs12`
   // module declaration (names crypto, no operation); a `name="DES"` display-label

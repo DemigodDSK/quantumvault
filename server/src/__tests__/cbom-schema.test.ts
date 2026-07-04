@@ -67,6 +67,37 @@ test("cbom schema: a representative multi-family inventory conforms to the offic
       asset({ family: "HashLegacy", algorithm: "MD5/SHA-1", file: "e.ts", line: 2, patternId: "hash-md5-sha1" }),
       asset({ family: "SymmetricLegacy", algorithm: "AES-128", keyBits: 128, file: "f.ts", line: 4, patternId: "sym-aes128" }),
       asset({ family: "Asymmetric", algorithm: "Private key (PKCS#8, algorithm unspecified)", file: "g.pem", line: 1, patternId: "pkcs8-pem-private-key" }),
+      // ENG-02: a parsed X.509 certificate (assetType "certificate")…
+      asset({
+        family: "RSA", algorithm: "X.509 certificate — RSA-2048, SHA-256 with RSA", keyBits: 2048,
+        file: "h.pem", line: 1, patternId: "x509-certificate",
+        certSubject: "www.example.com", certIssuer: "Example CA",
+        certNotBefore: "2026-01-01T00:00:00Z", certNotAfter: "2036-01-01T00:00:00Z",
+        certExpired: false, certKeyAlgorithm: "RSA-2048", certSignatureAlgorithm: "SHA-256 with RSA",
+      }),
+      // …a post-quantum certificate (SAFE — still valid CBOM inventory)…
+      asset({
+        family: "PQC", algorithm: "X.509 certificate — ML-DSA-65", quantumVulnerable: false,
+        file: "i.pem", line: 1, patternId: "x509-certificate",
+        certSubject: "pqc.example.com", certExpired: false,
+        certKeyAlgorithm: "ML-DSA-65", certSignatureAlgorithm: "ML-DSA-65",
+      }),
+      // …an unparseable certificate (surfaced, never dropped)…
+      asset({
+        family: "Asymmetric", algorithm: "Unparseable certificate — review manually",
+        file: "j.der", line: 1, patternId: "x509-cert-unparseable", confidence: "low",
+      }),
+      // …and TLS/SSH protocol-posture findings (assetType "protocol").
+      asset({
+        family: "Asymmetric", algorithm: "Legacy TLS protocol (SSLv3/TLS 1.0/1.1)",
+        file: "nginx.conf", line: 4, patternId: "tls-legacy-protocol-nginx",
+        snippet: "ssl_protocols TLSv1 TLSv1.1;", language: "config",
+      }),
+      asset({
+        family: "DH", algorithm: "Classical SSH key exchange (no PQC hybrid)",
+        file: "sshd_config", line: 9, patternId: "ssh-classical-kex",
+        snippet: "KexAlgorithms ecdh-sha2-nistp256", language: "config",
+      }),
     ],
     { target: "/repo", generatedAt: "2026-01-01T00:00:00.000Z" },
   );

@@ -57,7 +57,7 @@ test("health reports ok, the running version, and the pattern count", async () =
   const body = await r.json();
   assert.equal(body.status, "ok");
   assert.equal(body.version, VERSION, "health must report the running build version");
-  assert.equal(body.patterns, 53);
+  assert.equal(body.patterns, 59);
 });
 
 test("risk/config exposes the active weights and factor descriptions", async () => {

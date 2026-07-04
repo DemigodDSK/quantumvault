@@ -145,9 +145,9 @@ test("risk weights: invalid JSON falls back to defaults", () => {
 });
 
 // ------------------------------------------------------------- pattern db
-test("patterns: patternCount matches the database length and health endpoint (53)", () => {
+test("patterns: patternCount matches the database length and health endpoint (59)", () => {
   assert.equal(patternCount(), PATTERNS.length);
-  assert.equal(patternCount(), 53);
+  assert.equal(patternCount(), 59);
 });
 
 test("scanner: well-known SSH key files with no extension are scanned (authorized_keys)", () => {

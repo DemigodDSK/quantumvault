@@ -15,6 +15,8 @@ export const FAMILY_COLOR: Record<string, string> = {
   DH: "#2dd4bf",
   SymmetricLegacy: "#fb923c",
   HashLegacy: "#f472b6",
+  Asymmetric: "#94a3b8",
+  PQC: "#4ade80", // post-quantum inventory (safe) — green, not a warning color
 };
 
 export function SeverityBadge({ level }: { level: Severity }) {
