@@ -35,6 +35,9 @@ data/
 *.p12
 *.pfx
 *.keystore
+# x509 test fixtures are PUBLIC self-signed certificates (no private keys) —
+# re-included so the parser tests pass on a fresh checkout/CI.
+!server/src/__tests__/fixtures/certs/*.pem
 id_rsa
 id_ed25519
 credentials.json
