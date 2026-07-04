@@ -7,7 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-_Nothing unreleased._
+### Benchmark — full label coverage (no product/runtime change)
+
+- **Public-repo precision corpus re-adjudicated to 100% label coverage.** The
+  previous report labeled only the first ~60 findings per repo; the uncounted tail
+  was asserted "TP-leaning" but never verified. This labels the whole tail — 650
+  additional findings across the six largest repos (vault, pyca-cryptography,
+  step-ca, openssh, gitea, paramiko) — each adjudicated by reading the cited source
+  and every FP re-checked by an independent skeptic pass. Labels published in
+  `bench/repos/labels/`.
+- **Headline precision is now 88.6% (931 TP / 120 FP), full coverage, down from the
+  capped 95.9%.** The number went down because the previously-hidden tail contains
+  real false positives — most of them (79) bare Go `import "crypto/…"` lines in
+  vault, which the benchmark's documented convention labels FP (the import is not a
+  use site; the real call is labeled TP separately). We kept the convention rather
+  than flip it to lift the metric. A precision number you can only quote by capping
+  the sample is not a precision number. See `bench/REPORT.md` §2.
+- **X.509 certificates split out of the precision denominator.** `bench/repos/run.mjs`
+  now reports parsed certificates (683 across the corpus) as their own column and
+  excludes them from precision — a successful DER parse is proof a cert exists, not a
+  hand-adjudicated judgment. Orphaned labels whose finding no longer surfaces as
+  actionable (84: 52 old cert-body TPs now parsed as certificates, 32 old FPs the
+  v0.6.x demotions now correctly rank low) were pruned.
+- **Next honest engine opportunity (tracked, not chased here):** demote Go
+  `import`-only crypto lines to low-confidence mentions when the package's real call
+  sites are surfaced separately — with a qbench guard proving `ecdsa.GenerateKey`
+  still fires. This would recover most of the vault gap by fixing detection, not by
+  relabeling.
 
 ## [0.7.0] - 2026-07-03
 

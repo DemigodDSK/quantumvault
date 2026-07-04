@@ -1,362 +1,1676 @@
 {
- "api/auth/cert/cert_test.go:8": {
-  "label": "FP",
-  "algorithm": "ECDSA (Go crypto)",
-  "patternId": "go-ecdsa",
-  "reason": "Bare `\"crypto/ecdsa\"` import line in a test file — a package dependency declaration, not a crypto operation, key material, or config."
- },
- "api/auth/cert/cert_test.go:304": {
-  "label": "TP",
-  "algorithm": "ECDSA (Go crypto)",
-  "patternId": "go-ecdsa",
-  "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation (test CA key)."
- },
- "api/auth/cert/cert_test.go:340": {
-  "label": "TP",
-  "algorithm": "ECDSA (Go crypto)",
-  "patternId": "go-ecdsa",
-  "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation for a leaf cert."
- },
- "api/plugin_helpers.go:48": {
-  "label": "TP",
-  "algorithm": "ECDSA (JWT ES)",
-  "patternId": "jwt-ecdsa-alg",
-  "reason": "`CubbyHoleJWTSignatureAlgorithm = jose.ES512` — real crypto config selecting ECDSA P-521 (ES512) to sign the plugin unwrap token."
- },
- "builtin/credential/aws/backend_test.go:701": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "`expectedCert` holds a real embedded X.509 certificate PEM (real cert material in a test fixture)."
- },
- "builtin/credential/aws/certificates.go:15": {
-  "label": "FP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Hard-coded AWS PKCS#7 verification cert body; one of 47 real X.509 certs parsed at init() to verify EC2 instance-identity signatures."
- },
- "builtin/credential/aws/certificates.go:21": {
-  "label": "FP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body (BEGIN CERTIFICATE block)."
- },
- "builtin/credential/aws/certificates.go:36": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS PKCS#7 DSA verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:54": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body (BEGIN CERTIFICATE block)."
- },
- "builtin/credential/aws/certificates.go:72": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body (BEGIN CERTIFICATE block)."
- },
- "builtin/credential/aws/certificates.go:90": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body (BEGIN CERTIFICATE block)."
- },
- "builtin/credential/aws/certificates.go:108": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body (BEGIN CERTIFICATE block)."
- },
- "builtin/credential/aws/certificates.go:126": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body (BEGIN CERTIFICATE block)."
- },
- "builtin/credential/aws/certificates.go:144": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body (BEGIN CERTIFICATE block)."
- },
- "builtin/credential/aws/certificates.go:164": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Cited line is a BEGIN CERTIFICATE header of a real embedded AWS verification cert."
- },
- "builtin/credential/aws/certificates.go:188": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:207": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:222": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:242": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:256": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:270": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:284": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:299": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:323": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:347": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:371": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Cited line is a BEGIN CERTIFICATE header of a real embedded AWS verification cert."
- },
- "builtin/credential/aws/certificates.go:395": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:419": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:439": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:463": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:487": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:507": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:527": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:551": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:571": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:591": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:611": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Cited line is a BEGIN CERTIFICATE header of a real embedded AWS verification cert."
- },
- "builtin/credential/aws/certificates.go:631": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:655": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:679": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:699": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:719": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:739": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:759": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Cited line is a BEGIN CERTIFICATE header of a real embedded AWS verification cert."
- },
- "builtin/credential/aws/certificates.go:783": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body (rsa2048 block)."
- },
- "builtin/credential/aws/certificates.go:807": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body (RSA SHA256 cert)."
- },
- "builtin/credential/aws/certificates.go:827": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:847": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body."
- },
- "builtin/credential/aws/certificates.go:867": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded AWS verification X.509 certificate body (final RSA cert block)."
- },
- "builtin/credential/cert/backend_test.go:9": {
-  "label": "FP",
-  "algorithm": "ECDSA (Go crypto)",
-  "patternId": "go-ecdsa",
-  "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, material, or config."
- },
- "builtin/credential/cert/backend_test.go:95": {
-  "label": "TP",
-  "algorithm": "ECDSA (Go crypto)",
-  "patternId": "go-ecdsa",
-  "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation (test CA)."
- },
- "builtin/credential/cert/backend_test.go:129": {
-  "label": "TP",
-  "algorithm": "ECDSA (Go crypto)",
-  "patternId": "go-ecdsa",
-  "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation."
- },
- "builtin/credential/cert/backend_test.go:487": {
-  "label": "TP",
-  "algorithm": "ECDSA (Go crypto)",
-  "patternId": "go-ecdsa",
-  "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation."
- },
- "builtin/credential/cert/backend_test.go:520": {
-  "label": "TP",
-  "algorithm": "ECDSA (Go crypto)",
-  "patternId": "go-ecdsa",
-  "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 client key generation."
- },
- "builtin/credential/cert/backend_test.go:1301": {
-  "label": "TP",
-  "algorithm": "ECDSA (Go crypto)",
-  "patternId": "go-ecdsa",
-  "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation."
- },
- "builtin/credential/cert/backend_test.go:1396": {
-  "label": "TP",
-  "algorithm": "ECDSA (Go crypto)",
-  "patternId": "go-ecdsa",
-  "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation."
- },
- "builtin/credential/cert/backend_test.go:1431": {
-  "label": "TP",
-  "algorithm": "ECDSA (Go crypto)",
-  "patternId": "go-ecdsa",
-  "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 client key generation."
- },
- "builtin/credential/cert/backend_test.go:1608": {
-  "label": "TP",
-  "algorithm": "ECDSA (Go crypto)",
-  "patternId": "go-ecdsa",
-  "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation."
- },
- "builtin/credential/cert/backend_test.go:1834": {
-  "label": "TP",
-  "algorithm": "ECDSA (Go crypto)",
-  "patternId": "go-ecdsa",
-  "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation."
- },
- "builtin/credential/cert/backend_test.go:1917": {
-  "label": "TP",
-  "algorithm": "ECDSA (Go crypto)",
-  "patternId": "go-ecdsa",
-  "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation."
- }
+  "api/auth/cert/cert_test.go:8": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line in a test file — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "api/auth/cert/cert_test.go:304": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation (test CA key)."
+  },
+  "api/auth/cert/cert_test.go:340": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation for a leaf cert."
+  },
+  "api/plugin_helpers.go:48": {
+    "label": "TP",
+    "algorithm": "ECDSA (JWT ES)",
+    "patternId": "jwt-ecdsa-alg",
+    "reason": "`CubbyHoleJWTSignatureAlgorithm = jose.ES512` — real crypto config selecting ECDSA P-521 (ES512) to sign the plugin unwrap token."
+  },
+  "builtin/credential/aws/certificates.go:15": {
+    "label": "FP",
+    "algorithm": "X.509 certificate (algorithm in body)",
+    "patternId": "x509-cert-body",
+    "reason": "Hard-coded AWS PKCS#7 verification cert body; one of 47 real X.509 certs parsed at init() to verify EC2 instance-identity signatures."
+  },
+  "builtin/credential/aws/certificates.go:21": {
+    "label": "FP",
+    "algorithm": "X.509 certificate (algorithm in body)",
+    "patternId": "x509-cert-body",
+    "reason": "Real embedded AWS verification X.509 certificate body (BEGIN CERTIFICATE block)."
+  },
+  "builtin/credential/cert/backend_test.go:9": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, material, or config."
+  },
+  "builtin/credential/cert/backend_test.go:95": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation (test CA)."
+  },
+  "builtin/credential/cert/backend_test.go:129": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation."
+  },
+  "builtin/credential/cert/backend_test.go:487": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation."
+  },
+  "builtin/credential/cert/backend_test.go:520": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 client key generation."
+  },
+  "builtin/credential/cert/backend_test.go:1301": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation."
+  },
+  "builtin/credential/cert/backend_test.go:1396": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation."
+  },
+  "builtin/credential/cert/backend_test.go:1431": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 client key generation."
+  },
+  "builtin/credential/cert/backend_test.go:1608": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation."
+  },
+  "builtin/credential/cert/backend_test.go:1834": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation."
+  },
+  "builtin/credential/cert/backend_test.go:1917": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine ECDSA P-256 key generation."
+  },
+  "builtin/credential/cert/backend_test.go:2064": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/credential/cert/backend_test.go:3820": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/credential/cert/backend_test.go:3847": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/credential/cert/backend_test.go:3888": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/credential/cert/path_crls_test.go:8": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/credential/cert/path_crls_test.go:64": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/credential/cert/path_crls_test.go:99": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/database/credentials_test.go:9": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/nomad/backend_test.go:725": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "`const clientKey` holds a real embedded PKCS#8 RSA private key (test client TLS key fixture)."
+  },
+  "builtin/logical/pki/acme_billing_test.go:8": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/acme_billing_test.go:268": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/acme_billing_test.go:332": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/acme_challenges_test.go:9": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/acme_challenges_test.go:324": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/acme_challenges_test.go:368": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/acme_challenges_test.go:395": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/acme_challenges_test.go:444": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/acme_challenges_test.go:493": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/acme_challenges_test.go:542": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/acme_challenges_test.go:592": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/acme_challenges_test.go:632": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/acme_challenges_test.go:665": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/backend_test.go:89": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "`rootCAKeyPEM` holds a real embedded RSA private key (test root CA key)."
+  },
+  "builtin/logical/pki/backend_test.go:5559": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real embedded PKCS#8 RSA private key inside a CA pem_bundle test fixture."
+  },
+  "builtin/logical/pki/backend_test.go:6130": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "`rsaOIDKey` holds a real embedded PKCS#8 RSA-PSS-OID private key exercised against the import path."
+  },
+  "builtin/logical/pki/backend_test.go:5418": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (EC key)",
+    "patternId": "ecc-pem-header",
+    "reason": "Real embedded EC private key in a `pem_bundle` written to `config/ca` in the test."
+  },
+  "builtin/logical/pki/backend_test.go:15": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/backend_test.go:7919": {
+    "label": "TP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "`rsa.GenerateKey(rand.Reader, 2048)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/backend_test.go:11": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/backend_test.go:808": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P224(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/backend_test.go:810": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/backend_test.go:812": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P384(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/backend_test.go:814": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P521(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/backend_test.go:1305": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(curve, rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/backend_test.go:4024": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/ca_test.go:8": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/ca_test.go:59": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/ca_util.go:10": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/ca_util.go:9": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/ca_util_test.go:8": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/ca_util_test.go:24": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P521(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/crl_test.go:1389": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "`privKey` holds a real embedded PKCS#8 RSA private key (CRL test fixture)."
+  },
+  "builtin/logical/pki/integration_test.go:11": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/integration_test.go:9": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/issuing/sign_cert.go:9": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/issuing/sign_cert.go:7": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/issuing/signing_utils.go:11": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/issuing/signing_utils.go:8": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/path_acme_test.go:12": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/path_acme_test.go:760": {
+    "label": "TP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "`rsa.GenerateKey(rand.Reader, 2048)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/path_acme_test.go:9": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/path_acme_test.go:250": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/path_acme_test.go:385": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/path_acme_test.go:455": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/path_acme_test.go:784": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/path_acme_test.go:866": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/path_acme_test.go:939": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/path_acme_test.go:1212": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/path_acme_test.go:1643": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P384(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/path_acme_test.go:1762": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/path_acme_test.go:1907": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/path_acme_test.go:2080": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/path_issue_sign_test.go:199": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "Real embedded RSA private key body in a cached CA-and-key test fixture (full base64 body verified)."
+  },
+  "builtin/logical/pki/path_issue_sign_test.go:252": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "Real embedded RSA private key body in a cached CA-and-key test fixture (full base64 body verified)."
+  },
+  "builtin/logical/pki/path_issue_sign_test.go:322": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "Real embedded RSA private key body in a cached CA-and-key test fixture (full base64 body verified)."
+  },
+  "builtin/logical/pki/path_issue_sign_test.go:426": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "Real embedded RSA private key body in a cached CA-and-key test fixture (full base64 body verified)."
+  },
+  "builtin/logical/pki/path_issue_sign_test.go:612": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real embedded PKCS#8 private key (Ed25519, `ed25519CaAndKey` fixture) — genuine key material, also quantum-vulnerable."
+  },
+  "builtin/logical/pki/path_issue_sign_test.go:537": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (EC key)",
+    "patternId": "ecc-pem-header",
+    "reason": "Real embedded EC private key body in a cached ecNNNCaAndKey test fixture."
+  },
+  "builtin/logical/pki/path_issue_sign_test.go:554": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (EC key)",
+    "patternId": "ecc-pem-header",
+    "reason": "Real embedded EC private key body in a cached ecNNNCaAndKey test fixture."
+  },
+  "builtin/logical/pki/path_issue_sign_test.go:573": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (EC key)",
+    "patternId": "ecc-pem-header",
+    "reason": "Real embedded EC private key body in a cached ecNNNCaAndKey test fixture."
+  },
+  "builtin/logical/pki/path_issue_sign_test.go:594": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (EC key)",
+    "patternId": "ecc-pem-header",
+    "reason": "Real embedded EC private key body in a cached ecNNNCaAndKey test fixture."
+  },
+  "builtin/logical/pki/path_issue_sign_test.go:127": {
+    "label": "FP",
+    "algorithm": "X.509 certificate (algorithm in body)",
+    "patternId": "x509-cert-body",
+    "reason": "`strings.CutPrefix(rawCert, \"-----BEGIN CERTIFICATE-----\\n\")` — a PEM-header string literal used as a parsing delimiter; no certificate material at the site."
+  },
+  "builtin/logical/pki/path_revoke.go:11": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/path_revoke.go:9": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/path_root.go:12": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/path_root.go:9": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/path_tidy_test.go:8": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pki/path_tidy_test.go:943": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pki/storage_migrations_test.go:915": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "`migIntPrivKey` holds a real embedded RSA private key simulating an intermediate CA mount."
+  },
+  "builtin/logical/pki/test_helpers.go:10": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pkiext/pkiext_binary/acme_test.go:8": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/pkiext/pkiext_binary/acme_test.go:750": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/pkiext/pkiext_binary/acme_test.go:1097": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/ssh/backend_test.go:48": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "`testSharedPrivateKey` holds a real embedded RSA private key written to the SSH secrets mount in tests."
+  },
+  "builtin/logical/ssh/backend_test.go:86": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "`testCAPrivateKey` holds a real embedded RSA private key (test SSH CA key)."
+  },
+  "builtin/logical/ssh/backend_test.go:118": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "`testCAPrivateKeyEd25519` holds a real embedded OpenSSH private key (Ed25519) — genuine key material."
+  },
+  "builtin/logical/ssh/backend_test.go:971": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "`testKeyToSignPrivate` holds a real embedded OpenSSH ssh-rsa private key signed by the test CA."
+  },
+  "builtin/logical/ssh/backend_test.go:1168": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "`testKeyToSignPrivate` holds a real embedded OpenSSH ssh-rsa private key (algorithm-signer role test)."
+  },
+  "builtin/logical/ssh/backend_test.go:77": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "`testCAPublicKey` holds a real ssh-rsa public key blob (public half of the test CA key)."
+  },
+  "builtin/logical/ssh/backend_test.go:82": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "`publicKey3072` holds a real ssh-rsa 3072-bit public key blob."
+  },
+  "builtin/logical/ssh/backend_test.go:84": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "`publicKey4096` holds a real ssh-rsa 4096-bit public key blob."
+  },
+  "builtin/logical/ssh/backend_test.go:132": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "`testPublicKeyInstall` holds a real ssh-rsa public key installed into authorized_keys in tests."
+  },
+  "builtin/logical/ssh/backend_test.go:999": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "`testKeyToSignPublic` holds a real ssh-rsa public key blob submitted for CA signing."
+  },
+  "builtin/logical/ssh/backend_test.go:1196": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "`testKeyToSignPublic` holds a real ssh-rsa public key blob submitted for CA signing."
+  },
+  "builtin/logical/ssh/backend_test.go:2131": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "`\"ssh-rsa\": []int{2048, 3072, 4096}` inside `allowed_user_key_lengths` role config — real config enabling ssh-rsa client keys."
+  },
+  "builtin/logical/ssh/backend_test.go:127": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "`publicKeyECDSA256` holds a real ecdsa-sha2-nistp256 public key blob."
+  },
+  "builtin/logical/ssh/backend_test.go:128": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "`publicKeyECDSA521` holds a real ecdsa-sha2-nistp521 public key blob."
+  },
+  "builtin/logical/ssh/path_config_ca.go:73": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "`Default: \"ssh-rsa\"` on the `key_type` field — production default selecting ssh-rsa for SSH CA key generation."
+  },
+  "builtin/logical/ssh/path_config_ca.go:9": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/ssh/path_config_ca.go:408": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(curve, randomSource)` — genuine key generation call-site."
+  },
+  "builtin/logical/ssh/path_config_ca_test.go:265": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "`{\"ssh-rsa\", 2048}` test case submitted to config/ca — drives real ssh-rsa 2048 CA key generation."
+  },
+  "builtin/logical/ssh/path_config_ca_test.go:266": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "`{\"ssh-rsa\", 4096}` test case submitted to config/ca — drives real ssh-rsa 4096 CA key generation."
+  },
+  "builtin/logical/ssh/path_config_ca_test.go:267": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "`{\"ssh-rsa\", 0}` test case submitted to config/ca — drives real ssh-rsa (default bits) CA key generation."
+  },
+  "builtin/logical/ssh/path_config_ca_test.go:270": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "`{\"ecdsa-sha2-nistp256\", 0}` test case submitted to config/ca — drives real ECDSA P-256 CA key generation."
+  },
+  "builtin/logical/ssh/path_config_ca_test.go:271": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "`{\"ecdsa-sha2-nistp384\", 0}` test case submitted to config/ca — drives real ECDSA P-384 CA key generation."
+  },
+  "builtin/logical/ssh/path_config_ca_test.go:272": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "`{\"ecdsa-sha2-nistp521\", 0}` test case submitted to config/ca — drives real ECDSA P-521 CA key generation."
+  },
+  "builtin/logical/ssh/path_issue_sign.go:12": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/ssh/path_issue_sign.go:9": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/ssh/path_issue_sign.go:8": {
+    "label": "FP",
+    "algorithm": "DSA (Go crypto)",
+    "patternId": "go-dsa",
+    "reason": "Bare `\"crypto/dsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/ssh/util.go:39": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "`publicKeyRsa = \"ssh-rsa \" + base64...(sshPublicKey.Marshal())` — constructs the ssh-rsa public key string for a freshly generated RSA key pair."
+  },
+  "builtin/logical/transit/backend_test.go:1849": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`testTransit_AEAD(t, \"aes128-gcm96\")` — drives real AES-128-GCM key creation and encrypt/decrypt in the test."
+  },
+  "builtin/logical/transit/path_backup_test.go:16": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`testBackupRestore(t, \"aes128-gcm96\", \"encrypt-decrypt\")` — real AES-128 key creation/backup/restore exercised."
+  },
+  "builtin/logical/transit/path_backup_test.go:33": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`testBackupRestore(t, \"aes128-gcm96\", \"hmac-verify\")` — real AES-128 key creation exercised."
+  },
+  "builtin/logical/transit/path_byok.go:8": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/transit/path_byok_test.go:16": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`testBYOKExportImport(t, \"aes128-gcm96\", \"encrypt-decrypt\")` — real AES-128 key export/import exercised."
+  },
+  "builtin/logical/transit/path_encrypt.go:487": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`case \"aes128-gcm96\": polReq.KeyType = keysutil.KeyType_AES128_GCM96` — production dispatch enabling AES-128-GCM encryption keys."
+  },
+  "builtin/logical/transit/path_encrypt.go:503": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`case \"aes128-cbc\": polReq.KeyType = keysutil.KeyType_AES128_CBC` — production dispatch enabling AES-128-CBC keys."
+  },
+  "builtin/logical/transit/path_export.go:9": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/transit/path_export_test.go:65": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`verifyExportsCorrectVersion(t, \"encryption-key\", \"aes128-gcm96\", ...)` — real AES-128 key created and exported in the test."
+  },
+  "builtin/logical/transit/path_export_test.go:78": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`verifyExportsCorrectVersion(t, \"hmac-key\", \"aes128-gcm96\", ...)` — real AES-128 key created and exported in the test."
+  },
+  "builtin/logical/transit/path_export_test.go:406": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`testTransit_Export_PublicKeyNotSupported_ReturnsError(t, \"aes128-gcm96\")` — real AES-128 key created to exercise the error path."
+  },
+  "builtin/logical/transit/path_export_test.go:9": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/transit/path_import.go:197": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`case \"aes128-gcm96\": polReq.KeyType = keysutil.KeyType_AES128_GCM96` — production import dispatch enabling AES-128-GCM keys."
+  },
+  "builtin/logical/transit/path_import.go:219": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`case \"aes128-cmac\": polReq.KeyType = keysutil.KeyType_AES128_CMAC` — production import dispatch enabling AES-128-CMAC keys."
+  },
+  "builtin/logical/transit/path_import.go:225": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`case \"aes128-cbc\": polReq.KeyType = keysutil.KeyType_AES128_CBC` — production import dispatch enabling AES-128-CBC keys."
+  },
+  "builtin/logical/transit/path_import.go:8": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/transit/path_import_test.go:31": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`\"aes128-gcm96\"` in the `keyTypes` slice driving the import test matrix — real AES-128 keys generated and imported."
+  },
+  "builtin/logical/transit/path_import_test.go:996": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`case \"aes128-gcm96\", ...: preppedTargetKey = targetKey.([]byte)` — wraps real AES-128 key bytes for import."
+  },
+  "builtin/logical/transit/path_import_test.go:1051": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`case \"aes128-gcm96\": return uuid.GenerateRandomBytes(16)` — generates real 128-bit AES key material."
+  },
+  "builtin/logical/transit/path_import_test.go:13": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/transit/path_import_test.go:9": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/transit/path_import_test.go:1061": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`return ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/transit/path_import_test.go:1063": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`return ecdsa.GenerateKey(elliptic.P384(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/transit/path_import_test.go:1065": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`return ecdsa.GenerateKey(elliptic.P521(), rand.Reader)` — genuine key generation call-site."
+  },
+  "builtin/logical/transit/path_keys.go:231": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`case \"aes128-gcm96\": polReq.KeyType = keysutil.KeyType_AES128_GCM96` — production key-creation dispatch enabling AES-128-GCM."
+  },
+  "builtin/logical/transit/path_keys.go:255": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`case \"aes128-cmac\": polReq.KeyType = keysutil.KeyType_AES128_CMAC` — production key-creation dispatch enabling AES-128-CMAC."
+  },
+  "builtin/logical/transit/path_keys.go:302": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`case \"aes128-cbc\": polReq.KeyType = keysutil.KeyType_AES128_CBC` — production key-creation dispatch enabling AES-128-CBC."
+  },
+  "builtin/logical/transit/path_keys_config_test.go:53": {
+    "label": "FP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`req.Path = \"keys/aes128\"` — a key NAME in a request path slug; the algorithm is set by the adjacent `type` line, not here."
+  },
+  "builtin/logical/transit/path_keys_config_test.go:54": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`req.Data[\"type\"] = \"aes128-gcm96\"` — creates a real AES-128-GCM key in the test."
+  },
+  "builtin/logical/transit/path_keys_config_test.go:77": {
+    "label": "FP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`req.Path = \"keys/aes128/rotate\"` — key-name path slug (the key's name happens to be \"aes128\"), not an algorithm usage site."
+  },
+  "builtin/logical/transit/path_keys_config_test.go:138": {
+    "label": "FP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`req.Path = \"keys/aes128/config\"` — key-name path slug, not an algorithm usage site."
+  },
+  "builtin/logical/transit/path_keys_config_test.go:219": {
+    "label": "FP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`key = \"aes128\"` — key NAME string (the key was typed by an earlier `type=aes128-gcm96` line), an identifier match, not algorithm usage here."
+  },
+  "builtin/logical/transit/path_keys_test.go:209": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`creationParams: {\"type\": \"aes128-gcm96\"}` — creates a real AES-128-GCM key in the key-creation test matrix."
+  },
+  "builtin/logical/transit/path_keys_test.go:239": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`creationParams: {\"type\": \"aes128-cmac\"}` — creates a real AES-128-CMAC key (ent) in the test matrix."
+  },
+  "builtin/logical/transit/path_keys_test.go:347": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`creationParams: {\"type\": \"aes128-cbc\"}` — creates a real AES-128-CBC key (ent) in the test matrix."
+  },
+  "builtin/logical/transit/path_sign_verify.go:8": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "builtin/logical/transit/path_wrapping_key_test.go:8": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "command/agent/testing.go:78": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (EC key)",
+    "patternId": "ecc-pem-header",
+    "reason": "`TestECDSAPrivKey` holds a real embedded EC private key used to sign test JWTs."
+  },
+  "command/agent/testing.go:52": {
+    "label": "TP",
+    "algorithm": "ECDSA (JWT ES)",
+    "patternId": "jwt-ecdsa-alg",
+    "reason": "`jose.NewSigner(jose.SigningKey{Algorithm: jose.ES256, Key: key}, ...)` — real ECDSA ES256 JWT signing."
+  },
+  "command/agent/testing.go:8": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "command/server/tls_util.go:9": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "command/server/tls_util.go:161": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "command/transit_import_key.go:8": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "command/transit_import_key_test.go:42": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`rsa1, rsa2, aes128, aes256 := generateKeys(t)` — receives real generated AES-128 key material (not a name coincidence)."
+  },
+  "command/transit_import_key_test.go:90": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`aes128,` — passes real 128-bit AES key bytes into the transit import CLI test case."
+  },
+  "command/transit_import_key_test.go:91": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`[]string{\"type=aes128-gcm96\"}` — import arg creating a real AES-128-GCM transit key."
+  },
+  "command/transit_import_key_test.go:111": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`aes128,` — passes real 128-bit AES key bytes for an import-version test case."
+  },
+  "command/transit_import_key_test.go:112": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`[]string{\"type=aes128-gcm96\"}` — import-version arg for a real AES-128-GCM transit key."
+  },
+  "command/transit_import_key_test.go:119": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`[]string{\"type=aes128-gcm96\"}` — aes128-gcm96 type arg exercised against the import API (wrong-type negative case)."
+  },
+  "command/transit_import_key_test.go:171": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`func generateKeys(...) (..., aes128 []byte, ...)` — signature of the helper that genuinely generates 128-bit AES key material."
+  },
+  "command/transit_import_key_test.go:190": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`aes128 = make([]byte, 128/8)` — allocates real 128-bit AES key material."
+  },
+  "command/transit_import_key_test.go:191": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`rand.Read(aes128)` — fills real 128-bit AES key material with random bytes."
+  },
+  "enos/modules/verify_secrets_engines/modules/create/ssh.tf:62": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "`ca_key_types` list (FIPS branch) from which the SSH CA key type is randomly selected — real config enabling ssh-rsa/ECDSA CA key generation (matched by both ssh-rsa and ssh-ecdsa patterns)."
+  },
+  "enos/modules/verify_secrets_engines/modules/create/ssh.tf:64": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "`ca_key_types` list (non-FIPS branch) from which the SSH CA key type is randomly selected — real config enabling ssh-rsa/ECDSA CA key generation (matched by both ssh-rsa and ssh-ecdsa patterns)."
+  },
+  "enos/modules/verify_secrets_engines/modules/create/ssh.tf:76": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "`\"ssh-rsa\" = \"RSA\"` in `key_algorithm_map` — feeds `tls_private_key.algorithm`, directly parameterizing real RSA key generation."
+  },
+  "enos/modules/verify_secrets_engines/modules/create/ssh.tf:77": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "`\"ecdsa-sha2-nistp256\" = \"ECDSA\"` in `key_algorithm_map` — feeds `tls_private_key.algorithm` for real ECDSA key generation."
+  },
+  "enos/modules/verify_secrets_engines/modules/create/ssh.tf:78": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "`\"ecdsa-sha2-nistp384\" = \"ECDSA\"` in `key_algorithm_map` — feeds `tls_private_key.algorithm` for real ECDSA key generation."
+  },
+  "enos/modules/verify_secrets_engines/modules/create/ssh.tf:79": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "`\"ecdsa-sha2-nistp521\" = \"ECDSA\"` in `key_algorithm_map` — feeds `tls_private_key.algorithm` for real ECDSA key generation."
+  },
+  "enos/modules/verify_secrets_engines/modules/create/ssh.tf:84": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "`\"ecdsa-sha2-nistp256\" = \"P256\"` in `ecdsa_curve_map` — feeds `tls_private_key.ecdsa_curve`, selecting the real generation curve."
+  },
+  "enos/modules/verify_secrets_engines/modules/create/ssh.tf:85": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "`\"ecdsa-sha2-nistp384\" = \"P384\"` in `ecdsa_curve_map` — feeds `tls_private_key.ecdsa_curve`, selecting the real generation curve."
+  },
+  "enos/modules/verify_secrets_engines/modules/create/ssh.tf:86": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "`\"ecdsa-sha2-nistp521\" = \"P521\"` in `ecdsa_curve_map` — feeds `tls_private_key.ecdsa_curve`, selecting the real generation curve."
+  },
+  "helper/pgpkeys/test_keys.go:238": {
+    "label": "TP",
+    "algorithm": "PGP public key (algorithm in body)",
+    "patternId": "pgp-public-block",
+    "reason": "`TestAAPubKey1` holds a real embedded PGP (RSA) public key block test fixture."
+  },
+  "helper/pkcs7/decrypt.go:10": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "helper/pkcs7/decrypt_test.go:53": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real embedded RSA private key in the fixture bundle used to exercise PKCS#7 decryption."
+  },
+  "helper/pkcs7/encrypt.go:9": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "helper/pkcs7/pkcs7.go:9": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "helper/pkcs7/pkcs7.go:8": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "helper/pkcs7/pkcs7.go:7": {
+    "label": "FP",
+    "algorithm": "DSA (Go crypto)",
+    "patternId": "go-dsa",
+    "reason": "Bare `\"crypto/dsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "helper/pkcs7/pkcs7_test.go:9": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "helper/pkcs7/pkcs7_test.go:6": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "helper/pkcs7/pkcs7_test.go:159": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "helper/pkcs7/pkcs7_test.go:172": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P384(), rand.Reader)` — genuine key generation call-site."
+  },
+  "helper/pkcs7/pkcs7_test.go:185": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P521(), rand.Reader)` — genuine key generation call-site."
+  },
+  "helper/pkcs7/pkcs7_test.go:5": {
+    "label": "FP",
+    "algorithm": "DSA (Go crypto)",
+    "patternId": "go-dsa",
+    "reason": "Bare `\"crypto/dsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "helper/pkcs7/sign.go:6": {
+    "label": "FP",
+    "algorithm": "DSA (Go crypto)",
+    "patternId": "go-dsa",
+    "reason": "Bare `\"crypto/dsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "helper/pkcs7/sign_test.go:5": {
+    "label": "FP",
+    "algorithm": "DSA (Go crypto)",
+    "patternId": "go-dsa",
+    "reason": "Bare `\"crypto/dsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "helper/pkcs7/verify.go:5": {
+    "label": "FP",
+    "algorithm": "DSA (Go crypto)",
+    "patternId": "go-dsa",
+    "reason": "Bare `\"crypto/dsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "helper/testhelpers/certhelpers/cert_helpers.go:10": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "helper/testhelpers/pki/pkihelper.go:7": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "helper/testhelpers/pki/pkihelper.go:92": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "helper/testhelpers/pki/pkihelper.go:183": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "physical/raft/streamlayer.go:9": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "physical/raft/streamlayer.go:94": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P521(), reader)` — genuine key generation call-site."
+  },
+  "plugins/database/mongodb/cert_helpers_test.go:10": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "sdk/helper/certutil/certutil_test.go:13": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "sdk/helper/certutil/certutil_test.go:9": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "sdk/helper/certutil/certutil_test.go:479": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P384(), rand.Reader)` — genuine key generation call-site."
+  },
+  "sdk/helper/certutil/certutil_test.go:601": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "sdk/helper/certutil/certutil_test.go:636": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "sdk/helper/certutil/certutil_test.go:673": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "sdk/helper/certutil/certutil_test.go:1022": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "sdk/helper/certutil/certutil_test.go:1118": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "sdk/helper/certutil/certutil_test.go:1230": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P384(), rand.Reader)` — genuine key generation call-site."
+  },
+  "sdk/helper/certutil/helpers.go:14": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "sdk/helper/certutil/helpers.go:10": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "sdk/helper/certutil/helpers.go:399": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(curve, randReader)` — genuine key generation call-site."
+  },
+  "sdk/helper/certutil/helpers.go:9": {
+    "label": "FP",
+    "algorithm": "DSA (Go crypto)",
+    "patternId": "go-dsa",
+    "reason": "Bare `\"crypto/dsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "sdk/helper/certutil/types.go:19": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "sdk/helper/certutil/types.go:17": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "sdk/helper/certutil/types_test.go:8": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "sdk/helper/certutil/types_test.go:23": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P521(), rand.Reader)` — genuine key generation call-site."
+  },
+  "sdk/helper/cryptoutil/rsa.go:7": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "sdk/helper/cryptoutil/rsa.go:31": {
+    "label": "TP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "`return rsa.GenerateKey(randomSource, bits)` — genuine key generation call-site."
+  },
+  "sdk/helper/keysutil/policy.go:295": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`case KeyType_AES128_GCM96: return \"aes128-gcm96\"` — String() arm of the genuinely supported AES-128-GCM key type in the transit crypto core."
+  },
+  "sdk/helper/keysutil/policy.go:319": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`case KeyType_AES128_CMAC: return \"aes128-cmac\"` — String() arm of the supported AES-128-CMAC key type in the transit crypto core."
+  },
+  "sdk/helper/keysutil/policy.go:331": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "`case KeyType_AES128_CBC: return \"aes128-cbc\"` — String() arm of the supported AES-128-CBC key type in the transit crypto core."
+  },
+  "sdk/helper/keysutil/policy.go:17": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "sdk/helper/keysutil/policy.go:12": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "sdk/helper/keysutil/policy.go:2856": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(curve, rand.Reader)` — genuine key generation call-site."
+  },
+  "sdk/helper/keysutil/policy_test.go:12": {
+    "label": "FP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Bare `\"crypto/rsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "sdk/helper/keysutil/policy_test.go:9": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "sdk/helper/keysutil/policy_test.go:846": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "sdk/helper/ocsp/ocsp_test.go:9": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "sdk/helper/ocsp/ocsp_test.go:541": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "sdk/helper/ocsp/ocsp_test.go:562": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "sdk/helper/pluginutil/tls.go:8": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "sdk/helper/pluginutil/tls.go:24": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P521(), rand.Reader)` — genuine key generation call-site."
+  },
+  "sdk/helper/testcluster/docker/environment.go:10": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "sdk/helper/testcluster/docker/environment.go:261": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "sdk/helper/testcluster/docker/environment.go:325": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "sdk/helper/testcluster/types.go:8": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "ui/app/models/role-ssh.js:134": {
+    "label": "FP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "`possibleValues: ['default', 'ssh-rsa', ...]` — UI dropdown option strings for a form field; display metadata, not crypto usage or effective config."
+  },
+  "ui/mirage/factories/kubernetes-config.js:11": {
+    "label": "FP",
+    "algorithm": "X.509 certificate (algorithm in body)",
+    "patternId": "x509-cert-body",
+    "reason": "Fabricated placeholder cert string (mangled, non-parseable base64) in a mirage UI mock factory — not real certificate material."
+  },
+  "ui/mirage/factories/ldap-config.js:18": {
+    "label": "FP",
+    "algorithm": "X.509 certificate (algorithm in body)",
+    "patternId": "x509-cert-body",
+    "reason": "Fabricated placeholder cert string (mangled, non-parseable base64) in a mirage UI mock factory — not real certificate material."
+  },
+  "ui/mirage/factories/ldap-config.js:20": {
+    "label": "FP",
+    "algorithm": "X.509 certificate (algorithm in body)",
+    "patternId": "x509-cert-body",
+    "reason": "Fabricated placeholder cert string (mangled, non-parseable base64) in a mirage UI mock factory — not real certificate material."
+  },
+  "vault/cluster.go:8": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "vault/cluster.go:229": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P521(), c.secureRandomReader)` — genuine key generation call-site."
+  },
+  "vault/core.go:8": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "vault/ha.go:8": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "vault/identity_store_oidc.go:135": {
+    "label": "TP",
+    "algorithm": "RSA (JWT RS/PS)",
+    "patternId": "jwt-rsa-alg",
+    "reason": "`string(jose.RS256)` in `supportedAlgs` — production config enabling RS256 OIDC token signing."
+  },
+  "vault/identity_store_oidc.go:136": {
+    "label": "TP",
+    "algorithm": "RSA (JWT RS/PS)",
+    "patternId": "jwt-rsa-alg",
+    "reason": "`string(jose.RS384)` in `supportedAlgs` — production config enabling RS384 OIDC token signing."
+  },
+  "vault/identity_store_oidc.go:137": {
+    "label": "TP",
+    "algorithm": "RSA (JWT RS/PS)",
+    "patternId": "jwt-rsa-alg",
+    "reason": "`string(jose.RS512)` in `supportedAlgs` — production config enabling RS512 OIDC token signing."
+  },
+  "vault/identity_store_oidc.go:138": {
+    "label": "TP",
+    "algorithm": "ECDSA (JWT ES)",
+    "patternId": "jwt-ecdsa-alg",
+    "reason": "`string(jose.ES256)` in `supportedAlgs` — production config enabling ES256 OIDC token signing."
+  },
+  "vault/identity_store_oidc.go:139": {
+    "label": "TP",
+    "algorithm": "ECDSA (JWT ES)",
+    "patternId": "jwt-ecdsa-alg",
+    "reason": "`string(jose.ES384)` in `supportedAlgs` — production config enabling ES384 OIDC token signing."
+  },
+  "vault/identity_store_oidc.go:140": {
+    "label": "TP",
+    "algorithm": "ECDSA (JWT ES)",
+    "patternId": "jwt-ecdsa-alg",
+    "reason": "`string(jose.ES512)` in `supportedAlgs` — production config enabling ES512 OIDC token signing."
+  },
+  "vault/identity_store_oidc.go:8": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "vault/identity_store_oidc.go:1777": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(curve, rand.Reader)` — genuine ECDSA key generation for OIDC named-key rotation."
+  },
+  "vault/identity_store_oidc_provider_util.go:59": {
+    "label": "TP",
+    "algorithm": "RSA (JWT RS/PS)",
+    "patternId": "jwt-rsa-alg",
+    "reason": "`jose.RS256: sha256.New` — production alg→hash dispatch computing OIDC at_hash/c_hash for RS256-signed tokens."
+  },
+  "vault/identity_store_oidc_provider_util.go:60": {
+    "label": "TP",
+    "algorithm": "RSA (JWT RS/PS)",
+    "patternId": "jwt-rsa-alg",
+    "reason": "`jose.RS384: sha512.New384` — production alg→hash dispatch for RS384-signed tokens."
+  },
+  "vault/identity_store_oidc_provider_util.go:61": {
+    "label": "TP",
+    "algorithm": "RSA (JWT RS/PS)",
+    "patternId": "jwt-rsa-alg",
+    "reason": "`jose.RS512: sha512.New` — production alg→hash dispatch for RS512-signed tokens."
+  },
+  "vault/identity_store_oidc_provider_util.go:62": {
+    "label": "TP",
+    "algorithm": "ECDSA (JWT ES)",
+    "patternId": "jwt-ecdsa-alg",
+    "reason": "`jose.ES256: sha256.New` — production alg→hash dispatch for ES256-signed tokens."
+  },
+  "vault/identity_store_oidc_provider_util.go:63": {
+    "label": "TP",
+    "algorithm": "ECDSA (JWT ES)",
+    "patternId": "jwt-ecdsa-alg",
+    "reason": "`jose.ES384: sha512.New384` — production alg→hash dispatch for ES384-signed tokens."
+  },
+  "vault/identity_store_oidc_provider_util.go:64": {
+    "label": "TP",
+    "algorithm": "ECDSA (JWT ES)",
+    "patternId": "jwt-ecdsa-alg",
+    "reason": "`jose.ES512: sha512.New` — production alg→hash dispatch for ES512-signed tokens."
+  },
+  "vault/plugincatalog/plugin_artifact.go:47": {
+    "label": "TP",
+    "algorithm": "PGP public key (algorithm in body)",
+    "patternId": "pgp-public-block",
+    "reason": "HashiCorp's real production PGP public key block, parsed to verify plugin artifact signatures — genuine RSA key material in the verification path."
+  },
+  "vault/request_forwarding.go:9": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "vault/testing.go:74": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "`testSharedPrivateKey` holds a real embedded RSA private key shared by unit tests."
+  },
+  "vault/testing.go:71": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "`testSharedPublicKey` holds a real ssh-rsa public key blob (public half of the shared test key)."
+  },
+  "vault/testing.go:9": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "vault/testing.go:1254": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "vault/testing.go:1320": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P256(), rand.Reader)` — genuine key generation call-site."
+  },
+  "vault/wrapping.go:8": {
+    "label": "FP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Bare `\"crypto/ecdsa\"` import line — a package dependency declaration, not a crypto operation, key material, or config."
+  },
+  "vault/wrapping.go:41": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "`ecdsa.GenerateKey(elliptic.P521(), c.secureRandomReader)` — genuine key generation call-site."
+  }
 }

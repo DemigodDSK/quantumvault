@@ -1,362 +1,1250 @@
 {
- "docs/development/custom-vectors/cast5/generate_cast5.py:62": {
-  "label": "FP",
-  "algorithm": "AES-128",
-  "patternId": "sym-aes128",
-  "reason": "Match is on the substring of a test-vector FILE PATH string ('tests/.../AES/CTR/aes-128-ctr.txt') assigned to ctr_path; no AES-128 operation here."
- },
- "docs/development/custom-vectors/rsa-oaep-sha2/generate_rsa_oaep_sha2.py:25": {
-  "label": "TP",
-  "algorithm": "RSA",
-  "patternId": "rsa-python-cryptography",
-  "reason": "Real RSA key generation: rsa.generate_private_key(65537, 2048)."
- },
- "docs/development/custom-vectors/secp256k1/generate_secp256k1.py:13": {
-  "label": "TP",
-  "algorithm": "MD5/SHA-1",
-  "patternId": "hash-md5-sha1",
-  "reason": "Real mapping to the SHA-1 hash implementation (hashlib.sha1) in a hash-type dispatch table."
- },
- "src/cryptography/hazmat/decrepit/ciphers/algorithms.py:29": {
-  "label": "TP",
-  "algorithm": "DES/3DES",
-  "patternId": "sym-des-3des",
-  "reason": "Defines the TripleDES (3DES) block-cipher primitive class."
- },
- "src/cryptography/hazmat/decrepit/ciphers/algorithms.py:30": {
-  "label": "TP",
-  "algorithm": "DES/3DES",
-  "patternId": "sym-des-3des",
-  "reason": "The name attribute '3DES' of the real TripleDES cipher class declaration."
- },
- "src/cryptography/hazmat/primitives/_serialization.py:78": {
-  "label": "TP",
-  "algorithm": "PKCS#12 keystore (key + cert)",
-  "patternId": "pkcs12-keystore",
-  "reason": "Gates hmac_hash to the PKCS12 serialization format; real PKCS#12 keystore config logic in the encryption builder."
- },
- "src/cryptography/hazmat/primitives/_serialization.py:95": {
-  "label": "TP",
-  "algorithm": "PKCS#12 keystore (key + cert)",
-  "patternId": "pkcs12-keystore",
-  "reason": "Gates key_cert_algorithm to the PKCS12 format; real PKCS#12 keystore config logic."
- },
- "src/cryptography/hazmat/primitives/asymmetric/dsa.py:18": {
-  "label": "FP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "REFINED on re-review (was TP): -> DSAPrivateKey is a return-type annotation on an @abc.abstractmethod (no body) — a type reference, not a cryptographic operation. The engine correctly classifies it as a mention."
- },
- "src/cryptography/hazmat/primitives/asymmetric/dsa.py:34": {
-  "label": "TP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "Declares the DSAPrivateKey type (the DSA key primitive)."
- },
- "src/cryptography/hazmat/primitives/asymmetric/dsa.py:82": {
-  "label": "FP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "Return-type annotation on __copy__ dunder; a type reference, not a DSA operation or material."
- },
- "src/cryptography/hazmat/primitives/asymmetric/dsa.py:88": {
-  "label": "FP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "Return-type annotation on __deepcopy__ dunder; type reference only, no DSA operation."
- },
- "src/cryptography/hazmat/primitives/asymmetric/dsa.py:94": {
-  "label": "FP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "Backwards-compat type alias assignment (DSAPrivateKeyWithSerialization = DSAPrivateKey); an identifier alias, not an operation/material."
- },
- "src/cryptography/hazmat/primitives/asymmetric/dsa.py:95": {
-  "label": "TP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "Registers the concrete Rust/OpenSSL DSA private-key implementation against the ABC — wires up the real DSA implementation."
- },
- "src/cryptography/hazmat/primitives/asymmetric/dsa.py:177": {
-  "label": "FP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "Bare return-type annotation line (') -> DSAPrivateKey:'); type reference only."
- },
- "src/cryptography/hazmat/primitives/asymmetric/ec.py:328": {
-  "label": "TP",
-  "algorithm": "ECDSA/ECDH (Python)",
-  "patternId": "ecc-python",
-  "reason": "Binds EC private-key generation (generate_private_key = rust_openssl.ec.generate_private_key)."
- },
- "src/cryptography/hazmat/primitives/asymmetric/ec.py:342": {
-  "label": "TP",
-  "algorithm": "ECDSA/ECDH (Python)",
-  "patternId": "ecc-python",
-  "reason": "Real EC private-key derivation: rust_openssl.ec.derive_private_key(private_value, curve)."
- },
- "src/cryptography/hazmat/primitives/asymmetric/rsa.py:170": {
-  "label": "TP",
-  "algorithm": "RSA",
-  "patternId": "rsa-python-cryptography",
-  "reason": "Real RSA private-key generation: rust_openssl.rsa.generate_private_key(public_exponent, key_size)."
- },
- "src/cryptography/hazmat/primitives/asymmetric/types.py:49": {
-  "label": "FP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "Member of a typing.Union of allowed private-key types; type annotation, no DSA operation."
- },
- "src/cryptography/hazmat/primitives/asymmetric/types.py:60": {
-  "label": "FP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "Member of CertificateIssuerPrivateKeyTypes typing.Union; type annotation only."
- },
- "src/cryptography/hazmat/primitives/ciphers/algorithms.py:27": {
-  "label": "TP",
-  "algorithm": "DES/3DES",
-  "patternId": "sym-des-3des",
-  "reason": "Re-export import of the actual TripleDES (3DES) cipher class into the public ciphers namespace."
- },
- "src/cryptography/hazmat/primitives/ciphers/algorithms.py:50": {
-  "label": "TP",
-  "algorithm": "AES-128",
-  "patternId": "sym-aes128",
-  "reason": "Defines the AES128 block-cipher class (key_sizes=frozenset([128]))."
- },
- "src/cryptography/hazmat/primitives/ciphers/algorithms.py:95": {
-  "label": "TP",
-  "algorithm": "DES/3DES",
-  "patternId": "sym-des-3des",
-  "reason": "References the real TripleDES cipher class as the first arg of utils.deprecated(TripleDES, ...)."
- },
- "src/cryptography/hazmat/primitives/ciphers/algorithms.py:102": {
-  "label": "FP",
-  "algorithm": "DES/3DES",
-  "patternId": "sym-des-3des",
-  "reason": "The name= display-label string kwarg inside the deprecation-warning call metadata; a label, not a cipher operation."
- },
- "src/cryptography/hazmat/primitives/ciphers/modes.py:69": {
-  "label": "TP",
-  "algorithm": "AES-128",
-  "patternId": "sym-aes128",
-  "reason": "Runtime isinstance check against algorithms.AES128 to reject XTS mode; real cipher-mode validation referencing the AES128 primitive."
- },
- "src/cryptography/hazmat/primitives/serialization/pkcs12.py:11": {
-  "label": "TP",
-  "algorithm": "PKCS#12 keystore (key + cert)",
-  "patternId": "pkcs12-keystore",
-  "reason": "Imports the actual Rust PKCS#12 implementation module (pkcs12 as rust_pkcs12)."
- },
- "src/cryptography/hazmat/primitives/serialization/pkcs12.py:36": {
-  "label": "FP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "Member of the PKCS12PrivateKeyTypes typing.Union; type annotation, no DSA operation."
- },
- "src/cryptography/hazmat/primitives/serialization/pkcs12.py:57": {
-  "label": "FP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "DSAPrivateKey listed in an accepted-types tuple; type reference only, no DSA operation."
- },
- "src/cryptography/hazmat/primitives/serialization/pkcs12.py:152": {
-  "label": "FP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "DSAPrivateKey listed in another accepted-types tuple; type reference only."
- },
- "src/cryptography/hazmat/primitives/serialization/pkcs7.py:43": {
-  "label": "FP",
-  "algorithm": "AES-128",
-  "patternId": "sym-aes128",
-  "reason": "type[algorithms.AES128] inside a typing.Union alias (ContentEncryptionAlgorithm); type annotation, not a cipher operation."
- },
- "src/cryptography/hazmat/primitives/serialization/pkcs7.py:248": {
-  "label": "TP",
-  "algorithm": "AES-128",
-  "patternId": "sym-aes128",
-  "reason": "Runtime validation set membership check ({algorithms.AES128, algorithms.AES256}) constraining the S/MIME content encryption cipher; real crypto config."
- },
- "src/cryptography/hazmat/primitives/serialization/pkcs7.py:273": {
-  "label": "TP",
-  "algorithm": "AES-128",
-  "patternId": "sym-aes128",
-  "reason": "Sets the DEFAULT content-encryption algorithm to AES128 (self._content_encryption_algorithm or algorithms.AES128); real cipher-selection config."
- },
- "src/cryptography/hazmat/primitives/serialization/ssh.py:60": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "Defines the SSH 'ssh-rsa' key-type wire identifier constant used for SSH RSA key parsing/serialization."
- },
- "src/cryptography/hazmat/primitives/serialization/ssh.py:61": {
-  "label": "TP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "Defines the SSH 'ssh-dss' DSA key-type wire identifier constant."
- },
- "src/cryptography/hazmat/primitives/serialization/ssh.py:62": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Defines the SSH ECDSA NIST P-256 key-type identifier ('ecdsa-sha2-nistp256')."
- },
- "src/cryptography/hazmat/primitives/serialization/ssh.py:63": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Defines the SSH ECDSA NIST P-384 key-type identifier."
- },
- "src/cryptography/hazmat/primitives/serialization/ssh.py:64": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Defines the SSH ECDSA NIST P-521 key-type identifier."
- },
- "src/cryptography/hazmat/primitives/serialization/ssh.py:69": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Defines the SK (security-key) SSH ECDSA P-256 key-type identifier ('sk-ecdsa-sha2-nistp256@openssh.com')."
- },
- "src/cryptography/hazmat/primitives/serialization/ssh.py:78": {
-  "label": "TP",
-  "algorithm": "OpenSSH private key (algorithm in body)",
-  "patternId": "openssh-pem-private-key",
-  "reason": "Defines the OpenSSH private-key PEM boundary marker used to detect/parse OpenSSH private keys."
- },
- "src/cryptography/hazmat/primitives/serialization/ssh.py:149": {
-  "label": "TP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "Runtime isinstance dispatch of DSA keys to the _SSH_DSA key type during SSH serialization; real DSA key handling."
- },
- "src/cryptography/hazmat/primitives/serialization/ssh.py:411": {
-  "label": "TP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "Signature of load_private whose body genuinely constructs a DSA private key (DSAParameterNumbers/DSAPublicNumbers/private_key())."
- },
- "src/cryptography/hazmat/primitives/serialization/ssh.py:439": {
-  "label": "TP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "Parameter of encode_private which serializes a real DSA private key to OpenSSH wire format."
- },
- "src/cryptography/hazmat/primitives/serialization/ssh.py:500": {
-  "label": "TP",
-  "algorithm": "ECDSA/ECDH (Python)",
-  "patternId": "ecc-python",
-  "reason": "Real EC private-key derivation from parsed SSH data: ec.derive_private_key(secret, self.curve)."
- },
- "src/cryptography/hazmat/primitives/serialization/ssh.py:679": {
-  "label": "FP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "Member of the SSHPrivateKeyTypes typing.Union list; type annotation, no DSA operation."
- },
- "src/cryptography/hazmat/primitives/serialization/ssh.py:787": {
-  "label": "TP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "Runtime isinstance detection of a DSA private key (to emit the deprecation warning) during SSH key load; real DSA key handling."
- },
- "src/cryptography/hazmat/primitives/serialization/ssh.py:805": {
-  "label": "TP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "Runtime isinstance check on a DSA private key in _serialize_ssh_private_key; real DSA key handling."
- },
- "src/cryptography/x509/extensions.py:72": {
-  "label": "TP",
-  "algorithm": "MD5/SHA-1",
-  "patternId": "hash-md5-sha1",
-  "reason": "Real SHA-1 digest computation: hashlib.sha1(data).digest() (used for key identifiers)."
- },
- "src/rust/cryptography-key-parsing/src/pbe.rs:88": {
-  "label": "TP",
-  "algorithm": "PKCS#12 keystore (key + cert)",
-  "patternId": "pkcs12-keystore",
-  "reason": "Real PKCS#12 KDF invocation deriving the encryption key (cryptography_crypto::pkcs12::kdf(...))."
- },
- "src/rust/cryptography-key-parsing/src/pbe.rs:91": {
-  "label": "TP",
-  "algorithm": "PKCS#12 keystore (key + cert)",
-  "patternId": "pkcs12-keystore",
-  "reason": "KDF_ENCRYPTION_KEY_ID constant argument on the live PKCS#12 KDF call; part of the real key-derivation op (though same op as line 88 — double count)."
- },
- "src/rust/cryptography-key-parsing/src/pbe.rs:96": {
-  "label": "TP",
-  "algorithm": "PKCS#12 keystore (key + cert)",
-  "patternId": "pkcs12-keystore",
-  "reason": "Real PKCS#12 KDF invocation deriving the IV (cryptography_crypto::pkcs12::kdf(...))."
- },
- "src/rust/cryptography-key-parsing/src/pbe.rs:99": {
-  "label": "TP",
-  "algorithm": "PKCS#12 keystore (key + cert)",
-  "patternId": "pkcs12-keystore",
-  "reason": "KDF_IV_ID constant argument on the live PKCS#12 IV-derivation KDF call (same op as line 96 — double count)."
- },
- "src/rust/cryptography-key-parsing/src/pkcs8.rs:244": {
-  "label": "TP",
-  "algorithm": "PKCS#12 keystore (key + cert)",
-  "patternId": "pkcs12-keystore",
-  "reason": "Real PKCS#12 KDF invocation deriving the encryption key in PKCS8 password-based decryption."
- },
- "src/rust/cryptography-key-parsing/src/pkcs8.rs:247": {
-  "label": "TP",
-  "algorithm": "PKCS#12 keystore (key + cert)",
-  "patternId": "pkcs12-keystore",
-  "reason": "KDF_ENCRYPTION_KEY_ID arg on the live PKCS#12 KDF call (same op as line 244 — double count)."
- },
- "src/rust/cryptography-key-parsing/src/pkcs8.rs:252": {
-  "label": "TP",
-  "algorithm": "PKCS#12 keystore (key + cert)",
-  "patternId": "pkcs12-keystore",
-  "reason": "Real PKCS#12 KDF invocation deriving the IV in PKCS8 decryption."
- },
- "src/rust/cryptography-key-parsing/src/pkcs8.rs:255": {
-  "label": "TP",
-  "algorithm": "PKCS#12 keystore (key + cert)",
-  "patternId": "pkcs12-keystore",
-  "reason": "KDF_IV_ID arg on the live PKCS#12 IV-derivation KDF call (same op as line 252 — double count)."
- },
- "src/rust/cryptography-x509-verification/src/certificate.rs:31": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded X.509 CA certificate PEM (full base64 body, EC/id-ecPublicKey) parsed as a test vector."
- },
- "src/rust/cryptography-x509-verification/src/lib.rs:667": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded self-signed looping CA X.509 certificate PEM with full base64 body."
- },
- "src/rust/cryptography-x509-verification/src/ops.rs:110": {
-  "label": "TP",
-  "algorithm": "X.509 certificate (algorithm in body)",
-  "patternId": "x509-cert-body",
-  "reason": "Real embedded RSA X.509 test certificate PEM ('SSLeay/rsa test CA', full base64 body)."
- },
- "src/rust/cryptography-x509/src/lib.rs:19": {
-  "label": "FP",
-  "algorithm": "PKCS#12 keystore (key + cert)",
-  "patternId": "pkcs12-keystore",
-  "reason": "Bare Rust module declaration 'pub mod pkcs12;'; names the implementation module but is not a crypto operation or material."
- },
- "src/rust/src/lib.rs:42": {
-  "label": "FP",
-  "algorithm": "PKCS#12 keystore (key + cert)",
-  "patternId": "pkcs12-keystore",
-  "reason": "Bare Rust module declaration 'mod pkcs12;'; structural, no operation or material."
- },
- "src/rust/src/lib.rs:144": {
-  "label": "FP",
-  "algorithm": "PKCS#12 keystore (key + cert)",
-  "patternId": "pkcs12-keystore",
-  "reason": "'use crate::pkcs12::pkcs12;' pymodule re-export wiring; an import statement, not a crypto operation or material."
- }
+  "docs/development/custom-vectors/cast5/generate_cast5.py:62": {
+    "label": "FP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "Match is on the substring of a test-vector FILE PATH string ('tests/.../AES/CTR/aes-128-ctr.txt') assigned to ctr_path; no AES-128 operation here."
+  },
+  "docs/development/custom-vectors/rsa-oaep-sha2/generate_rsa_oaep_sha2.py:25": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-python-cryptography",
+    "reason": "Real RSA key generation: rsa.generate_private_key(65537, 2048)."
+  },
+  "docs/development/custom-vectors/secp256k1/generate_secp256k1.py:13": {
+    "label": "TP",
+    "algorithm": "MD5/SHA-1",
+    "patternId": "hash-md5-sha1",
+    "reason": "Real mapping to the SHA-1 hash implementation (hashlib.sha1) in a hash-type dispatch table."
+  },
+  "src/cryptography/hazmat/decrepit/ciphers/algorithms.py:29": {
+    "label": "TP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "Defines the TripleDES (3DES) block-cipher primitive class."
+  },
+  "src/cryptography/hazmat/decrepit/ciphers/algorithms.py:30": {
+    "label": "TP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "The name attribute '3DES' of the real TripleDES cipher class declaration."
+  },
+  "src/cryptography/hazmat/primitives/_serialization.py:78": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Gates hmac_hash to the PKCS12 serialization format; real PKCS#12 keystore config logic in the encryption builder."
+  },
+  "src/cryptography/hazmat/primitives/_serialization.py:95": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Gates key_cert_algorithm to the PKCS12 format; real PKCS#12 keystore config logic."
+  },
+  "src/cryptography/hazmat/primitives/asymmetric/dsa.py:34": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "Declares the DSAPrivateKey type (the DSA key primitive)."
+  },
+  "src/cryptography/hazmat/primitives/asymmetric/dsa.py:94": {
+    "label": "FP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "Backwards-compat type alias assignment (DSAPrivateKeyWithSerialization = DSAPrivateKey); an identifier alias, not an operation/material."
+  },
+  "src/cryptography/hazmat/primitives/asymmetric/dsa.py:95": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "Registers the concrete Rust/OpenSSL DSA private-key implementation against the ABC — wires up the real DSA implementation."
+  },
+  "src/cryptography/hazmat/primitives/asymmetric/ec.py:328": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (Python)",
+    "patternId": "ecc-python",
+    "reason": "Binds EC private-key generation (generate_private_key = rust_openssl.ec.generate_private_key)."
+  },
+  "src/cryptography/hazmat/primitives/asymmetric/ec.py:342": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (Python)",
+    "patternId": "ecc-python",
+    "reason": "Real EC private-key derivation: rust_openssl.ec.derive_private_key(private_value, curve)."
+  },
+  "src/cryptography/hazmat/primitives/asymmetric/rsa.py:170": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-python-cryptography",
+    "reason": "Real RSA private-key generation: rust_openssl.rsa.generate_private_key(public_exponent, key_size)."
+  },
+  "src/cryptography/hazmat/primitives/ciphers/algorithms.py:27": {
+    "label": "TP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "Re-export import of the actual TripleDES (3DES) cipher class into the public ciphers namespace."
+  },
+  "src/cryptography/hazmat/primitives/ciphers/algorithms.py:50": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "Defines the AES128 block-cipher class (key_sizes=frozenset([128]))."
+  },
+  "src/cryptography/hazmat/primitives/ciphers/algorithms.py:95": {
+    "label": "TP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "References the real TripleDES cipher class as the first arg of utils.deprecated(TripleDES, ...)."
+  },
+  "src/cryptography/hazmat/primitives/ciphers/algorithms.py:102": {
+    "label": "FP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "The name= display-label string kwarg inside the deprecation-warning call metadata; a label, not a cipher operation."
+  },
+  "src/cryptography/hazmat/primitives/ciphers/modes.py:69": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "Runtime isinstance check against algorithms.AES128 to reject XTS mode; real cipher-mode validation referencing the AES128 primitive."
+  },
+  "src/cryptography/hazmat/primitives/serialization/pkcs12.py:11": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Imports the actual Rust PKCS#12 implementation module (pkcs12 as rust_pkcs12)."
+  },
+  "src/cryptography/hazmat/primitives/serialization/pkcs12.py:57": {
+    "label": "FP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "DSAPrivateKey listed in an accepted-types tuple; type reference only, no DSA operation."
+  },
+  "src/cryptography/hazmat/primitives/serialization/pkcs12.py:152": {
+    "label": "FP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "DSAPrivateKey listed in another accepted-types tuple; type reference only."
+  },
+  "src/cryptography/hazmat/primitives/serialization/pkcs7.py:248": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "Runtime validation set membership check ({algorithms.AES128, algorithms.AES256}) constraining the S/MIME content encryption cipher; real crypto config."
+  },
+  "src/cryptography/hazmat/primitives/serialization/pkcs7.py:273": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "Sets the DEFAULT content-encryption algorithm to AES128 (self._content_encryption_algorithm or algorithms.AES128); real cipher-selection config."
+  },
+  "src/cryptography/hazmat/primitives/serialization/ssh.py:60": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Defines the SSH 'ssh-rsa' key-type wire identifier constant used for SSH RSA key parsing/serialization."
+  },
+  "src/cryptography/hazmat/primitives/serialization/ssh.py:61": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "Defines the SSH 'ssh-dss' DSA key-type wire identifier constant."
+  },
+  "src/cryptography/hazmat/primitives/serialization/ssh.py:62": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Defines the SSH ECDSA NIST P-256 key-type identifier ('ecdsa-sha2-nistp256')."
+  },
+  "src/cryptography/hazmat/primitives/serialization/ssh.py:63": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Defines the SSH ECDSA NIST P-384 key-type identifier."
+  },
+  "src/cryptography/hazmat/primitives/serialization/ssh.py:64": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Defines the SSH ECDSA NIST P-521 key-type identifier."
+  },
+  "src/cryptography/hazmat/primitives/serialization/ssh.py:69": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Defines the SK (security-key) SSH ECDSA P-256 key-type identifier ('sk-ecdsa-sha2-nistp256@openssh.com')."
+  },
+  "src/cryptography/hazmat/primitives/serialization/ssh.py:78": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Defines the OpenSSH private-key PEM boundary marker used to detect/parse OpenSSH private keys."
+  },
+  "src/cryptography/hazmat/primitives/serialization/ssh.py:149": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "Runtime isinstance dispatch of DSA keys to the _SSH_DSA key type during SSH serialization; real DSA key handling."
+  },
+  "src/cryptography/hazmat/primitives/serialization/ssh.py:411": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "Signature of load_private whose body genuinely constructs a DSA private key (DSAParameterNumbers/DSAPublicNumbers/private_key())."
+  },
+  "src/cryptography/hazmat/primitives/serialization/ssh.py:439": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "Parameter of encode_private which serializes a real DSA private key to OpenSSH wire format."
+  },
+  "src/cryptography/hazmat/primitives/serialization/ssh.py:500": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (Python)",
+    "patternId": "ecc-python",
+    "reason": "Real EC private-key derivation from parsed SSH data: ec.derive_private_key(secret, self.curve)."
+  },
+  "src/cryptography/hazmat/primitives/serialization/ssh.py:787": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "Runtime isinstance detection of a DSA private key (to emit the deprecation warning) during SSH key load; real DSA key handling."
+  },
+  "src/cryptography/hazmat/primitives/serialization/ssh.py:805": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "Runtime isinstance check on a DSA private key in _serialize_ssh_private_key; real DSA key handling."
+  },
+  "src/cryptography/x509/extensions.py:72": {
+    "label": "TP",
+    "algorithm": "MD5/SHA-1",
+    "patternId": "hash-md5-sha1",
+    "reason": "Real SHA-1 digest computation: hashlib.sha1(data).digest() (used for key identifiers)."
+  },
+  "src/rust/cryptography-key-parsing/src/pbe.rs:88": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Real PKCS#12 KDF invocation deriving the encryption key (cryptography_crypto::pkcs12::kdf(...))."
+  },
+  "src/rust/cryptography-key-parsing/src/pbe.rs:91": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "KDF_ENCRYPTION_KEY_ID constant argument on the live PKCS#12 KDF call; part of the real key-derivation op (though same op as line 88 — double count)."
+  },
+  "src/rust/cryptography-key-parsing/src/pbe.rs:96": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Real PKCS#12 KDF invocation deriving the IV (cryptography_crypto::pkcs12::kdf(...))."
+  },
+  "src/rust/cryptography-key-parsing/src/pbe.rs:99": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "KDF_IV_ID constant argument on the live PKCS#12 IV-derivation KDF call (same op as line 96 — double count)."
+  },
+  "src/rust/cryptography-key-parsing/src/pkcs8.rs:244": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Real PKCS#12 KDF invocation deriving the encryption key in PKCS8 password-based decryption."
+  },
+  "src/rust/cryptography-key-parsing/src/pkcs8.rs:247": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "KDF_ENCRYPTION_KEY_ID arg on the live PKCS#12 KDF call (same op as line 244 — double count)."
+  },
+  "src/rust/cryptography-key-parsing/src/pkcs8.rs:252": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Real PKCS#12 KDF invocation deriving the IV in PKCS8 decryption."
+  },
+  "src/rust/cryptography-key-parsing/src/pkcs8.rs:255": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "KDF_IV_ID arg on the live PKCS#12 IV-derivation KDF call (same op as line 252 — double count)."
+  },
+  "src/rust/cryptography-x509/src/lib.rs:19": {
+    "label": "FP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Bare Rust module declaration 'pub mod pkcs12;'; names the implementation module but is not a crypto operation or material."
+  },
+  "src/rust/src/lib.rs:42": {
+    "label": "FP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Bare Rust module declaration 'mod pkcs12;'; structural, no operation or material."
+  },
+  "src/rust/src/lib.rs:144": {
+    "label": "FP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "'use crate::pkcs12::pkcs12;' pymodule re-export wiring; an import statement, not a crypto operation or material."
+  },
+  "src/rust/src/pkcs12.rs:128": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Type parameter in the return type of pkcs12_attributes, whose body genuinely constructs these PKCS#12 Attribute values (real-body signature, per ssh.py:411 precedent)."
+  },
+  "src/rust/src/pkcs12.rs:129": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Vec type parameter in the same pkcs12_attributes return type; the function body genuinely builds the PKCS#12 attributes (same signature as line 128 — double count)."
+  },
+  "src/rust/src/pkcs12.rs:139": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Real construction of a cryptography_x509::pkcs12::Attribute (FriendlyName) pushed into the live PKCS#12 SafeBag attribute set."
+  },
+  "src/rust/src/pkcs12.rs:141": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "AttributeSet::FriendlyName value on the live Attribute construction (same op as line 139 — double count)."
+  },
+  "src/rust/src/pkcs12.rs:147": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Real construction of a pkcs12::Attribute (LocalKeyId) in the live PKCS#12 attribute builder."
+  },
+  "src/rust/src/pkcs12.rs:149": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "AttributeSet::LocalKeyId value on the live Attribute construction (same op as line 147 — double count)."
+  },
+  "src/rust/src/pkcs12.rs:155": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Real construction of a pkcs12::Attribute (JDKTruststoreUsage) in the live PKCS#12 attribute builder."
+  },
+  "src/rust/src/pkcs12.rs:157": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "AttributeSet::JDKTruststoreUsage value on the live Attribute construction (same op as line 155 — double count)."
+  },
+  "src/rust/src/pkcs12.rs:175": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Return type of cert_to_bag whose body genuinely builds the PKCS#12 SafeBag for a certificate (real-body signature precedent)."
+  },
+  "src/rust/src/pkcs12.rs:176": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Real construction of the pkcs12::SafeBag wrapping the certificate for PKCS#12 serialization."
+  },
+  "src/rust/src/pkcs12.rs:178": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "BagValue::CertBag construction inside the live SafeBag build (same op as line 176 — double count)."
+  },
+  "src/rust/src/pkcs12.rs:179": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "pkcs12::CertBag construction holding the raw certificate DER inside the live SafeBag build."
+  },
+  "src/rust/src/pkcs12.rs:181": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "CertType::X509 wrapping of the real certificate bytes inside the CertBag construction (same op — double count)."
+  },
+  "src/rust/src/pkcs12.rs:219": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Runtime equality gate == PrivateFormat::PKCS12 selecting the PKCS#12 PBE cipher path in decode_encryption_algorithm; real format dispatch."
+  },
+  "src/rust/src/pkcs12.rs:284": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Parameter of serialize_safebags, whose body genuinely encrypts, MACs (PKCS#12 KDF) and DER-serializes the PKCS#12 AuthSafe (real-body signature precedent)."
+  },
+  "src/rust/src/pkcs12.rs:306": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Runtime match dispatch on BagValue::ShroudedKeyBag separating already-encrypted key bags during real PKCS#12 serialization (RFC 7292 4.1)."
+  },
+  "src/rust/src/pkcs12.rs:371": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Real PKCS#12 KDF invocation deriving the MAC key (cryptography_crypto::pkcs12::kdf(...))."
+  },
+  "src/rust/src/pkcs12.rs:374": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "KDF_MAC_KEY_ID constant argument on the live PKCS#12 MAC-key KDF call (same op as line 371 — double count)."
+  },
+  "src/rust/src/pkcs12.rs:391": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Real construction of the pkcs12::Pfx (the PKCS#12 bundle itself) that is then DER-serialized and returned."
+  },
+  "src/rust/src/pkcs12.rs:399": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Real construction of the Pfx MacData (HMAC digest + salt + iterations) on the live PKCS#12 bundle (same Pfx build as line 391 — double count)."
+  },
+  "src/rust/src/pkcs12.rs:523": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Real construction of the SafeBag holding the encrypted private key during PKCS#12 key serialization."
+  },
+  "src/rust/src/pkcs12.rs:526": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "BagValue::ShroudedKeyBag wrapping the freshly encrypted PKCS#8 key ciphertext (same op as line 523 — double count)."
+  },
+  "src/rust/src/pkcs12.rs:542": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Real construction of the SafeBag holding the plaintext PKCS#8 key when no encryption is requested."
+  },
+  "src/rust/src/pkcs12.rs:544": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "BagValue::KeyBag wrapping the parsed PKCS#8 key TLV (same op as line 542 — double count)."
+  },
+  "src/rust/src/pkcs12.rs:561": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Return type of decode_p12 whose body genuinely parses PKCS#12 DER via openssl::pkcs12 (real-body signature precedent)."
+  },
+  "src/rust/src/pkcs12.rs:562": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Real PKCS#12 parse call: openssl::pkcs12::Pkcs12::from_der on the input bytes."
+  },
+  "src/rust/src/pkcs12.rs:579": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Real strict-DER parse of the PKCS#12 Pfx (asn1::parse_single::<pkcs12::Pfx>) on the live input to decide the BER-fallback warning."
+  },
+  "src/rust/src/pkcs12.rs:698": {
+    "label": "FP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "pyo3 pymodule declaration block 'pub(crate) mod pkcs12 {' that only re-exports the real functions; structural wiring, not a crypto operation or material (lib.rs mod-declaration precedent)."
+  },
+  "src/rust/src/pkcs7.rs:29": {
+    "label": "FP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "'use crate::pkcs12::symmetric_encrypt;' Rust import statement; import wiring, not a crypto operation or material (lib.rs:144 use-import precedent)."
+  },
+  "src/rust/src/serialization.rs:41": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Declares the PKCS12 variant of the PrivateFormat enum — the real serialization-format option runtime code dispatches on (ssh.py wire-identifier precedent)."
+  },
+  "src/rust/src/serialization.rs:81": {
+    "label": "TP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Runtime match arm gating encryption_builder to PrivateFormat::PKCS12 (and OpenSSH); real PKCS#12 config logic, Rust twin of _serialization.py:78."
+  },
+  "src/rust/src/types.rs:72": {
+    "label": "FP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Module-path string inside a LazyPyImport declaration (PBESv1SHA1And3KeyTripleDESCBC import wiring); an import statement, not an operation or material."
+  },
+  "src/rust/src/types.rs:76": {
+    "label": "FP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Module-path string inside a LazyPyImport declaration (PBESv2SHA256AndAES256CBC import wiring); import statement only."
+  },
+  "src/rust/src/types.rs:294": {
+    "label": "FP",
+    "algorithm": "PKCS#12 keystore (key + cert)",
+    "patternId": "pkcs12-keystore",
+    "reason": "Module-path string inside the PKCS12KEYANDCERTIFICATES LazyPyImport declaration; import wiring, not a crypto operation or material."
+  },
+  "vectors/cryptography_vectors/asymmetric/DH/dh_key_256.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (dh_key_256.pem) (DH key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/DH/dhkey.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (dhkey.pem) (DH key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/DH/dhkey_rfc5114_2.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (dhkey_rfc5114_2.pem) (DH key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/DSA/custom/nilpotent.pem:1": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-pem-header",
+    "reason": "Real DSA private-key PEM test vector (nilpotent.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/EC/ec-missing-curve.pem:1": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (EC key)",
+    "patternId": "ecc-pem-header",
+    "reason": "Real EC private-key PEM test vector (ec-missing-curve.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/EC/explicit_parameters_private_key.pem:1": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (EC key)",
+    "patternId": "ecc-pem-header",
+    "reason": "Real EC private-key PEM test vector (explicit_parameters_private_key.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/EC/explicit_parameters_wap_wsg_idm_ecid_wtls11_private_key.pem:1": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (EC key)",
+    "patternId": "ecc-pem-header",
+    "reason": "Real EC private-key PEM test vector (explicit_parameters_wap_wsg_idm_ecid_wtls11_private_key.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/EC/high-bit-set.pem:1": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (EC key)",
+    "patternId": "ecc-pem-header",
+    "reason": "Real EC private-key PEM test vector (high-bit-set.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/EC/secp128r1_private_key.pem:1": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (EC key)",
+    "patternId": "ecc-pem-header",
+    "reason": "Real EC private-key PEM test vector (secp128r1_private_key.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/EC/secp256k1-explicit-no-seed.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (secp256k1-explicit-no-seed.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/EC/secp256r1-explicit-no-seed.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (secp256r1-explicit-no-seed.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/EC/secp256r1-explicit-seed.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (secp256r1-explicit-seed.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/EC/secp384r1-explicit-no-seed.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (secp384r1-explicit-no-seed.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/EC/secp384r1-explicit-seed.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (secp384r1-explicit-seed.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/EC/secp521r1-explicit-no-seed.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (secp521r1-explicit-no-seed.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/EC/secp521r1-explicit-seed.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (secp521r1-explicit-seed.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/Ed25519/ed25519-pkcs8-enc.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (ed25519-pkcs8-enc.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/Ed25519/ed25519-pkcs8.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (ed25519-pkcs8.pem) (Ed25519 key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/Ed448/ed448-pkcs8-enc.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (ed448-pkcs8-enc.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/Ed448/ed448-pkcs8.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (ed448-pkcs8.pem) (Ed448 key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/MLKEM/mlkem768.pem:1": {
+    "label": "FP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "The PKCS#8 blob is an ML-KEM-768 (FIPS 203, post-quantum) private-key seed — no quantum-vulnerable primitive present; the generic PRIVATE KEY header over-matched."
+  },
+  "vectors/cryptography_vectors/asymmetric/OpenSSH/dsa-nopsw.key:1": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real OpenSSH private-key test vector (dsa-nopsw.key, dsa); full base64 key body present."
+  },
+  "vectors/cryptography_vectors/asymmetric/OpenSSH/dsa-psw.key:1": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real OpenSSH private-key test vector (dsa-psw.key, dsa); full base64 key body present."
+  },
+  "vectors/cryptography_vectors/asymmetric/OpenSSH/ecdsa-nopsw.key:1": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real OpenSSH private-key test vector (ecdsa-nopsw.key, ecdsa); full base64 key body present."
+  },
+  "vectors/cryptography_vectors/asymmetric/OpenSSH/ecdsa-psw.key:1": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real OpenSSH private-key test vector (ecdsa-psw.key, ecdsa); full base64 key body present."
+  },
+  "vectors/cryptography_vectors/asymmetric/OpenSSH/ed25519-aesgcm-psw.key:1": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real OpenSSH private-key test vector (ed25519-aesgcm-psw.key, ed25519); full base64 key body present."
+  },
+  "vectors/cryptography_vectors/asymmetric/OpenSSH/ed25519-nopsw.key:1": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real OpenSSH private-key test vector (ed25519-nopsw.key, ed25519); full base64 key body present."
+  },
+  "vectors/cryptography_vectors/asymmetric/OpenSSH/ed25519-psw.key:1": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real OpenSSH private-key test vector (ed25519-psw.key, ed25519); full base64 key body present."
+  },
+  "vectors/cryptography_vectors/asymmetric/OpenSSH/rsa-nopsw.key:1": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real OpenSSH private-key test vector (rsa-nopsw.key, rsa); full base64 key body present."
+  },
+  "vectors/cryptography_vectors/asymmetric/OpenSSH/rsa-psw.key:1": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real OpenSSH private-key test vector (rsa-psw.key, rsa); full base64 key body present."
+  },
+  "vectors/cryptography_vectors/asymmetric/OpenSSH/sk-ecdsa-nopsw.key:1": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real OpenSSH private-key test vector (sk-ecdsa-nopsw.key, sk-ecdsa); full base64 key body present."
+  },
+  "vectors/cryptography_vectors/asymmetric/OpenSSH/sk-ecdsa-psw.key:1": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real OpenSSH private-key test vector (sk-ecdsa-psw.key, sk-ecdsa); full base64 key body present."
+  },
+  "vectors/cryptography_vectors/asymmetric/OpenSSH/sk-ed25519-nopsw.key:1": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real OpenSSH private-key test vector (sk-ed25519-nopsw.key, sk-ed25519); full base64 key body present."
+  },
+  "vectors/cryptography_vectors/asymmetric/OpenSSH/sk-ed25519-psw.key:1": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real OpenSSH private-key test vector (sk-ed25519-psw.key, sk-ed25519); full base64 key body present."
+  },
+  "vectors/cryptography_vectors/asymmetric/PEM_Serialization/dsa_4096.pem:1": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-pem-header",
+    "reason": "Real DSA private-key PEM test vector (dsa_4096.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/PEM_Serialization/dsa_private_key.pem:3": {
+    "label": "TP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "DEK-Info header declaring DES-EDE3-CBC as the live encryption of this vector's key body (dsa_private_key.pem); real 3DES usage on genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PEM_Serialization/dsa_private_key.pem:1": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-pem-header",
+    "reason": "Real DSA private-key PEM test vector (dsa_private_key.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/PEM_Serialization/ec_private_key.pem:1": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (EC key)",
+    "patternId": "ecc-pem-header",
+    "reason": "Real EC private-key PEM test vector (ec_private_key.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/PEM_Serialization/ec_private_key_encrypted.pem:1": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (EC key)",
+    "patternId": "ecc-pem-header",
+    "reason": "Real EC private-key PEM test vector (ec_private_key_encrypted.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/PEM_Serialization/rsa-bad-1025-q-is-2.pem:1": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "Real RSA private-key PEM test vector (rsa-bad-1025-q-is-2.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/PEM_Serialization/rsa_private_key.pem:1": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "Real RSA private-key PEM test vector (rsa_private_key.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/PEM_Serialization/rsa_private_key.pem:3": {
+    "label": "TP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "DEK-Info header declaring DES-EDE3-CBC as the live encryption of this vector's key body (rsa_private_key.pem); real 3DES usage on genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/bad-encryption-oid.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (bad-encryption-oid.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/bad-oid-dsa-key.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector with a deliberately corrupted algorithm OID over a genuine DSA key body; key material present."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/ec-consistent-curve.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (ec-consistent-curve.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/ec-inconsistent-curve.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (ec-inconsistent-curve.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/ec-inconsistent-curve2.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (ec-inconsistent-curve2.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/ec-invalid-private-scalar.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (ec-invalid-private-scalar.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/ec-invalid-version.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (ec-invalid-version.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/ec_oid_not_in_reg_private_2.pkcs8.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (ec_oid_not_in_reg_private_2.pkcs8.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/ec_private_key.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (ec_private_key.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/ec_private_key_encrypted.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (ec_private_key_encrypted.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/ecc_private_with_rfc5915_ext.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (ecc_private_with_rfc5915_ext.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/ed25519-scrypt.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (ed25519-scrypt.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/enc-ec-sha1-128-rc4.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (enc-ec-sha1-128-rc4.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/enc-rsa-3des.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (enc-rsa-3des.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/enc-rsa-pkcs8-pbkdf2-0iter.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (enc-rsa-pkcs8-pbkdf2-0iter.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/enc-rsa-pkcs8.pem:22": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 RSA private-key test vector (PEM block follows an ASN.1 text dump in the same file); genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/enc-unknown-algorithm.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (enc-unknown-algorithm.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/enc-unknown-kdf.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (enc-unknown-kdf.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/enc-unknown-pbkdf2-prf.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (enc-unknown-pbkdf2-prf.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/enc2-rsa-pkcs8.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (enc2-rsa-pkcs8.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/nodompar_private.pkcs8.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (nodompar_private.pkcs8.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/pkcs12_s2k_pem-X_9607.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (pkcs12_s2k_pem-X_9607.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/pkcs12_s2k_pem-X_9671.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (pkcs12_s2k_pem-X_9671.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/pkcs12_s2k_pem-X_9925.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (pkcs12_s2k_pem-X_9925.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/pkcs12_s2k_pem-X_9926.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (pkcs12_s2k_pem-X_9926.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/pkcs12_s2k_pem-X_9927.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (pkcs12_s2k_pem-X_9927.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/pkcs12_s2k_pem-X_9928.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (pkcs12_s2k_pem-X_9928.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/pkcs12_s2k_pem-X_9929.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (pkcs12_s2k_pem-X_9929.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/pkcs12_s2k_pem-X_9930.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (pkcs12_s2k_pem-X_9930.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/pkcs12_s2k_pem-X_9931.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (pkcs12_s2k_pem-X_9931.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/pkcs12_s2k_pem-X_9932.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (pkcs12_s2k_pem-X_9932.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/private.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (private.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/rsa-40bitrc2.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (rsa-40bitrc2.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/rsa-aes-192-cbc.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (rsa-aes-192-cbc.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/rsa-pbe-3des-long-salt.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (rsa-pbe-3des-long-salt.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/rsa-pbewithmd5anddescbc.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (rsa-pbewithmd5anddescbc.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/rsa-rc2-cbc-effective-key-length.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (rsa-rc2-cbc-effective-key-length.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/rsa-rc2-cbc.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (rsa-rc2-cbc.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/rsa_pkcs8_pbes2_pbkdf2_2048_3des_sha224.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (rsa_pkcs8_pbes2_pbkdf2_2048_3des_sha224.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/rsa_pkcs8_pbes2_pbkdf2_2048_3des_sha384.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (rsa_pkcs8_pbes2_pbkdf2_2048_3des_sha384.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/rsa_pkcs8_pbes2_pbkdf2_2048_3des_sha512.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (rsa_pkcs8_pbes2_pbkdf2_2048_3des_sha512.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/rsa_pss_2048.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (rsa_pss_2048.pem) (RSA key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/rsa_pss_2048_hash.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (rsa_pss_2048_hash.pem) (RSA key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/rsa_pss_2048_hash_mask.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (rsa_pss_2048_hash_mask.pem) (RSA key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/rsa_pss_2048_hash_mask_diff.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (rsa_pss_2048_hash_mask_diff.pem) (RSA key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/rsa_pss_2048_hash_mask_salt.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (rsa_pss_2048_hash_mask_salt.pem) (RSA key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/unenc-dsa-pkcs8.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (unenc-dsa-pkcs8.pem) (DSA key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/unenc-rsa-pkcs8.pem:63": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real unencrypted PKCS#8 RSA private-key test vector (PEM block follows an ASN.1 text dump); genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/withdompar_private.pkcs8.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (withdompar_private.pkcs8.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/PKCS8/wrong-pem-delimiter-rsa.pem:1": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "Real RSA private-key PEM test vector (wrong-pem-delimiter-rsa.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/dsa-wrong-version.pem:1": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-pem-header",
+    "reason": "Real DSA private-key PEM test vector (dsa-wrong-version.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/dsa.1024.pem:1": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-pem-header",
+    "reason": "Real DSA private-key PEM test vector (dsa.1024.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/dsa.2048.pem:1": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-pem-header",
+    "reason": "Real DSA private-key PEM test vector (dsa.2048.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/dsa.3072.pem:1": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-pem-header",
+    "reason": "Real DSA private-key PEM test vector (dsa.3072.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/key1-malformed-dek-info.pem:1": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "Real RSA private-key PEM test vector (key1-malformed-dek-info.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/key1-malformed-dek-info.pem:3": {
+    "label": "TP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "DEK-Info header declaring DES-EDE3-CBC as the live encryption of this vector's key body (key1-malformed-dek-info.pem); real 3DES usage on genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/key1-malformed-iv.pem:1": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "Real RSA private-key PEM test vector (key1-malformed-iv.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/key1-malformed-iv.pem:3": {
+    "label": "TP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "DEK-Info header declaring DES-EDE3-CBC as the live encryption of this vector's key body (key1-malformed-iv.pem); real 3DES usage on genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/key1-no-dek-info.pem:1": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "Real RSA private-key PEM test vector (key1-no-dek-info.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/key1-short-iv.pem:1": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "Real RSA private-key PEM test vector (key1-short-iv.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/key1-short-iv.pem:3": {
+    "label": "TP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "DEK-Info header declaring DES-EDE3-CBC as the live encryption of this vector's key body (key1-short-iv.pem); real 3DES usage on genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/key1.pem:1": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "Real RSA private-key PEM test vector (key1.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/key1.pem:3": {
+    "label": "TP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "DEK-Info header declaring DES-EDE3-CBC as the live encryption of this vector's key body (key1.pem); real 3DES usage on genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/key2.pem:1": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "Real RSA private-key PEM test vector (key2.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/key2.pem:3": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "DEK-Info header declaring AES-128-CBC as the live encryption of this vector's RSA key body (key2.pem)."
+  },
+  "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/rsa-wrong-version.pem:1": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "Real RSA private-key PEM test vector (rsa-wrong-version.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/testrsa-encrypted.pem:1": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "Real RSA private-key PEM test vector (testrsa-encrypted.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/testrsa-encrypted.pem:3": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "DEK-Info header declaring AES-128-CBC as the live encryption of this vector's RSA key body (testrsa-encrypted.pem)."
+  },
+  "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/testrsa.pem:1": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "Real RSA private-key PEM test vector (testrsa.pem) with full base64 body."
+  },
+  "vectors/cryptography_vectors/asymmetric/X25519/x25519-pkcs8-enc.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (x25519-pkcs8-enc.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/X25519/x25519-pkcs8.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (x25519-pkcs8.pem) (X25519 key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/X448/x448-pkcs8-enc.pem:1": {
+    "label": "TP",
+    "algorithm": "Encrypted private key (PKCS#8)",
+    "patternId": "pkcs8-encrypted-pem",
+    "reason": "Real encrypted PKCS#8 private-key test vector (x448-pkcs8-enc.pem); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/asymmetric/X448/x448-pkcs8.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (x448-pkcs8.pem) (X448 key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/pkcs12/ca/ca_key.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (ca_key.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/x509/cryptography.io.chain_with_garbage.pem:67": {
+    "label": "FP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Garbage PRIVATE KEY block whose base64 body decodes to a bit.ly URL string (deliberate garbage vector); no key material present."
+  },
+  "vectors/cryptography_vectors/x509/cryptography.io.with_garbage.pem:3": {
+    "label": "FP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "PEM PRIVATE KEY block whose entire base64 body decodes to the string 'https://bit.ly/3uJ9zYg' (deliberate garbage/easter egg); no key material present."
+  },
+  "vectors/cryptography_vectors/x509/cryptography.io.with_garbage.pem:45": {
+    "label": "FP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Second garbage PRIVATE KEY block in the same file; body decodes to the same bit.ly URL string, not key material."
+  },
+  "vectors/cryptography_vectors/x509/cryptography.io.with_headers.pem:34": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "Real encrypted RSA private key (Proc-Type/DEK-Info AES-256-CBC headers + full base64 body) appended after the certificate in this vector."
+  },
+  "vectors/cryptography_vectors/x509/custom/ca/ca_key.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (ca_key.pem) (EC key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/x509/custom/ca/rsa_key.pem:1": {
+    "label": "TP",
+    "algorithm": "Private key (PKCS#8, algorithm unspecified)",
+    "patternId": "pkcs8-pem-private-key",
+    "reason": "Real PKCS#8 private-key test vector (rsa_key.pem) (RSA key); full base64 body — genuine key material."
+  },
+  "vectors/cryptography_vectors/x509/requests/basic_constraints.pem:32": {
+    "label": "TP",
+    "algorithm": "RSA (X.509)",
+    "patternId": "tls-rsa-cert",
+    "reason": "OpenSSL text dump reporting the real sha1WithRSAEncryption signature of the CSR whose PEM body is in this same file (line 48); RSA+SHA-1 cert material genuinely present."
+  },
+  "vectors/cryptography_vectors/x509/requests/two_basic_constraints.pem:34": {
+    "label": "TP",
+    "algorithm": "RSA (X.509)",
+    "patternId": "tls-rsa-cert",
+    "reason": "Text-dump signature-algorithm line of the real sha1WithRSAEncryption-signed CSR present in this file (PEM at line 50)."
+  },
+  "vectors/cryptography_vectors/x509/requests/unsupported_extension.pem:32": {
+    "label": "TP",
+    "algorithm": "RSA (X.509)",
+    "patternId": "tls-rsa-cert",
+    "reason": "Text-dump signature-algorithm line of the real sha1WithRSAEncryption-signed CSR present in this file (PEM at line 48)."
+  },
+  "vectors/cryptography_vectors/x509/requests/unsupported_extension_critical.pem:32": {
+    "label": "TP",
+    "algorithm": "RSA (X.509)",
+    "patternId": "tls-rsa-cert",
+    "reason": "Text-dump signature-algorithm line of the real sha1WithRSAEncryption-signed CSR present in this file (PEM at line 48)."
+  }
 }

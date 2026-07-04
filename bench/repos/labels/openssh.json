@@ -1,362 +1,692 @@
 {
- "compat.c:155": {
-  "label": "FP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "DH algorithm-name string literal passed to match_filter_denylist(), which REMOVES these algos from the KEX proposal for SSH_OLD_DHGEX compat — not an enabled/used crypto or key material at this line."
- },
- "compat.c:156": {
-  "label": "FP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "Second DH algo-name literal in the same match_filter_denylist() removal call; the line denies/filters the algorithm, it does not perform or configure-in DH."
- },
- "dh.c:303": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman (OpenSSL C API)",
-  "patternId": "dh-openssl-c",
-  "reason": "Real DH key generation via DH_generate_key(dh) inside dh_gen_key()."
- },
- "ed25519-openssl.c:57": {
-  "label": "TP",
-  "algorithm": "Asymmetric keygen (OpenSSL EVP_PKEY)",
-  "patternId": "evp-pkey-keygen",
-  "reason": "EVP_PKEY_keygen_init on an EVP_PKEY_ED25519 context — real keygen of a quantum-vulnerable Ed25519 key."
- },
- "ed25519-openssl.c:61": {
-  "label": "TP",
-  "algorithm": "Asymmetric keygen (OpenSSL EVP_PKEY)",
-  "patternId": "evp-pkey-keygen",
-  "reason": "EVP_PKEY_keygen(ctx,&pkey) actually generates the Ed25519 keypair."
- },
- "kex.h:53": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "#define KEX_DH1 for a real DH KEX algorithm name OpenSSH implements/negotiates — legacy-crypto algorithm declaration."
- },
- "kex.h:54": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "#define KEX_DH14_SHA1 real DH KEX algorithm identifier used by the KEX layer."
- },
- "kex.h:55": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "#define KEX_DH14_SHA256 real DH KEX algorithm identifier."
- },
- "kex.h:56": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "#define KEX_DH16_SHA512 real DH KEX algorithm identifier."
- },
- "kex.h:57": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "#define KEX_DH18_SHA512 real DH KEX algorithm identifier."
- },
- "kex.h:58": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "#define KEX_DHGEX_SHA1 real DH group-exchange algorithm identifier."
- },
- "kex.h:59": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "#define KEX_DHGEX_SHA256 real DH group-exchange algorithm identifier."
- },
- "kexecdh.c:57": {
-  "label": "TP",
-  "algorithm": "ECDSA/ECDH (OpenSSL C API)",
-  "patternId": "ecc-openssl-c",
-  "reason": "EC_KEY_new_by_curve_name(kex->ec_nid) creates the ECDH client key on a NIST curve — real ECC operation."
- },
- "kexecdh.c:61": {
-  "label": "TP",
-  "algorithm": "ECDSA/ECDH (OpenSSL C API)",
-  "patternId": "ecc-openssl-c",
-  "reason": "EC_KEY_generate_key(client_key) generates the ECDH client keypair."
- },
- "kexecdh.c:103": {
-  "label": "TP",
-  "algorithm": "ECDSA/ECDH (OpenSSL C API)",
-  "patternId": "ecc-openssl-c",
-  "reason": "EC_KEY_new_by_curve_name(kex->ec_nid) creates the ECDH server key — real ECC operation."
- },
- "kexecdh.c:107": {
-  "label": "TP",
-  "algorithm": "ECDSA/ECDH (OpenSSL C API)",
-  "patternId": "ecc-openssl-c",
-  "reason": "EC_KEY_generate_key(server_key) generates the ECDH server keypair."
- },
- "myproposal.h:38": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "Default KEX_CLIENT_KEX proposal enabling diffie-hellman-group-exchange-sha256 — real crypto-enablement config."
- },
- "myproposal.h:39": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "Default KEX proposal enabling diffie-hellman-group16-sha512."
- },
- "myproposal.h:40": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "Default KEX proposal enabling diffie-hellman-group18-sha512."
- },
- "myproposal.h:41": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "Default KEX proposal enabling diffie-hellman-group14-sha256."
- },
- "myproposal.h:45": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Default KEX_DEFAULT_PK_ALG enabling ecdsa-sha2-nistp256 cert pubkey algorithm — real crypto config."
- },
- "myproposal.h:46": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Default pubkey-algo list enabling ecdsa-sha2-nistp384 cert."
- },
- "myproposal.h:47": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Default pubkey-algo list enabling ecdsa-sha2-nistp521 cert."
- },
- "myproposal.h:49": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Default pubkey-algo list enabling sk-ecdsa-sha2-nistp256 (FIDO) cert."
- },
- "myproposal.h:50": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Default pubkey-algo list enabling webauthn-sk-ecdsa-sha2-nistp256 cert."
- },
- "myproposal.h:54": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Default pubkey-algo list enabling ecdsa-sha2-nistp256."
- },
- "myproposal.h:55": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Default pubkey-algo list enabling ecdsa-sha2-nistp384."
- },
- "myproposal.h:56": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Default pubkey-algo list enabling ecdsa-sha2-nistp521."
- },
- "myproposal.h:58": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Default pubkey-algo list enabling sk-ecdsa-sha2-nistp256 (FIDO)."
- },
- "myproposal.h:59": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Default pubkey-algo list enabling webauthn-sk-ecdsa-sha2-nistp256."
- },
- "myproposal.h:87": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "SSH_ALLOWED_CA_SIGALGS enabling ecdsa-sha2-nistp256 as an allowed CA signature algorithm — real crypto config."
- },
- "myproposal.h:88": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Allowed-CA-sigalgs config enabling ecdsa-sha2-nistp384."
- },
- "myproposal.h:89": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Allowed-CA-sigalgs config enabling ecdsa-sha2-nistp521."
- },
- "myproposal.h:91": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Allowed-CA-sigalgs config enabling sk-ecdsa-sha2-nistp256."
- },
- "myproposal.h:92": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Allowed-CA-sigalgs config enabling webauthn-sk-ecdsa-sha2-nistp256."
- },
- "regress/misc/fuzz-harness/fixed-keys.h:6": {
-  "label": "TP",
-  "algorithm": "OpenSSH private key (algorithm in body)",
-  "patternId": "openssh-pem-private-key",
-  "reason": "Real armored OpenSSH RSA private key material (PRIV_RSA fuzzer fixture) — actual base64 key blob follows."
- },
- "regress/misc/fuzz-harness/fixed-keys.h:34": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "Real ssh-rsa public key material (PUB_RSA fixture) with full base64 body."
- },
- "regress/misc/fuzz-harness/fixed-keys.h:36": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "Real ssh-rsa-cert-v01 certificate material (CERT_RSA fixture)."
- },
- "regress/misc/fuzz-harness/fixed-keys.h:38": {
-  "label": "TP",
-  "algorithm": "OpenSSH private key (algorithm in body)",
-  "patternId": "openssh-pem-private-key",
-  "reason": "Real armored OpenSSH ECDSA private key material (PRIV_ECDSA fixture)."
- },
- "regress/misc/fuzz-harness/fixed-keys.h:47": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Real ecdsa-sha2-nistp256 public key material (PUB_ECDSA fixture)."
- },
- "regress/misc/fuzz-harness/fixed-keys.h:49": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Real ecdsa-sha2-nistp256 certificate material (CERT_ECDSA fixture)."
- },
- "regress/misc/fuzz-harness/fixed-keys.h:51": {
-  "label": "TP",
-  "algorithm": "OpenSSH private key (algorithm in body)",
-  "patternId": "openssh-pem-private-key",
-  "reason": "Real armored OpenSSH Ed25519 private key material (PRIV_ED25519 fixture); Ed25519 is quantum-vulnerable."
- },
- "regress/misc/fuzz-harness/fixed-keys.h:63": {
-  "label": "TP",
-  "algorithm": "OpenSSH private key (algorithm in body)",
-  "patternId": "openssh-pem-private-key",
-  "reason": "Real armored OpenSSH sk-ecdsa (FIDO) private key material (PRIV_ECDSA_SK fixture)."
- },
- "regress/misc/fuzz-harness/fixed-keys.h:78": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Real sk-ecdsa-sha2-nistp256 public key material (PUB_ECDSA_SK fixture)."
- },
- "regress/misc/fuzz-harness/fixed-keys.h:80": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Real sk-ecdsa-sha2-nistp256 certificate material (CERT_ECDSA_SK fixture)."
- },
- "regress/misc/fuzz-harness/fixed-keys.h:82": {
-  "label": "TP",
-  "algorithm": "OpenSSH private key (algorithm in body)",
-  "patternId": "openssh-pem-private-key",
-  "reason": "Real armored OpenSSH sk-ed25519 (FIDO) private key material (PRIV_ED25519_SK fixture)."
- },
- "regress/misc/sk-dummy/sk-dummy.c:106": {
-  "label": "TP",
-  "algorithm": "ECDSA/ECDH (OpenSSL C API)",
-  "patternId": "ecc-openssl-c",
-  "reason": "EC_KEY_new_by_curve_name(NID_X9_62_prime256v1) — real ECDSA key creation on P-256 in the SK dummy provider."
- },
- "regress/misc/sk-dummy/sk-dummy.c:107": {
-  "label": "FP",
-  "algorithm": "ECDSA/ECDH (OpenSSL C API)",
-  "patternId": "ecc-openssl-c",
-  "reason": "skdebug() log-string literal echoing the function name 'EC_KEY_new_by_curve_name' — not a crypto call (the real call is line 106)."
- },
- "regress/misc/sk-dummy/sk-dummy.c:110": {
-  "label": "TP",
-  "algorithm": "ECDSA/ECDH (OpenSSL C API)",
-  "patternId": "ecc-openssl-c",
-  "reason": "EC_KEY_generate_key(key) generates the dummy ECDSA keypair — real ECC operation."
- },
- "regress/misc/sk-dummy/sk-dummy.c:111": {
-  "label": "FP",
-  "algorithm": "ECDSA/ECDH (OpenSSL C API)",
-  "patternId": "ecc-openssl-c",
-  "reason": "skdebug() log-string literal echoing 'EC_KEY_generate_key' — not a crypto call (the real call is line 110)."
- },
- "regress/misc/ssh-verify-attestation/ssh-verify-attestation.c:217": {
-  "label": "TP",
-  "algorithm": "ECDSA/ECDH (OpenSSL C API)",
-  "patternId": "ecc-openssl-c",
-  "reason": "EC_KEY_new_by_curve_name(key->ecdsa_nid) — real ECDSA key construction while verifying an attestation cert."
- },
- "regress/unittests/kex/test_kex.c:239": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "do_kex(\"diffie-hellman-group-exchange-sha256\") drives a real DH key exchange in the unit test."
- },
- "regress/unittests/kex/test_kex.c:240": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "do_kex() exercises real diffie-hellman-group-exchange-sha1 kex."
- },
- "regress/unittests/kex/test_kex.c:241": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "do_kex() exercises real diffie-hellman-group14-sha1 kex."
- },
- "regress/unittests/kex/test_kex.c:242": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "do_kex() exercises real diffie-hellman-group1-sha1 kex."
- },
- "regress/unittests/kex/test_kex.c:244": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "do_kex() exercises real diffie-hellman-group14-sha256 kex (benchmark path)."
- },
- "regress/unittests/kex/test_kex.c:245": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "do_kex() exercises real diffie-hellman-group16-sha512 kex."
- },
- "regress/unittests/kex/test_kex.c:246": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "do_kex() exercises real diffie-hellman-group18-sha512 kex."
- },
- "regress/unittests/kex/test_proposal.c:32": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "#define DHGEX1 for a real DH group-exchange algorithm name used to drive the KEX proposal parser test."
- },
- "regress/unittests/kex/test_proposal.c:33": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "#define DHGEX256 for a real DH group-exchange algorithm name used in the proposal test."
- }
+  "compat.c:155": {
+    "label": "FP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "DH algorithm-name string literal passed to match_filter_denylist(), which REMOVES these algos from the KEX proposal for SSH_OLD_DHGEX compat — not an enabled/used crypto or key material at this line."
+  },
+  "compat.c:156": {
+    "label": "FP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "Second DH algo-name literal in the same match_filter_denylist() removal call; the line denies/filters the algorithm, it does not perform or configure-in DH."
+  },
+  "dh.c:303": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman (OpenSSL C API)",
+    "patternId": "dh-openssl-c",
+    "reason": "Real DH key generation via DH_generate_key(dh) inside dh_gen_key()."
+  },
+  "ed25519-openssl.c:57": {
+    "label": "TP",
+    "algorithm": "Asymmetric keygen (OpenSSL EVP_PKEY)",
+    "patternId": "evp-pkey-keygen",
+    "reason": "EVP_PKEY_keygen_init on an EVP_PKEY_ED25519 context — real keygen of a quantum-vulnerable Ed25519 key."
+  },
+  "ed25519-openssl.c:61": {
+    "label": "TP",
+    "algorithm": "Asymmetric keygen (OpenSSL EVP_PKEY)",
+    "patternId": "evp-pkey-keygen",
+    "reason": "EVP_PKEY_keygen(ctx,&pkey) actually generates the Ed25519 keypair."
+  },
+  "kex.h:53": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "#define KEX_DH1 for a real DH KEX algorithm name OpenSSH implements/negotiates — legacy-crypto algorithm declaration."
+  },
+  "kex.h:54": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "#define KEX_DH14_SHA1 real DH KEX algorithm identifier used by the KEX layer."
+  },
+  "kex.h:55": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "#define KEX_DH14_SHA256 real DH KEX algorithm identifier."
+  },
+  "kex.h:56": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "#define KEX_DH16_SHA512 real DH KEX algorithm identifier."
+  },
+  "kex.h:57": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "#define KEX_DH18_SHA512 real DH KEX algorithm identifier."
+  },
+  "kex.h:58": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "#define KEX_DHGEX_SHA1 real DH group-exchange algorithm identifier."
+  },
+  "kex.h:59": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "#define KEX_DHGEX_SHA256 real DH group-exchange algorithm identifier."
+  },
+  "kexecdh.c:57": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (OpenSSL C API)",
+    "patternId": "ecc-openssl-c",
+    "reason": "EC_KEY_new_by_curve_name(kex->ec_nid) creates the ECDH client key on a NIST curve — real ECC operation."
+  },
+  "kexecdh.c:61": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (OpenSSL C API)",
+    "patternId": "ecc-openssl-c",
+    "reason": "EC_KEY_generate_key(client_key) generates the ECDH client keypair."
+  },
+  "kexecdh.c:103": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (OpenSSL C API)",
+    "patternId": "ecc-openssl-c",
+    "reason": "EC_KEY_new_by_curve_name(kex->ec_nid) creates the ECDH server key — real ECC operation."
+  },
+  "kexecdh.c:107": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (OpenSSL C API)",
+    "patternId": "ecc-openssl-c",
+    "reason": "EC_KEY_generate_key(server_key) generates the ECDH server keypair."
+  },
+  "myproposal.h:38": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "Default KEX_CLIENT_KEX proposal enabling diffie-hellman-group-exchange-sha256 — real crypto-enablement config."
+  },
+  "myproposal.h:39": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "Default KEX proposal enabling diffie-hellman-group16-sha512."
+  },
+  "myproposal.h:40": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "Default KEX proposal enabling diffie-hellman-group18-sha512."
+  },
+  "myproposal.h:41": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "Default KEX proposal enabling diffie-hellman-group14-sha256."
+  },
+  "myproposal.h:45": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Default KEX_DEFAULT_PK_ALG enabling ecdsa-sha2-nistp256 cert pubkey algorithm — real crypto config."
+  },
+  "myproposal.h:46": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Default pubkey-algo list enabling ecdsa-sha2-nistp384 cert."
+  },
+  "myproposal.h:47": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Default pubkey-algo list enabling ecdsa-sha2-nistp521 cert."
+  },
+  "myproposal.h:49": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Default pubkey-algo list enabling sk-ecdsa-sha2-nistp256 (FIDO) cert."
+  },
+  "myproposal.h:50": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Default pubkey-algo list enabling webauthn-sk-ecdsa-sha2-nistp256 cert."
+  },
+  "myproposal.h:54": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Default pubkey-algo list enabling ecdsa-sha2-nistp256."
+  },
+  "myproposal.h:55": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Default pubkey-algo list enabling ecdsa-sha2-nistp384."
+  },
+  "myproposal.h:56": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Default pubkey-algo list enabling ecdsa-sha2-nistp521."
+  },
+  "myproposal.h:58": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Default pubkey-algo list enabling sk-ecdsa-sha2-nistp256 (FIDO)."
+  },
+  "myproposal.h:59": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Default pubkey-algo list enabling webauthn-sk-ecdsa-sha2-nistp256."
+  },
+  "myproposal.h:87": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "SSH_ALLOWED_CA_SIGALGS enabling ecdsa-sha2-nistp256 as an allowed CA signature algorithm — real crypto config."
+  },
+  "myproposal.h:88": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Allowed-CA-sigalgs config enabling ecdsa-sha2-nistp384."
+  },
+  "myproposal.h:89": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Allowed-CA-sigalgs config enabling ecdsa-sha2-nistp521."
+  },
+  "myproposal.h:91": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Allowed-CA-sigalgs config enabling sk-ecdsa-sha2-nistp256."
+  },
+  "myproposal.h:92": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Allowed-CA-sigalgs config enabling webauthn-sk-ecdsa-sha2-nistp256."
+  },
+  "regress/misc/fuzz-harness/fixed-keys.h:6": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real armored OpenSSH RSA private key material (PRIV_RSA fuzzer fixture) — actual base64 key blob follows."
+  },
+  "regress/misc/fuzz-harness/fixed-keys.h:34": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa public key material (PUB_RSA fixture) with full base64 body."
+  },
+  "regress/misc/fuzz-harness/fixed-keys.h:36": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa-cert-v01 certificate material (CERT_RSA fixture)."
+  },
+  "regress/misc/fuzz-harness/fixed-keys.h:38": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real armored OpenSSH ECDSA private key material (PRIV_ECDSA fixture)."
+  },
+  "regress/misc/fuzz-harness/fixed-keys.h:47": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Real ecdsa-sha2-nistp256 public key material (PUB_ECDSA fixture)."
+  },
+  "regress/misc/fuzz-harness/fixed-keys.h:49": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Real ecdsa-sha2-nistp256 certificate material (CERT_ECDSA fixture)."
+  },
+  "regress/misc/fuzz-harness/fixed-keys.h:51": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real armored OpenSSH Ed25519 private key material (PRIV_ED25519 fixture); Ed25519 is quantum-vulnerable."
+  },
+  "regress/misc/fuzz-harness/fixed-keys.h:63": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real armored OpenSSH sk-ecdsa (FIDO) private key material (PRIV_ECDSA_SK fixture)."
+  },
+  "regress/misc/fuzz-harness/fixed-keys.h:78": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Real sk-ecdsa-sha2-nistp256 public key material (PUB_ECDSA_SK fixture)."
+  },
+  "regress/misc/fuzz-harness/fixed-keys.h:80": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Real sk-ecdsa-sha2-nistp256 certificate material (CERT_ECDSA_SK fixture)."
+  },
+  "regress/misc/fuzz-harness/fixed-keys.h:82": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real armored OpenSSH sk-ed25519 (FIDO) private key material (PRIV_ED25519_SK fixture)."
+  },
+  "regress/misc/sk-dummy/sk-dummy.c:106": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (OpenSSL C API)",
+    "patternId": "ecc-openssl-c",
+    "reason": "EC_KEY_new_by_curve_name(NID_X9_62_prime256v1) — real ECDSA key creation on P-256 in the SK dummy provider."
+  },
+  "regress/misc/sk-dummy/sk-dummy.c:107": {
+    "label": "FP",
+    "algorithm": "ECDSA/ECDH (OpenSSL C API)",
+    "patternId": "ecc-openssl-c",
+    "reason": "skdebug() log-string literal echoing the function name 'EC_KEY_new_by_curve_name' — not a crypto call (the real call is line 106)."
+  },
+  "regress/misc/sk-dummy/sk-dummy.c:110": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (OpenSSL C API)",
+    "patternId": "ecc-openssl-c",
+    "reason": "EC_KEY_generate_key(key) generates the dummy ECDSA keypair — real ECC operation."
+  },
+  "regress/misc/sk-dummy/sk-dummy.c:111": {
+    "label": "FP",
+    "algorithm": "ECDSA/ECDH (OpenSSL C API)",
+    "patternId": "ecc-openssl-c",
+    "reason": "skdebug() log-string literal echoing 'EC_KEY_generate_key' — not a crypto call (the real call is line 110)."
+  },
+  "regress/misc/ssh-verify-attestation/ssh-verify-attestation.c:217": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (OpenSSL C API)",
+    "patternId": "ecc-openssl-c",
+    "reason": "EC_KEY_new_by_curve_name(key->ecdsa_nid) — real ECDSA key construction while verifying an attestation cert."
+  },
+  "regress/unittests/kex/test_kex.c:239": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "do_kex(\"diffie-hellman-group-exchange-sha256\") drives a real DH key exchange in the unit test."
+  },
+  "regress/unittests/kex/test_kex.c:240": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "do_kex() exercises real diffie-hellman-group-exchange-sha1 kex."
+  },
+  "regress/unittests/kex/test_kex.c:241": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "do_kex() exercises real diffie-hellman-group14-sha1 kex."
+  },
+  "regress/unittests/kex/test_kex.c:242": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "do_kex() exercises real diffie-hellman-group1-sha1 kex."
+  },
+  "regress/unittests/kex/test_kex.c:244": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "do_kex() exercises real diffie-hellman-group14-sha256 kex (benchmark path)."
+  },
+  "regress/unittests/kex/test_kex.c:245": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "do_kex() exercises real diffie-hellman-group16-sha512 kex."
+  },
+  "regress/unittests/kex/test_kex.c:246": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "do_kex() exercises real diffie-hellman-group18-sha512 kex."
+  },
+  "regress/unittests/kex/test_proposal.c:32": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "#define DHGEX1 for a real DH group-exchange algorithm name used to drive the KEX proposal parser test."
+  },
+  "regress/unittests/kex/test_proposal.c:33": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "#define DHGEX256 for a real DH group-exchange algorithm name used in the proposal test."
+  },
+  "regress/unittests/sshbuf/test_sshbuf_getput_crypto.c:226": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (OpenSSL C API)",
+    "patternId": "ecc-openssl-c",
+    "reason": "EC_KEY_new_by_curve_name(ec256_nid) creates a real P-256 EC key whose point is set and serialized in the sshbuf_put_ec test — real ECC operation."
+  },
+  "regress/unittests/sshbuf/test_sshbuf_getput_crypto.c:249": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (OpenSSL C API)",
+    "patternId": "ecc-openssl-c",
+    "reason": "EC_KEY_new_by_curve_name(ec256_nid) creates a real P-256 EC key deserialized from the buffer in the sshbuf_get_ec test — real ECC operation."
+  },
+  "regress/unittests/sshbuf/test_sshbuf_getput_fuzz.c:63": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (OpenSSL C API)",
+    "patternId": "ecc-openssl-c",
+    "reason": "EC_KEY_new_by_curve_name(NID_X9_62_prime256v1) creates a real EC key that sshbuf_get_eckey parses fuzzed data into — real ECC operation in the fuzz harness."
+  },
+  "regress/unittests/sshkey/test_file.c:114": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Asserts signature_type of a real RSA certificate just loaded via sshkey_load_cert(\"rsa_1_sha1\") is ssh-rsa — test logic operating on real RSA cert material, not a prose mention."
+  },
+  "regress/unittests/sshkey/test_fuzz.c:280": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "sig_fuzz(k1, \"ssh-rsa\") performs real RSA/SHA1 signing with a loaded private key and fuzzes verification — the string drives an actual signature operation (do_kex analogy)."
+  },
+  "regress/unittests/sshkey/test_sshkey.c:499": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "signature_tests(k1, k2, \"ssh-rsa\") signs and verifies with real loaded RSA keys — the string selects the algorithm for a real RSA signature round-trip."
+  },
+  "regress/unittests/sshkey/test_sshkey.c:555": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "build_cert(b, k2, \"ssh-rsa-cert-v01@openssh.com\", k3, k1, NULL) constructs a real RSA certificate blob signed with a real RSA key in the nested-certificate test."
+  },
+  "regress/unittests/sshkey/test_sshkey.c:631": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "signature_benchmark(..., KEY_RSA, 1024, \"ssh-rsa\", 0) generates a 1024-bit RSA key and performs real ssh-rsa signing in the benchmark."
+  },
+  "regress/unittests/sshkey/test_sshkey.c:634": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "signature_benchmark(..., KEY_RSA, 2048, \"ssh-rsa\", 0) performs real 2048-bit RSA ssh-rsa signing in the benchmark."
+  },
+  "regress/unittests/sshkey/test_sshkey.c:643": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "signature_benchmark(..., KEY_RSA, 1024, \"ssh-rsa\", 1) performs real RSA ssh-rsa signature verification in the benchmark."
+  },
+  "regress/unittests/sshkey/test_sshkey.c:646": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "signature_benchmark(..., KEY_RSA, 2048, \"ssh-rsa\", 1) performs real 2048-bit RSA ssh-rsa signature verification in the benchmark."
+  },
+  "ssh-ecdsa-sk.c:276": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "strcmp(ktype, \"webauthn-sk-ecdsa...\") dispatches inside ssh_ecdsa_sk_verify while parsing a real ECDSA-SK signature blob — part of the real verification path."
+  },
+  "ssh-ecdsa-sk.c:277": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Second webauthn-sk-ecdsa cert type strcmp in the same ssh_ecdsa_sk_verify signature-type dispatch — real ECDSA-SK verification logic."
+  },
+  "ssh-ecdsa-sk.c:280": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "strcmp rejecting non-sk-ecdsa-sha2-nistp256 signature types in ssh_ecdsa_sk_verify — the accept/reject gate of the real ECDSA-SK verify path."
+  },
+  "ssh-ecdsa-sk.c:459": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": ".name = \"sk-ecdsa-sha2-nistp256@openssh.com\" in the sshkey_ecdsa_sk_impl registration — declares the ECDSA-SK algorithm OpenSSH implements (kex.h-define analogy)."
+  },
+  "ssh-ecdsa-sk.c:471": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": ".name registration of sk-ecdsa-sha2-nistp256-cert-v01 in sshkey_ecdsa_sk_cert_impl — real algorithm implementation registration."
+  },
+  "ssh-ecdsa-sk.c:483": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": ".name registration of webauthn-sk-ecdsa-sha2-nistp256 in sshkey_ecdsa_sk_webauthn_impl — real algorithm implementation registration."
+  },
+  "ssh-ecdsa-sk.c:495": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": ".name registration of webauthn-sk-ecdsa-sha2-nistp256-cert-v01 in sshkey_ecdsa_sk_webauthn_cert_impl — real algorithm implementation registration."
+  },
+  "ssh-ecdsa.c:512": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": ".name = \"ecdsa-sha2-nistp256\" in sshkey_ecdsa_nistp256_impl, wired to real generate/sign/verify funcs — algorithm implementation registration."
+  },
+  "ssh-ecdsa.c:524": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": ".name registration of ecdsa-sha2-nistp256-cert-v01 in sshkey_ecdsa_nistp256_cert_impl — real algorithm implementation registration."
+  },
+  "ssh-ecdsa.c:536": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": ".name registration of ecdsa-sha2-nistp384 in sshkey_ecdsa_nistp384_impl — real algorithm implementation registration."
+  },
+  "ssh-ecdsa.c:548": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": ".name registration of ecdsa-sha2-nistp384-cert-v01 in sshkey_ecdsa_nistp384_cert_impl — real algorithm implementation registration."
+  },
+  "ssh-ecdsa.c:561": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": ".name registration of ecdsa-sha2-nistp521 in sshkey_ecdsa_nistp521_impl — real algorithm implementation registration."
+  },
+  "ssh-ecdsa.c:573": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": ".name registration of ecdsa-sha2-nistp521-cert-v01 in sshkey_ecdsa_nistp521_cert_impl — real algorithm implementation registration."
+  },
+  "ssh-ecdsa.c:206": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (OpenSSL C API)",
+    "patternId": "ecc-openssl-c",
+    "reason": "EC_KEY_new_by_curve_name(from->ecdsa_nid) in ssh_ecdsa_copy_public constructs a real EC key and copies the public point — real ECC operation."
+  },
+  "ssh-ecdsa.c:245": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (OpenSSL C API)",
+    "patternId": "ecc-openssl-c",
+    "reason": "EC_KEY_new_by_curve_name(key->ecdsa_nid) in ssh_ecdsa_deserialize_public constructs the EC key that wire-format ECDSA public keys are parsed into — real ECC operation."
+  },
+  "ssh-ecdsa.c:178": {
+    "label": "TP",
+    "algorithm": "Asymmetric keygen (OpenSSL EVP_PKEY)",
+    "patternId": "evp-pkey-keygen",
+    "reason": "EVP_PKEY_keygen_init on an EVP_PKEY_EC context inside ssh_ecdsa_generate — real ECDSA key generation."
+  },
+  "ssh-ecdsa.c:180": {
+    "label": "TP",
+    "algorithm": "Asymmetric keygen (OpenSSL EVP_PKEY)",
+    "patternId": "evp-pkey-keygen",
+    "reason": "EVP_PKEY_keygen(ctx, &res) actually generates the ECDSA keypair on the curve set via EVP_PKEY_CTX_set_ec_paramgen_curve_nid."
+  },
+  "ssh-keyscan.c:242": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "ssh-rsa-cert-v01 assigned into myproposal[PROPOSAL_SERVER_HOST_KEY_ALGS] in keygrab_ssh2 — enables RSA cert host-key negotiation in a real SSH connection."
+  },
+  "ssh-keyscan.c:245": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "\"ssh-rsa\" in the KT_RSA host-key-algs proposal actually negotiated with scanned servers — real crypto-enablement config."
+  },
+  "ssh-keyscan.c:253": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "ecdsa-sha2-nistp256-cert-v01 in the KT_ECDSA host-key-algs proposal used for real SSH negotiation by the keyscanner."
+  },
+  "ssh-keyscan.c:254": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "ecdsa-sha2-nistp384-cert-v01 in the same actively-negotiated ECDSA host-key proposal."
+  },
+  "ssh-keyscan.c:255": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "ecdsa-sha2-nistp521-cert-v01 in the same actively-negotiated ECDSA host-key proposal."
+  },
+  "ssh-keyscan.c:256": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "ecdsa-sha2-nistp256 in the non-cert arm of the negotiated ECDSA host-key proposal."
+  },
+  "ssh-keyscan.c:257": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "ecdsa-sha2-nistp384 in the non-cert arm of the negotiated ECDSA host-key proposal."
+  },
+  "ssh-keyscan.c:258": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "ecdsa-sha2-nistp521 in the non-cert arm of the negotiated ECDSA host-key proposal."
+  },
+  "ssh-keyscan.c:262": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "sk-ecdsa-sha2-nistp256-cert-v01 in the KT_ECDSA_SK host-key-algs proposal used for real SSH negotiation."
+  },
+  "ssh-keyscan.c:263": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "sk-ecdsa-sha2-nistp256@openssh.com in the KT_ECDSA_SK host-key-algs proposal used for real SSH negotiation."
+  },
+  "ssh-rsa.c:315": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "return \"ssh-rsa\" in ssh_rsa_hash_alg_ident mapping SHA1 to its RSA signature identifier — algorithm-selection logic inside the real RSA implementation."
+  },
+  "ssh-rsa.c:331": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "strcmp(ident, \"ssh-rsa\") in rsa_hash_id_from_ident dispatches the hash for real RSA sign/verify — algorithm dispatch in the RSA implementation."
+  },
+  "ssh-rsa.c:352": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "strcmp(alg, \"ssh-rsa-cert-v01@openssh.com\") in ssh_rsa_hash_id_from_keyname maps the RSA cert type to SHA1 — real RSA algorithm dispatch."
+  },
+  "ssh-rsa.c:526": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "strcmp on ssh-rsa-cert-v01 inside ssh_rsa_verify's signature-type check — enforcement logic on the real RSA verification path."
+  },
+  "ssh-rsa.c:595": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": ".name = \"ssh-rsa\" in sshkey_rsa_impl, wired to real generate/sign/verify funcs — RSA algorithm implementation registration."
+  },
+  "ssh-rsa.c:607": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": ".name registration of ssh-rsa-cert-v01 in sshkey_rsa_cert_impl — real RSA cert algorithm implementation registration."
+  },
+  "ssh-rsa.c:138": {
+    "label": "TP",
+    "algorithm": "RSA (OpenSSL C API)",
+    "patternId": "rsa-openssl-c",
+    "reason": "EVP_PKEY_CTX_set_rsa_keygen_bits(ctx, bits) configures real RSA key generation in ssh_rsa_generate."
+  },
+  "ssh-rsa.c:134": {
+    "label": "TP",
+    "algorithm": "Asymmetric keygen (OpenSSL EVP_PKEY)",
+    "patternId": "evp-pkey-keygen",
+    "reason": "EVP_PKEY_keygen_init on an EVP_PKEY_RSA context in ssh_rsa_generate — real RSA keygen initialization."
+  },
+  "ssh-rsa.c:142": {
+    "label": "TP",
+    "algorithm": "Asymmetric keygen (OpenSSL EVP_PKEY)",
+    "patternId": "evp-pkey-keygen",
+    "reason": "EVP_PKEY_keygen(ctx, &res) actually generates the RSA keypair in ssh_rsa_generate."
+  },
+  "ssh-sk.c:221": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (OpenSSL C API)",
+    "patternId": "ecc-openssl-c",
+    "reason": "EC_KEY_new_by_curve_name(key->ecdsa_nid) builds the P-256 key into which the FIDO authenticator's ECDSA public key is parsed — real ECC operation."
+  },
+  "sshkey.c:67": {
+    "label": "FP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "#define MARK_BEGIN armor-marker string constant for the key file format — a bodyless BEGIN marker with no key material at this site (the v0.6.1 empty-PEM-block class); the real key handling is in the surrounding functions."
+  },
+  "sshkey.c:295": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "match_pattern_list(\"ssh-rsa\", sigalgs, 0) in sshkey_match_keyname_to_sigalgs decides whether an RSA key may be used against the allowed sigalgs — positive enablement/negotiation logic, not a denylist removal."
+  },
+  "sshkey.c:299": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "match_pattern_list(\"ssh-rsa-cert-v01@openssh.com\", ...) in the KEY_RSA_CERT arm of the same sigalg-matching function — real RSA cert negotiation logic."
+  },
+  "sshkey.c:306": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "match_pattern_list(\"sk-ecdsa-sha2-nistp256@openssh.com\", ...) in the KEY_ECDSA_SK arm of sshkey_match_keyname_to_sigalgs — real ECDSA-SK negotiation logic."
+  },
+  "sshkey.c:308": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "webauthn-sk-ecdsa-sha2-nistp256 alternative in the same KEY_ECDSA_SK sigalg-matching arm — real negotiation logic."
+  },
+  "sshkey.c:312": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "sk-ecdsa-sha2-nistp256-cert-v01 in the KEY_ECDSA_SK_CERT sigalg-matching arm — real ECDSA-SK cert negotiation logic."
+  },
+  "sshkey.c:314": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "webauthn-sk-ecdsa-sha2-nistp256-cert-v01 in the same KEY_ECDSA_SK_CERT sigalg-matching arm — real negotiation logic."
+  }
 }

@@ -1,362 +1,410 @@
 {
- "paramiko/auth_handler.py:326": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "Assigns pubkey_algo = \"ssh-rsa-cert-v01@openssh.com\" to force SHA-1 RSA cert algorithm for old OpenSSH; a real host-key algorithm selection."
- },
- "paramiko/dsskey.py:46": {
-  "label": "TP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "name = \"ssh-dss\" declares the DSS (DSA) SSH key type on the DSSKey class that implements DSA sign/verify."
- },
- "paramiko/ecdsakey.py:277": {
-  "label": "TP",
-  "algorithm": "ECDSA/ECDH (Python)",
-  "patternId": "ecc-python",
-  "reason": "ec.generate_private_key(curve, ...) genuinely generates an ECDSA private key."
- },
- "paramiko/ecdsakey.py:314": {
-  "label": "TP",
-  "algorithm": "ECDSA/ECDH (Python)",
-  "patternId": "ecc-python",
-  "reason": "ec.derive_private_key(...) derives a real ECDSA private key from OpenSSH-format key material."
- },
- "paramiko/kex_ecdh_nist.py:59": {
-  "label": "TP",
-  "algorithm": "ECDSA/ECDH (Python)",
-  "patternId": "ecc-python",
-  "reason": "ec.generate_private_key generates the ephemeral EC key for the NIST-curve ECDH key exchange."
- },
- "paramiko/kex_gex.py:53": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "name attribute declares the diffie-hellman-group-exchange-sha1 kex on the KexGex class implementing DH group exchange."
- },
- "paramiko/kex_gex.py:287": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "name declares the diffie-hellman-group-exchange-sha256 kex on the KexGexSHA256 subclass implementing DH group exchange."
- },
- "paramiko/kex_group1.py:46": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "name = diffie-hellman-group1-sha1 on the KexGroup1 class that performs the DH group-1 exchange."
- },
- "paramiko/kex_group14.py:34": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "name = diffie-hellman-group14-sha1 declares the DH group-14 kex implementation."
- },
- "paramiko/kex_group14.py:39": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "name = diffie-hellman-group14-sha256 declares the SHA-256 variant of DH group-14 kex."
- },
- "paramiko/kex_group16.py:29": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "KexGroup16SHA512 class defines DH group-16 kex (the 4096-bit MODP prime P follows); real DH configuration."
- },
- "paramiko/kex_group16.py:34": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "name = diffie-hellman-group16-sha512 attribute on the DH group-16 kex class (same real declaration as the class body)."
- },
- "paramiko/pkey.py:55": {
-  "label": "TP",
-  "algorithm": "DES/3DES",
-  "patternId": "sym-des-3des",
-  "reason": "Imports TripleDES cipher primitive from cryptography (decrepit path) for use in private-key file decryption."
- },
- "paramiko/pkey.py:57": {
-  "label": "TP",
-  "algorithm": "DES/3DES",
-  "patternId": "sym-des-3des",
-  "reason": "Fallback import of the TripleDES cipher primitive; a real 3DES usage."
- },
- "paramiko/pkey.py:101": {
-  "label": "TP",
-  "algorithm": "AES-128",
-  "patternId": "sym-aes128",
-  "reason": "_CIPHER_TABLE entry \"AES-128-CBC\" maps to algorithms.AES with keysize 16 (128-bit) and CBC mode for private-key encryption; real cipher config."
- },
- "paramiko/pkey.py:113": {
-  "label": "TP",
-  "algorithm": "DES/3DES",
-  "patternId": "sym-des-3des",
-  "reason": "_CIPHER_TABLE entry \"DES-EDE3-CBC\" configures 3DES (TripleDES) for encrypted PEM private keys."
- },
- "paramiko/pkey.py:114": {
-  "label": "TP",
-  "algorithm": "DES/3DES",
-  "patternId": "sym-des-3des",
-  "reason": "\"cipher\": TripleDES wires the 3DES cipher class into the cipher table."
- },
- "paramiko/pkey.py:184": {
-  "label": "TP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "isinstance(loaded, asymmetric.dsa.DSAPrivateKey) dispatches a loaded DSA private key to DSSKey; real DSA key handling."
- },
- "paramiko/rsakey.py:39": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "name = \"ssh-rsa\" declares the RSA SSH key type on RSAKey (SHA-1 RSA signature algorithm)."
- },
- "paramiko/rsakey.py:41": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "HASHES maps \"ssh-rsa\" -> hashes.SHA1, defining the legacy SHA-1 RSA signature scheme; real crypto config."
- },
- "paramiko/rsakey.py:42": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "HASHES maps the ssh-rsa cert variant to SHA1; real SHA-1 RSA signature config."
- },
- "paramiko/rsakey.py:76": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "cert_type=\"ssh-rsa-cert-v01@openssh.com\" configures the RSA certificate key type during key load."
- },
- "paramiko/rsakey.py:188": {
-  "label": "TP",
-  "algorithm": "RSA",
-  "patternId": "rsa-python-cryptography",
-  "reason": "rsa.generate_private_key(public_exponent=65537, key_size=bits, ...) generates a real RSA private key."
- },
- "paramiko/transport.py:138": {
-  "label": "TP",
-  "algorithm": "DES/3DES",
-  "patternId": "sym-des-3des",
-  "reason": "Imports the TripleDES cipher primitive for the transport-layer 3des-cbc cipher."
- },
- "paramiko/transport.py:140": {
-  "label": "TP",
-  "algorithm": "DES/3DES",
-  "patternId": "sym-des-3des",
-  "reason": "Fallback import of TripleDES for the transport 3des-cbc cipher."
- },
- "paramiko/transport.py:180": {
-  "label": "TP",
-  "algorithm": "AES-128",
-  "patternId": "sym-aes128",
-  "reason": "\"aes128-ctr\" listed in _preferred_ciphers, an actual offered SSH cipher (AES-128)."
- },
- "paramiko/transport.py:183": {
-  "label": "TP",
-  "algorithm": "AES-128",
-  "patternId": "sym-aes128",
-  "reason": "\"aes128-cbc\" in _preferred_ciphers, a real offered AES-128 CBC cipher."
- },
- "paramiko/transport.py:186": {
-  "label": "TP",
-  "algorithm": "DES/3DES",
-  "patternId": "sym-des-3des",
-  "reason": "\"3des-cbc\" in _preferred_ciphers, a real offered 3DES cipher."
- },
- "paramiko/transport.py:187": {
-  "label": "TP",
-  "algorithm": "AES-128",
-  "patternId": "sym-aes128",
-  "reason": "\"aes128-gcm@openssh.com\" in _preferred_ciphers, a real offered AES-128-GCM cipher."
- },
- "paramiko/transport.py:203": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "\"ecdsa-sha2-nistp256\" in _preferred_keys, a real offered ECDSA host-key algorithm."
- },
- "paramiko/transport.py:204": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "\"ecdsa-sha2-nistp384\" in _preferred_keys, a real offered ECDSA host-key algorithm."
- },
- "paramiko/transport.py:205": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "\"ecdsa-sha2-nistp521\" in _preferred_keys, a real offered ECDSA host-key algorithm."
- },
- "paramiko/transport.py:208": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "\"ssh-rsa\" in _preferred_keys, a real offered SHA-1 RSA host-key algorithm."
- },
- "paramiko/transport.py:209": {
-  "label": "TP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "\"ssh-dss\" in _preferred_keys, a real offered DSA host-key algorithm."
- },
- "paramiko/transport.py:214": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "\"ecdsa-sha2-nistp256\" in _preferred_pubkeys, a real accepted ECDSA public-key algorithm."
- },
- "paramiko/transport.py:215": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "\"ecdsa-sha2-nistp384\" in _preferred_pubkeys, a real accepted ECDSA public-key algorithm."
- },
- "paramiko/transport.py:216": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "\"ecdsa-sha2-nistp521\" in _preferred_pubkeys, a real accepted ECDSA public-key algorithm."
- },
- "paramiko/transport.py:219": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "\"ssh-rsa\" in _preferred_pubkeys, a real accepted SHA-1 RSA public-key algorithm."
- },
- "paramiko/transport.py:220": {
-  "label": "TP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "\"ssh-dss\" in _preferred_pubkeys, a real accepted DSA public-key algorithm."
- },
- "paramiko/transport.py:226": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "\"diffie-hellman-group16-sha512\" in _preferred_kex, a real offered DH key exchange."
- },
- "paramiko/transport.py:227": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "\"diffie-hellman-group-exchange-sha256\" in _preferred_kex, a real offered DH kex."
- },
- "paramiko/transport.py:228": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "\"diffie-hellman-group14-sha256\" in _preferred_kex, a real offered DH kex."
- },
- "paramiko/transport.py:229": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "\"diffie-hellman-group-exchange-sha1\" in _preferred_kex, a real offered DH kex."
- },
- "paramiko/transport.py:230": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "\"diffie-hellman-group14-sha1\" in _preferred_kex, a real offered DH kex."
- },
- "paramiko/transport.py:231": {
-  "label": "TP",
-  "algorithm": "Diffie-Hellman",
-  "patternId": "dh-keyexchange",
-  "reason": "\"diffie-hellman-group1-sha1\" in _preferred_kex, a real offered DH kex."
- },
- "paramiko/transport.py:243": {
-  "label": "TP",
-  "algorithm": "AES-128",
-  "patternId": "sym-aes128",
-  "reason": "_cipher_info entry \"aes128-ctr\" maps to algorithms.AES with 16-byte key (128-bit) and CTR mode; real cipher config."
- },
- "paramiko/transport.py:261": {
-  "label": "TP",
-  "algorithm": "AES-128",
-  "patternId": "sym-aes128",
-  "reason": "_cipher_info entry \"aes128-cbc\" maps to algorithms.AES 128-bit CBC; real cipher config."
- },
- "paramiko/transport.py:279": {
-  "label": "TP",
-  "algorithm": "DES/3DES",
-  "patternId": "sym-des-3des",
-  "reason": "_cipher_info entry \"3des-cbc\" configures the TripleDES cipher class; real 3DES config."
- },
- "paramiko/transport.py:280": {
-  "label": "TP",
-  "algorithm": "DES/3DES",
-  "patternId": "sym-des-3des",
-  "reason": "\"class\": TripleDES wires the 3DES cipher into _cipher_info."
- },
- "paramiko/transport.py:285": {
-  "label": "TP",
-  "algorithm": "AES-128",
-  "patternId": "sym-aes128",
-  "reason": "_cipher_info entry \"aes128-gcm@openssh.com\" maps to aead.AESGCM with 16-byte key; real AES-128-GCM config."
- },
- "paramiko/transport.py:317": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "_key_info maps \"ssh-rsa\" -> RSAKey, dispatching the RSA SSH host-key implementation."
- },
- "paramiko/transport.py:318": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "_key_info maps the ssh-rsa cert variant -> RSAKey; real RSA cert key dispatch."
- },
- "paramiko/transport.py:323": {
-  "label": "TP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "_key_info maps \"ssh-dss\" -> DSSKey, dispatching the DSA SSH key implementation."
- },
- "paramiko/transport.py:324": {
-  "label": "TP",
-  "algorithm": "DSA",
-  "patternId": "dsa-usage",
-  "reason": "_key_info maps the ssh-dss cert variant -> DSSKey; real DSA cert key dispatch."
- },
- "paramiko/transport.py:325": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "_key_info maps \"ecdsa-sha2-nistp256\" -> ECDSAKey; real ECDSA key dispatch."
- },
- "paramiko/transport.py:326": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "_key_info maps the ecdsa-nistp256 cert variant -> ECDSAKey; real ECDSA cert key dispatch."
- },
- "paramiko/transport.py:327": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "_key_info maps \"ecdsa-sha2-nistp384\" -> ECDSAKey; real ECDSA key dispatch."
- },
- "paramiko/transport.py:328": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "_key_info maps the ecdsa-nistp384 cert variant -> ECDSAKey; real ECDSA cert key dispatch."
- },
- "paramiko/transport.py:329": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "_key_info maps \"ecdsa-sha2-nistp521\" -> ECDSAKey; real ECDSA key dispatch."
- },
- "paramiko/transport.py:330": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "_key_info maps the ecdsa-nistp521 cert variant -> ECDSAKey; real ECDSA cert key dispatch."
- }
+  "paramiko/auth_handler.py:326": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Assigns pubkey_algo = \"ssh-rsa-cert-v01@openssh.com\" to force SHA-1 RSA cert algorithm for old OpenSSH; a real host-key algorithm selection."
+  },
+  "paramiko/dsskey.py:46": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "name = \"ssh-dss\" declares the DSS (DSA) SSH key type on the DSSKey class that implements DSA sign/verify."
+  },
+  "paramiko/ecdsakey.py:277": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (Python)",
+    "patternId": "ecc-python",
+    "reason": "ec.generate_private_key(curve, ...) genuinely generates an ECDSA private key."
+  },
+  "paramiko/ecdsakey.py:314": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (Python)",
+    "patternId": "ecc-python",
+    "reason": "ec.derive_private_key(...) derives a real ECDSA private key from OpenSSH-format key material."
+  },
+  "paramiko/kex_ecdh_nist.py:59": {
+    "label": "TP",
+    "algorithm": "ECDSA/ECDH (Python)",
+    "patternId": "ecc-python",
+    "reason": "ec.generate_private_key generates the ephemeral EC key for the NIST-curve ECDH key exchange."
+  },
+  "paramiko/kex_gex.py:53": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "name attribute declares the diffie-hellman-group-exchange-sha1 kex on the KexGex class implementing DH group exchange."
+  },
+  "paramiko/kex_gex.py:287": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "name declares the diffie-hellman-group-exchange-sha256 kex on the KexGexSHA256 subclass implementing DH group exchange."
+  },
+  "paramiko/kex_group1.py:46": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "name = diffie-hellman-group1-sha1 on the KexGroup1 class that performs the DH group-1 exchange."
+  },
+  "paramiko/kex_group14.py:34": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "name = diffie-hellman-group14-sha1 declares the DH group-14 kex implementation."
+  },
+  "paramiko/kex_group14.py:39": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "name = diffie-hellman-group14-sha256 declares the SHA-256 variant of DH group-14 kex."
+  },
+  "paramiko/kex_group16.py:29": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "KexGroup16SHA512 class defines DH group-16 kex (the 4096-bit MODP prime P follows); real DH configuration."
+  },
+  "paramiko/kex_group16.py:34": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "name = diffie-hellman-group16-sha512 attribute on the DH group-16 kex class (same real declaration as the class body)."
+  },
+  "paramiko/pkey.py:55": {
+    "label": "TP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "Imports TripleDES cipher primitive from cryptography (decrepit path) for use in private-key file decryption."
+  },
+  "paramiko/pkey.py:57": {
+    "label": "TP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "Fallback import of the TripleDES cipher primitive; a real 3DES usage."
+  },
+  "paramiko/pkey.py:101": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "_CIPHER_TABLE entry \"AES-128-CBC\" maps to algorithms.AES with keysize 16 (128-bit) and CBC mode for private-key encryption; real cipher config."
+  },
+  "paramiko/pkey.py:113": {
+    "label": "TP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "_CIPHER_TABLE entry \"DES-EDE3-CBC\" configures 3DES (TripleDES) for encrypted PEM private keys."
+  },
+  "paramiko/pkey.py:114": {
+    "label": "TP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "\"cipher\": TripleDES wires the 3DES cipher class into the cipher table."
+  },
+  "paramiko/pkey.py:184": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "isinstance(loaded, asymmetric.dsa.DSAPrivateKey) dispatches a loaded DSA private key to DSSKey; real DSA key handling."
+  },
+  "paramiko/rsakey.py:39": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "name = \"ssh-rsa\" declares the RSA SSH key type on RSAKey (SHA-1 RSA signature algorithm)."
+  },
+  "paramiko/rsakey.py:41": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "HASHES maps \"ssh-rsa\" -> hashes.SHA1, defining the legacy SHA-1 RSA signature scheme; real crypto config."
+  },
+  "paramiko/rsakey.py:42": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "HASHES maps the ssh-rsa cert variant to SHA1; real SHA-1 RSA signature config."
+  },
+  "paramiko/rsakey.py:76": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "cert_type=\"ssh-rsa-cert-v01@openssh.com\" configures the RSA certificate key type during key load."
+  },
+  "paramiko/rsakey.py:188": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-python-cryptography",
+    "reason": "rsa.generate_private_key(public_exponent=65537, key_size=bits, ...) generates a real RSA private key."
+  },
+  "paramiko/transport.py:138": {
+    "label": "TP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "Imports the TripleDES cipher primitive for the transport-layer 3des-cbc cipher."
+  },
+  "paramiko/transport.py:140": {
+    "label": "TP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "Fallback import of TripleDES for the transport 3des-cbc cipher."
+  },
+  "paramiko/transport.py:180": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "\"aes128-ctr\" listed in _preferred_ciphers, an actual offered SSH cipher (AES-128)."
+  },
+  "paramiko/transport.py:183": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "\"aes128-cbc\" in _preferred_ciphers, a real offered AES-128 CBC cipher."
+  },
+  "paramiko/transport.py:186": {
+    "label": "TP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "\"3des-cbc\" in _preferred_ciphers, a real offered 3DES cipher."
+  },
+  "paramiko/transport.py:187": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "\"aes128-gcm@openssh.com\" in _preferred_ciphers, a real offered AES-128-GCM cipher."
+  },
+  "paramiko/transport.py:203": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "\"ecdsa-sha2-nistp256\" in _preferred_keys, a real offered ECDSA host-key algorithm."
+  },
+  "paramiko/transport.py:204": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "\"ecdsa-sha2-nistp384\" in _preferred_keys, a real offered ECDSA host-key algorithm."
+  },
+  "paramiko/transport.py:205": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "\"ecdsa-sha2-nistp521\" in _preferred_keys, a real offered ECDSA host-key algorithm."
+  },
+  "paramiko/transport.py:208": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "\"ssh-rsa\" in _preferred_keys, a real offered SHA-1 RSA host-key algorithm."
+  },
+  "paramiko/transport.py:209": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "\"ssh-dss\" in _preferred_keys, a real offered DSA host-key algorithm."
+  },
+  "paramiko/transport.py:214": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "\"ecdsa-sha2-nistp256\" in _preferred_pubkeys, a real accepted ECDSA public-key algorithm."
+  },
+  "paramiko/transport.py:215": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "\"ecdsa-sha2-nistp384\" in _preferred_pubkeys, a real accepted ECDSA public-key algorithm."
+  },
+  "paramiko/transport.py:216": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "\"ecdsa-sha2-nistp521\" in _preferred_pubkeys, a real accepted ECDSA public-key algorithm."
+  },
+  "paramiko/transport.py:219": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "\"ssh-rsa\" in _preferred_pubkeys, a real accepted SHA-1 RSA public-key algorithm."
+  },
+  "paramiko/transport.py:220": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "\"ssh-dss\" in _preferred_pubkeys, a real accepted DSA public-key algorithm."
+  },
+  "paramiko/transport.py:226": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "\"diffie-hellman-group16-sha512\" in _preferred_kex, a real offered DH key exchange."
+  },
+  "paramiko/transport.py:227": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "\"diffie-hellman-group-exchange-sha256\" in _preferred_kex, a real offered DH kex."
+  },
+  "paramiko/transport.py:228": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "\"diffie-hellman-group14-sha256\" in _preferred_kex, a real offered DH kex."
+  },
+  "paramiko/transport.py:229": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "\"diffie-hellman-group-exchange-sha1\" in _preferred_kex, a real offered DH kex."
+  },
+  "paramiko/transport.py:230": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "\"diffie-hellman-group14-sha1\" in _preferred_kex, a real offered DH kex."
+  },
+  "paramiko/transport.py:231": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "\"diffie-hellman-group1-sha1\" in _preferred_kex, a real offered DH kex."
+  },
+  "paramiko/transport.py:243": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "_cipher_info entry \"aes128-ctr\" maps to algorithms.AES with 16-byte key (128-bit) and CTR mode; real cipher config."
+  },
+  "paramiko/transport.py:261": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "_cipher_info entry \"aes128-cbc\" maps to algorithms.AES 128-bit CBC; real cipher config."
+  },
+  "paramiko/transport.py:279": {
+    "label": "TP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "_cipher_info entry \"3des-cbc\" configures the TripleDES cipher class; real 3DES config."
+  },
+  "paramiko/transport.py:280": {
+    "label": "TP",
+    "algorithm": "DES/3DES",
+    "patternId": "sym-des-3des",
+    "reason": "\"class\": TripleDES wires the 3DES cipher into _cipher_info."
+  },
+  "paramiko/transport.py:285": {
+    "label": "TP",
+    "algorithm": "AES-128",
+    "patternId": "sym-aes128",
+    "reason": "_cipher_info entry \"aes128-gcm@openssh.com\" maps to aead.AESGCM with 16-byte key; real AES-128-GCM config."
+  },
+  "paramiko/transport.py:317": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "_key_info maps \"ssh-rsa\" -> RSAKey, dispatching the RSA SSH host-key implementation."
+  },
+  "paramiko/transport.py:318": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "_key_info maps the ssh-rsa cert variant -> RSAKey; real RSA cert key dispatch."
+  },
+  "paramiko/transport.py:323": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "_key_info maps \"ssh-dss\" -> DSSKey, dispatching the DSA SSH key implementation."
+  },
+  "paramiko/transport.py:324": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "_key_info maps the ssh-dss cert variant -> DSSKey; real DSA cert key dispatch."
+  },
+  "paramiko/transport.py:325": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "_key_info maps \"ecdsa-sha2-nistp256\" -> ECDSAKey; real ECDSA key dispatch."
+  },
+  "paramiko/transport.py:326": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "_key_info maps the ecdsa-nistp256 cert variant -> ECDSAKey; real ECDSA cert key dispatch."
+  },
+  "paramiko/transport.py:327": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "_key_info maps \"ecdsa-sha2-nistp384\" -> ECDSAKey; real ECDSA key dispatch."
+  },
+  "paramiko/transport.py:328": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "_key_info maps the ecdsa-nistp384 cert variant -> ECDSAKey; real ECDSA cert key dispatch."
+  },
+  "paramiko/transport.py:329": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "_key_info maps \"ecdsa-sha2-nistp521\" -> ECDSAKey; real ECDSA key dispatch."
+  },
+  "paramiko/transport.py:330": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "_key_info maps the ecdsa-nistp521 cert variant -> ECDSAKey; real ECDSA cert key dispatch."
+  },
+  "paramiko/transport.py:336": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "_kex_info maps \"diffie-hellman-group1-sha1\" -> KexGroup1, dispatching the DH group-1 kex implementation (same real dispatch table style as _key_info)."
+  },
+  "paramiko/transport.py:337": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "_kex_info maps \"diffie-hellman-group14-sha1\" -> KexGroup14; real DH kex dispatch."
+  },
+  "paramiko/transport.py:338": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "_kex_info maps \"diffie-hellman-group-exchange-sha1\" -> KexGex; real DH group-exchange kex dispatch."
+  },
+  "paramiko/transport.py:339": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "_kex_info maps \"diffie-hellman-group-exchange-sha256\" -> KexGexSHA256; real DH group-exchange kex dispatch."
+  },
+  "paramiko/transport.py:340": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "_kex_info maps \"diffie-hellman-group14-sha256\" -> KexGroup14SHA256; real DH kex dispatch."
+  },
+  "paramiko/transport.py:341": {
+    "label": "TP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "_kex_info maps \"diffie-hellman-group16-sha512\" -> KexGroup16SHA512; real DH kex dispatch."
+  },
+  "paramiko/transport.py:2416": {
+    "label": "FP",
+    "algorithm": "Diffie-Hellman",
+    "patternId": "dh-keyexchange",
+    "reason": "mp_required_prefix = \"diffie-hellman-group-exchange-sha\" is a match-prefix used only to FILTER group-exchange kexes OUT of the proposal when no modulus pack is loaded — a removal filter, not an enabled/used DH at this line (same convention as the openssh match_filter_denylist FPs); the actual offered kexes are the _preferred_kex entries already labeled TP."
+  },
+  "paramiko/transport.py:1409": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "\"ssh-rsa\" assigned into self._preferred_keys in connect() when the pinned hostkey is RSA — actively configures the legacy SHA-1 RSA host-key algorithm for negotiation (parallel to the _preferred_keys ssh-rsa TP at line 208)."
+  }
 }

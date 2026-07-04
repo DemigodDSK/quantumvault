@@ -78,9 +78,13 @@ The 73 MB Juliet archive is **not** vendored here — `download.sh` pulls it fro
 to an exact commit, scanned, and with **every actionable finding hand-labeled TP/FP
 by reading the cited source line**. Labels are published in `bench/repos/labels/` so
 anyone can check our adjudication. Findings labeled TP were additionally re-checked
-by an independent adversarial pass (skeptic-tries-to-refute). **Result: 95.9%
-precision (446 TP / 19 FP)** — and the number *rose* as the corpus grew from 9 to
-20 repos (92.4% → 95.9%), with **four negative controls at zero findings**.
+by an independent adversarial pass (skeptic-tries-to-refute). **Result: 88.6%
+precision (931 TP / 120 FP), full coverage — no per-repo cap**, with **four negative
+controls at zero findings**. (An earlier report quoted 95.9%, but only the first ~60
+findings per repo were labeled; removing that cap and labeling the whole tail is what
+moved the number — see [`REPORT.md`](REPORT.md) §2.) **683 X.509 certificates** are
+discovered and inventoried separately, excluded from the precision denominator (a DER
+parse is proof a cert exists, not a judgment call).
 
 **Why this is the credible one for our actual task:** it's the exact job (find the
 crypto in a codebase), on real messy code we didn't write, at fixed commits, with
@@ -113,8 +117,9 @@ node run.mjs           # clones each pinned repo, scans, compares to published l
 
 UniQueS scores **100% recall on the in-scope NIST SARD legacy-crypto labels** (an
 external, government dataset — which also caught real gaps our own suite missed),
-and **95.9% precision across 20 pinned public repositories** with per-finding
-labels published for audit, spanning libraries, applications, and four negative
-controls. SARD does not cover the RSA/ECC quantum core (it predates the threat
-model), so the real-repo corpus — not SARD — is the evidence for full-scope
-discovery quality. `qbench` is our regression gate and is not quoted as a benchmark.
+and **88.6% precision across 20 pinned public repositories** — every actionable
+finding labeled, no cap — with per-finding labels published for audit, spanning
+libraries, applications, and four negative controls. SARD does not cover the RSA/ECC
+quantum core (it predates the threat model), so the real-repo corpus — not SARD — is
+the evidence for full-scope discovery quality. `qbench` is our regression gate and is
+not quoted as a benchmark.

@@ -1,332 +1,362 @@
 {
- "cmd/cert.go:10": {
-  "label": "TP",
-  "algorithm": "ECDSA (Go crypto)",
-  "patternId": "go-ecdsa",
-  "reason": "Real import of crypto/ecdsa in the gitea cert-generation command."
- },
- "cmd/cert.go:13": {
-  "label": "TP",
-  "algorithm": "RSA (Go crypto)",
-  "patternId": "go-crypto-rsa",
-  "reason": "Real import of crypto/rsa in cert-generation code."
- },
- "cmd/cert.go:111": {
-  "label": "TP",
-  "algorithm": "RSA (Go crypto)",
-  "patternId": "go-crypto-rsa",
-  "reason": "Actual RSA keypair generation: rsa.GenerateKey(rand.Reader, rsa-bits)."
- },
- "cmd/cert.go:113": {
-  "label": "TP",
-  "algorithm": "ECDSA (Go crypto)",
-  "patternId": "go-ecdsa",
-  "reason": "Actual ECDSA P224 keypair generation."
- },
- "cmd/cert.go:115": {
-  "label": "TP",
-  "algorithm": "ECDSA (Go crypto)",
-  "patternId": "go-ecdsa",
-  "reason": "Actual ECDSA P256 keypair generation."
- },
- "cmd/cert.go:117": {
-  "label": "TP",
-  "algorithm": "ECDSA (Go crypto)",
-  "patternId": "go-ecdsa",
-  "reason": "Actual ECDSA P384 keypair generation."
- },
- "cmd/cert.go:119": {
-  "label": "TP",
-  "algorithm": "ECDSA (Go crypto)",
-  "patternId": "go-ecdsa",
-  "reason": "Actual ECDSA P521 keypair generation."
- },
- "custom/conf/app.example.ini:277": {
-  "label": "FP",
-  "algorithm": "PKCS#12 keystore (key + cert)",
-  "patternId": "pkcs12-keystore",
-  "reason": "An 'openssl pkcs12' command shown inside a ';;'-commented example block documenting how to convert a .pfx; not an active keystore config or crypto operation."
- },
- "custom/conf/app.example.ini:278": {
-  "label": "FP",
-  "algorithm": "PKCS#12 keystore (key + cert)",
-  "patternId": "pkcs12-keystore",
-  "reason": "Second 'openssl pkcs12' documentation command in the same commented example block; not real config."
- },
- "models/asymkey/gpg_key_test.go:22": {
-  "label": "TP",
-  "algorithm": "PGP public key (algorithm in body)",
-  "patternId": "pgp-public-block",
-  "reason": "Real armored PGP PUBLIC KEY BLOCK fixture (actual key material) used by TestCheckArmoredGPGKeyString."
- },
- "models/asymkey/gpg_key_test.go:59": {
-  "label": "TP",
-  "algorithm": "PGP public key (algorithm in body)",
-  "patternId": "pgp-public-block",
-  "reason": "Real armored PGP PUBLIC KEY BLOCK fixture (actual key material)."
- },
- "models/asymkey/gpg_key_test.go:80": {
-  "label": "TP",
-  "algorithm": "PGP public key (algorithm in body)",
-  "patternId": "pgp-public-block",
-  "reason": "Real armored PGP PUBLIC KEY BLOCK fixture (actual key material)."
- },
- "models/asymkey/gpg_key_test.go:203": {
-  "label": "TP",
-  "algorithm": "PGP public key (algorithm in body)",
-  "patternId": "pgp-public-block",
-  "reason": "Real armored PGP PUBLIC KEY BLOCK fixture (actual key material)."
- },
- "models/asymkey/gpg_key_test.go:245": {
-  "label": "TP",
-  "algorithm": "PGP public key (algorithm in body)",
-  "patternId": "pgp-public-block",
-  "reason": "Real armored PGP PUBLIC KEY BLOCK fixture (actual key material)."
- },
- "models/asymkey/ssh_key_parse.go:7": {
-  "label": "TP",
-  "algorithm": "RSA (Go crypto)",
-  "patternId": "go-crypto-rsa",
-  "reason": "Real crypto/rsa import in SSH public-key parsing code."
- },
- "models/asymkey/ssh_key_test.go:30": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "Real ssh-rsa 1024-bit public key material in a parse-test table."
- },
- "models/asymkey/ssh_key_test.go:31": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "Real ssh-rsa 2048-bit public key material."
- },
- "models/asymkey/ssh_key_test.go:32": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Real ecdsa-sha2-nistp256 public key material."
- },
- "models/asymkey/ssh_key_test.go:33": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Real ecdsa-sha2-nistp384 public key material."
- },
- "models/asymkey/ssh_key_test.go:57": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "Real ssh-rsa public key material in a fingerprint/format test table."
- },
- "models/asymkey/ssh_key_test.go:58": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "Real ssh-rsa public key material (line-wrapped variant)."
- },
- "models/asymkey/ssh_key_test.go:59": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "Real ssh-rsa public key material (wrapped variant)."
- },
- "models/asymkey/ssh_key_test.go:151": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "Real ssh-rsa public key material in fingerprint test."
- },
- "models/asymkey/ssh_key_test.go:152": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "Real ssh-rsa public key material in fingerprint test."
- },
- "models/asymkey/ssh_key_test.go:153": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Real ecdsa-sha2-nistp256 public key material in fingerprint test."
- },
- "models/asymkey/ssh_key_test.go:154": {
-  "label": "TP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Real ecdsa-sha2-nistp384 public key material in fingerprint test."
- },
- "models/asymkey/ssh_key_test.go:172": {
-  "label": "TP",
-  "algorithm": "OpenSSH private key (algorithm in body)",
-  "patternId": "openssh-pem-private-key",
-  "reason": "Real OPENSSH PRIVATE KEY (RSA) block — actual private key material in a test fixture."
- },
- "models/asymkey/ssh_key_test.go:211": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "Real ssh-rsa public key material (matching test@rekor.dev keypair)."
- },
- "models/asymkey/ssh_key_test.go:214": {
-  "label": "TP",
-  "algorithm": "OpenSSH private key (algorithm in body)",
-  "patternId": "openssh-pem-private-key",
-  "reason": "Real OPENSSH PRIVATE KEY (RSA) block — actual private key material."
- },
- "models/asymkey/ssh_key_test.go:253": {
-  "label": "TP",
-  "algorithm": "RSA (SSH)",
-  "patternId": "ssh-rsa-key",
-  "reason": "Real ssh-rsa public key material (other-test@rekor.dev keypair)."
- },
- "models/asymkey/ssh_key_test.go:257": {
-  "label": "TP",
-  "algorithm": "OpenSSH private key (algorithm in body)",
-  "patternId": "openssh-pem-private-key",
-  "reason": "Real OPENSSH PRIVATE KEY (ed25519) block — actual private key material."
- },
- "modules/ssh/ssh.go:10": {
-  "label": "TP",
-  "algorithm": "RSA (Go crypto)",
-  "patternId": "go-crypto-rsa",
-  "reason": "Real crypto/rsa import in the built-in SSH server module."
- },
- "modules/ssh/ssh.go:402": {
-  "label": "TP",
-  "algorithm": "RSA (Go crypto)",
-  "patternId": "go-crypto-rsa",
-  "reason": "Actual 4096-bit RSA host keypair generation in GenKeyPair."
- },
- "modules/util/keypair_test.go:9": {
-  "label": "TP",
-  "algorithm": "RSA (Go crypto)",
-  "patternId": "go-crypto-rsa",
-  "reason": "Real crypto/rsa import in the keypair test."
- },
- "modules/util/keypair_test.go:25": {
-  "label": "TP",
-  "algorithm": "RSA",
-  "patternId": "rsa-pem-header",
-  "reason": "Test asserts the generated key emits a real '-----BEGIN RSA PRIVATE KEY-----' PEM header; exercises actual RSA key generation."
- },
- "modules/util/keypair.go:9": {
-  "label": "TP",
-  "algorithm": "RSA (Go crypto)",
-  "patternId": "go-crypto-rsa",
-  "reason": "Real crypto/rsa import in the keypair generation helper."
- },
- "modules/util/keypair.go:17": {
-  "label": "TP",
-  "algorithm": "RSA (Go crypto)",
-  "patternId": "go-crypto-rsa",
-  "reason": "Actual RSA keypair generation: rsa.GenerateKey(rand.Reader, bits)."
- },
- "options/locale/locale_cs-CZ.json:673": {
-  "label": "FP",
-  "algorithm": "PGP public key (algorithm in body)",
-  "patternId": "pgp-public-block",
-  "reason": "i18n UI placeholder string describing the expected GPG key format ('Begins with -----BEGIN PGP PUBLIC KEY BLOCK-----'); no key material."
- },
- "options/locale/locale_de-DE.json:664": {
-  "label": "FP",
-  "algorithm": "PGP public key (algorithm in body)",
-  "patternId": "pgp-public-block",
-  "reason": "i18n UI placeholder string; hint text, not key material."
- },
- "options/locale/locale_el-GR.json:602": {
-  "label": "FP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Same i18n placeholder listing 'ecdsa-sha2-nistp256/384/521' token names; not a key."
- },
- "options/locale/locale_el-GR.json:603": {
-  "label": "FP",
-  "algorithm": "PGP public key (algorithm in body)",
-  "patternId": "pgp-public-block",
-  "reason": "i18n GPG placeholder hint text, not key material."
- },
- "options/locale/locale_en-US.json:777": {
-  "label": "FP",
-  "algorithm": "PGP public key (algorithm in body)",
-  "patternId": "pgp-public-block",
-  "reason": "Source-language UI placeholder: 'Begins with -----BEGIN PGP PUBLIC KEY BLOCK-----'; no key."
- },
- "options/locale/locale_es-ES.json:596": {
-  "label": "FP",
-  "algorithm": "PGP public key (algorithm in body)",
-  "patternId": "pgp-public-block",
-  "reason": "i18n GPG placeholder hint text, not key material."
- },
- "options/locale/locale_fa-IR.json:470": {
-  "label": "FP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Same i18n placeholder listing ecdsa token names; not a key."
- },
- "options/locale/locale_fa-IR.json:471": {
-  "label": "FP",
-  "algorithm": "PGP public key (algorithm in body)",
-  "patternId": "pgp-public-block",
-  "reason": "i18n GPG placeholder hint text, not key material."
- },
- "options/locale/locale_fi-FI.json:442": {
-  "label": "FP",
-  "algorithm": "PGP public key (algorithm in body)",
-  "patternId": "pgp-public-block",
-  "reason": "i18n GPG placeholder hint text, not key material."
- },
- "options/locale/locale_fr-FR.json:782": {
-  "label": "FP",
-  "algorithm": "PGP public key (algorithm in body)",
-  "patternId": "pgp-public-block",
-  "reason": "i18n GPG placeholder hint text, not key material."
- },
- "options/locale/locale_ga-IE.json:781": {
-  "label": "FP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Same i18n placeholder listing ecdsa token names; not a key."
- },
- "options/locale/locale_it-IT.json:484": {
-  "label": "FP",
-  "algorithm": "PGP public key (algorithm in body)",
-  "patternId": "pgp-public-block",
-  "reason": "i18n GPG placeholder hint text, not key material."
- },
- "options/locale/locale_ja-JP.json:779": {
-  "label": "FP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Same i18n placeholder listing ecdsa token names; not a key."
- },
- "options/locale/locale_ja-JP.json:780": {
-  "label": "FP",
-  "algorithm": "PGP public key (algorithm in body)",
-  "patternId": "pgp-public-block",
-  "reason": "i18n GPG placeholder hint text, not key material."
- },
- "options/locale/locale_ko-KR.json:778": {
-  "label": "FP",
-  "algorithm": "ECDSA (SSH)",
-  "patternId": "ssh-ecdsa-key",
-  "reason": "Same i18n placeholder listing ecdsa token names; not a key."
- },
- "options/locale/locale_ko-KR.json:779": {
-  "label": "FP",
-  "algorithm": "PGP public key (algorithm in body)",
-  "patternId": "pgp-public-block",
-  "reason": "i18n GPG placeholder hint text, not key material."
- },
- "options/locale/locale_ko-KR.json:796": {
-  "label": "FP",
-  "algorithm": "PGP public key (algorithm in body)",
-  "patternId": "pgp-public-block",
-  "reason": "i18n GPG signature placeholder hint text, not key material."
- },
- "options/locale/locale_lv-LV.json:610": {
-  "label": "FP",
-  "algorithm": "PGP public key (algorithm in body)",
-  "patternId": "pgp-public-block",
-  "reason": "i18n GPG placeholder hint text, not key material."
- }
+  "cmd/cert.go:10": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Real import of crypto/ecdsa in the gitea cert-generation command."
+  },
+  "cmd/cert.go:13": {
+    "label": "TP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Real import of crypto/rsa in cert-generation code."
+  },
+  "cmd/cert.go:111": {
+    "label": "TP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Actual RSA keypair generation: rsa.GenerateKey(rand.Reader, rsa-bits)."
+  },
+  "cmd/cert.go:113": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Actual ECDSA P224 keypair generation."
+  },
+  "cmd/cert.go:115": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Actual ECDSA P256 keypair generation."
+  },
+  "cmd/cert.go:117": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Actual ECDSA P384 keypair generation."
+  },
+  "cmd/cert.go:119": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Actual ECDSA P521 keypair generation."
+  },
+  "models/asymkey/gpg_key_test.go:22": {
+    "label": "TP",
+    "algorithm": "PGP public key (algorithm in body)",
+    "patternId": "pgp-public-block",
+    "reason": "Real armored PGP PUBLIC KEY BLOCK fixture (actual key material) used by TestCheckArmoredGPGKeyString."
+  },
+  "models/asymkey/gpg_key_test.go:59": {
+    "label": "TP",
+    "algorithm": "PGP public key (algorithm in body)",
+    "patternId": "pgp-public-block",
+    "reason": "Real armored PGP PUBLIC KEY BLOCK fixture (actual key material)."
+  },
+  "models/asymkey/gpg_key_test.go:80": {
+    "label": "TP",
+    "algorithm": "PGP public key (algorithm in body)",
+    "patternId": "pgp-public-block",
+    "reason": "Real armored PGP PUBLIC KEY BLOCK fixture (actual key material)."
+  },
+  "models/asymkey/gpg_key_test.go:203": {
+    "label": "TP",
+    "algorithm": "PGP public key (algorithm in body)",
+    "patternId": "pgp-public-block",
+    "reason": "Real armored PGP PUBLIC KEY BLOCK fixture (actual key material)."
+  },
+  "models/asymkey/gpg_key_test.go:245": {
+    "label": "TP",
+    "algorithm": "PGP public key (algorithm in body)",
+    "patternId": "pgp-public-block",
+    "reason": "Real armored PGP PUBLIC KEY BLOCK fixture (actual key material)."
+  },
+  "models/asymkey/ssh_key_parse.go:7": {
+    "label": "TP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Real crypto/rsa import in SSH public-key parsing code."
+  },
+  "models/asymkey/ssh_key_test.go:30": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa 1024-bit public key material in a parse-test table."
+  },
+  "models/asymkey/ssh_key_test.go:31": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa 2048-bit public key material."
+  },
+  "models/asymkey/ssh_key_test.go:32": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Real ecdsa-sha2-nistp256 public key material."
+  },
+  "models/asymkey/ssh_key_test.go:33": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Real ecdsa-sha2-nistp384 public key material."
+  },
+  "models/asymkey/ssh_key_test.go:57": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa public key material in a fingerprint/format test table."
+  },
+  "models/asymkey/ssh_key_test.go:58": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa public key material (line-wrapped variant)."
+  },
+  "models/asymkey/ssh_key_test.go:59": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa public key material (wrapped variant)."
+  },
+  "models/asymkey/ssh_key_test.go:151": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa public key material in fingerprint test."
+  },
+  "models/asymkey/ssh_key_test.go:152": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa public key material in fingerprint test."
+  },
+  "models/asymkey/ssh_key_test.go:153": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Real ecdsa-sha2-nistp256 public key material in fingerprint test."
+  },
+  "models/asymkey/ssh_key_test.go:154": {
+    "label": "TP",
+    "algorithm": "ECDSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Real ecdsa-sha2-nistp384 public key material in fingerprint test."
+  },
+  "models/asymkey/ssh_key_test.go:172": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real OPENSSH PRIVATE KEY (RSA) block — actual private key material in a test fixture."
+  },
+  "models/asymkey/ssh_key_test.go:211": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa public key material (matching test@rekor.dev keypair)."
+  },
+  "models/asymkey/ssh_key_test.go:214": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real OPENSSH PRIVATE KEY (RSA) block — actual private key material."
+  },
+  "models/asymkey/ssh_key_test.go:253": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa public key material (other-test@rekor.dev keypair)."
+  },
+  "models/asymkey/ssh_key_test.go:257": {
+    "label": "TP",
+    "algorithm": "OpenSSH private key (algorithm in body)",
+    "patternId": "openssh-pem-private-key",
+    "reason": "Real OPENSSH PRIVATE KEY (ed25519) block — actual private key material."
+  },
+  "modules/ssh/ssh.go:10": {
+    "label": "TP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Real crypto/rsa import in the built-in SSH server module."
+  },
+  "modules/ssh/ssh.go:402": {
+    "label": "TP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Actual 4096-bit RSA host keypair generation in GenKeyPair."
+  },
+  "modules/util/keypair_test.go:9": {
+    "label": "TP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Real crypto/rsa import in the keypair test."
+  },
+  "modules/util/keypair_test.go:25": {
+    "label": "TP",
+    "algorithm": "RSA",
+    "patternId": "rsa-pem-header",
+    "reason": "Test asserts the generated key emits a real '-----BEGIN RSA PRIVATE KEY-----' PEM header; exercises actual RSA key generation."
+  },
+  "modules/util/keypair.go:9": {
+    "label": "TP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Real crypto/rsa import in the keypair generation helper."
+  },
+  "modules/util/keypair.go:17": {
+    "label": "TP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Actual RSA keypair generation: rsa.GenerateKey(rand.Reader, bits)."
+  },
+  "docker/root/etc/templates/sshd_config:23": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-ecdsa-key",
+    "reason": "Shipped Docker sshd_config template: CASignatureAlgorithms actively enables ssh-rsa/rsa-sha2 (and ecdsa-sha2-nistp256/384/521) for CA cert validation — real config enabling the primitives; covers both the RSA and ECDSA findings on this line."
+  },
+  "routers/api/packages/chef/auth.go:9": {
+    "label": "TP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Real crypto/rsa import in Chef package auth; the file genuinely calls rsa.VerifyPKCS1v15 (line 247) and dispatches on *rsa.PublicKey."
+  },
+  "routers/web/repo/setting/settings_test.go:38": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa public key material submitted through AddKeyForm in the read-only deploy-key test."
+  },
+  "routers/web/repo/setting/settings_test.go:63": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa public key material in the read-write deploy-key test."
+  },
+  "services/asymkey/ssh_key_test.go:30": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa public key material in the authorized-keys parse-test table."
+  },
+  "services/asymkey/ssh_key_test.go:33": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa public key material (expected keyContents entry in the same parse-test table)."
+  },
+  "services/asymkey/ssh_key_test.go:37": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa public key material in a multi-key parse-test input."
+  },
+  "services/asymkey/ssh_key_test.go:41": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa public key material (expected keyContents entry)."
+  },
+  "services/asymkey/ssh_key_test.go:42": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "Real ssh-dss (DSA) public key material — actual key blob in the parse-test table, genuinely homogeneous with the :52/:62 occurrences of the same fixture."
+  },
+  "services/asymkey/ssh_key_test.go:46": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa public key material in a parse-test input with an interleaved comment line."
+  },
+  "services/asymkey/ssh_key_test.go:51": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa public key material (expected keyContents entry)."
+  },
+  "services/asymkey/ssh_key_test.go:52": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "Real ssh-dss (DSA) public key material — same actual key blob repeated as an expected keyContents entry."
+  },
+  "services/asymkey/ssh_key_test.go:56": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa public key material in a parse-test input with garbage line interleaved."
+  },
+  "services/asymkey/ssh_key_test.go:61": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Real ssh-rsa public key material (expected keyContents entry)."
+  },
+  "services/asymkey/ssh_key_test.go:62": {
+    "label": "TP",
+    "algorithm": "DSA",
+    "patternId": "dsa-usage",
+    "reason": "Real ssh-dss (DSA) public key material — same actual key blob, expected keyContents entry."
+  },
+  "services/auth/httpsign.go:207": {
+    "label": "TP",
+    "algorithm": "RSA (SSH)",
+    "patternId": "ssh-rsa-key",
+    "reason": "Production HTTP-signature verification dispatch: matching key type ssh-rsa selects RSA_SHA256/RSA_SHA512 verification of the request — a real RSA code path, not a mention."
+  },
+  "services/oauth2_provider/jwtsigningkey.go:116": {
+    "label": "TP",
+    "algorithm": "JWK asymmetric key (RSA/EC)",
+    "patternId": "jwk-asymmetric-key",
+    "reason": "ToJWK() builds a JWK ('kty':'RSA') from the actual *rsa.PublicKey of the live OAuth2 JWT signing key — real key material serialization."
+  },
+  "services/oauth2_provider/jwtsigningkey.go:225": {
+    "label": "TP",
+    "algorithm": "JWK asymmetric key (RSA/EC)",
+    "patternId": "jwk-asymmetric-key",
+    "reason": "ToJWK() builds a JWK ('kty':'EC' with crv/x/y) from the actual *ecdsa.PublicKey — real key material serialization."
+  },
+  "services/oauth2_provider/jwtsigningkey.go:11": {
+    "label": "TP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Real crypto/rsa import in the OAuth2 JWT signing-key service; genuinely used (rsa.GenerateKey at line 357, rsaSingingKey type)."
+  },
+  "services/oauth2_provider/jwtsigningkey.go:357": {
+    "label": "TP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Actual 4096-bit RSA keypair generation for RS* JWT signing keys."
+  },
+  "services/oauth2_provider/jwtsigningkey.go:7": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Real crypto/ecdsa import in the OAuth2 JWT signing-key service; genuinely used (ecdsa.GenerateKey at line 362, ecdsaSingingKey type)."
+  },
+  "services/oauth2_provider/jwtsigningkey.go:362": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Actual ECDSA P256 keypair generation (the default JWT signing algorithm path)."
+  },
+  "services/oauth2_provider/jwtsigningkey_test.go:7": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Real crypto/ecdsa import in the JWK test; the file calls ecdsa.GenerateKey below."
+  },
+  "services/oauth2_provider/jwtsigningkey_test.go:32": {
+    "label": "TP",
+    "algorithm": "ECDSA (Go crypto)",
+    "patternId": "go-ecdsa",
+    "reason": "Actual ECDSA keypair generation (P256/P384/P521 table) in TestECDSASigningKeyToJWK."
+  },
+  "services/packages/alpine/repository.go:13": {
+    "label": "TP",
+    "algorithm": "RSA (Go crypto)",
+    "patternId": "go-crypto-rsa",
+    "reason": "Real crypto/rsa import in Alpine package repository signing; the file genuinely calls rsa.SignPKCS1v15 (line 301)."
+  }
 }
