@@ -1,5 +1,6 @@
 import type { CryptoAsset, CryptoFamily, ComplianceReport, Severity } from "../types.js";
 import { RESOLVED_STATUSES } from "../types.js";
+import { quantumExposure } from "../discovery/cryptoRef.js";
 import { VERSION } from "../version.js";
 import { computePosture, type Posture } from "./posture.js";
 
@@ -16,13 +17,34 @@ import { computePosture, type Posture } from "./posture.js";
  * assessment can be emitted as HTML (print-to-PDF) or JSON (system of record).
  */
 
-/** Quantum impact class for an algorithm family. */
-type QuantumImpact = "Broken (Shor)" | "Weakened (Grover)";
+/** Quantum impact class for an algorithm family (⚑4 honest tiers). A family
+ *  can mix tiers (SymmetricLegacy holds Grover-weakened AES-128 alongside
+ *  classically-weak DES/3DES/RC4), so the label is derived from the exposures
+ *  actually present in the row, not asserted per-family. */
+type QuantumImpact =
+  | "Broken (Shor)"
+  | "Weakened (Grover)"
+  | "Classically weak"
+  | "Grover / classically weak"
+  | "None (post-quantum)";
 
-// Asymmetric public-key crypto is broken outright by Shor's algorithm; legacy
-// symmetric/hash primitives are only weakened by Grover (a quadratic, not
-// exponential, speedup) — a distinction that drives migration urgency.
+// Asymmetric public-key crypto is broken outright by Shor's algorithm; AES-128
+// is only margin-reduced by Grover; DES/3DES and MD5/SHA-1 are classically
+// weak already — distinctions that drive migration urgency.
 const SHOR_BROKEN: CryptoFamily[] = ["RSA", "ECC", "DSA", "DH", "Asymmetric"];
+
+/** Honest per-family impact label, derived from the exposure tiers of the
+ *  actual findings in the family (never overstated to the Shor tier). */
+function familyImpact(assetsInFamily: CryptoAsset[]): QuantumImpact {
+  const tiers = new Set(assetsInFamily.map((a) => quantumExposure(a)));
+  tiers.delete("none");
+  if (tiers.size === 0) return "None (post-quantum)";
+  if (tiers.size > 1) return "Grover / classically weak"; // only SymmetricLegacy can mix
+  const tier = [...tiers][0];
+  if (tier === "shor-broken") return "Broken (Shor)";
+  if (tier === "grover-weakened") return "Weakened (Grover)";
+  return "Classically weak";
+}
 
 const FAMILY_LABEL: Record<CryptoFamily, string> = {
   RSA: "RSA",
@@ -165,15 +187,22 @@ export function buildAssessment(input: AssessmentInput): AssessmentReport {
   const vulnerable = actionable.filter((a) => a.quantumVulnerable).length;
 
   // ---- inventory by family (sorted by count desc) -------------------------
-  const familyCounts = new Map<CryptoFamily, number>();
-  for (const a of assets) familyCounts.set(a.family, (familyCounts.get(a.family) ?? 0) + 1);
-  const inventory: InventoryRow[] = [...familyCounts.entries()]
-    .map(([family, count]) => ({
+  const byFamily = new Map<CryptoFamily, CryptoAsset[]>();
+  for (const a of assets) {
+    const list = byFamily.get(a.family);
+    if (list) list.push(a);
+    else byFamily.set(a.family, [a]);
+  }
+  const inventory: InventoryRow[] = [...byFamily.entries()]
+    .map(([family, members]) => ({
       family,
       label: FAMILY_LABEL[family] ?? family,
-      count,
-      sharePct: total ? Math.round((count / total) * 100) : 0,
-      quantumImpact: (SHOR_BROKEN.includes(family) ? "Broken (Shor)" : "Weakened (Grover)") as QuantumImpact,
+      count: members.length,
+      sharePct: total ? Math.round((members.length / total) * 100) : 0,
+      // Derived from the findings actually present (⚑4): AES-128 rows read
+      // "Weakened (Grover)", DES/3DES/MD5/SHA-1 read "Classically weak", and a
+      // PQC row is never mislabeled as Grover-affected.
+      quantumImpact: familyImpact(members),
       nistReplacement: FAMILY_REPLACEMENT[family] ?? "NIST PQC",
     }))
     .sort((a, b) => b.count - a.count);

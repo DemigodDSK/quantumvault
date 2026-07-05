@@ -1,4 +1,5 @@
 import type { CryptoAsset, RiskScore, RiskFactorBreakdown, Severity } from "../types.js";
+import { quantumExposure } from "../discovery/cryptoRef.js";
 
 /**
  * 5-factor weighted risk model.
@@ -121,6 +122,13 @@ function retentionScore(asset: CryptoAsset): number {
 function hndlScore(asset: CryptoAsset): number {
   // Harvest-now-decrypt-later: key-exchange + transport crypto on partner paths
   // is the highest-urgency category — captured traffic can be decrypted later.
+  //
+  // Grover-weakened symmetric crypto (AES-128) has NO practical HNDL path:
+  // harvested AES-128 ciphertext still costs ~2^64 quantum operations under
+  // Grover, with serial-depth requirements widely considered impractical at
+  // scale. It scores below the classically-weak ciphers (DES/3DES/RC4), whose
+  // harvested traffic is attackable with CLASSICAL compute alone (⚑4).
+  if (quantumExposure(asset) === "grover-weakened") return 20;
   if (!isShorBroken(asset)) return 35;
   const partner = pathSignal(asset.file, PARTNER_HINTS) * 20;
   const keyExchangeBoost = asset.family === "DH" || asset.family === "ECC" ? 25 : 10;
@@ -167,6 +175,16 @@ function effortFor(asset: CryptoAsset, priority: Severity): number {
 }
 
 function recommendationFor(asset: CryptoAsset, priority: Severity): string {
+  // Grover-weakened symmetric crypto (AES-128) is margin reduction, not a
+  // break — the honest recommendation is a scheduled key-length upgrade, never
+  // the "migrate immediately" language reserved for Shor-broken crypto (⚑4).
+  if (quantumExposure(asset) === "grover-weakened") {
+    return (
+      `Migrate ${asset.algorithm} at ${asset.file}:${asset.line} to ${asset.pqcReplacement} ` +
+      `on your normal upgrade cycle — Grover only halves the effective security margin ` +
+      `(~2^64, widely considered impractical at scale); this is not a crypto emergency.`
+    );
+  }
   const verb = priority === "critical" ? "Immediately migrate" : priority === "high" ? "Prioritize migration of" : "Plan migration of";
   return `${verb} ${asset.algorithm} at ${asset.file}:${asset.line} to ${asset.pqcReplacement}.`;
 }

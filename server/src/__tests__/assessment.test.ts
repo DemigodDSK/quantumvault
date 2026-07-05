@@ -97,9 +97,37 @@ test("assessment: inventory aggregates by family and shares are sane", () => {
   for (const row of a.inventory) {
     assert.ok(Number.isInteger(row.sharePct) && row.sharePct >= 0 && row.sharePct <= 100);
   }
-  // Quantum-impact classification: asymmetric is Shor-broken, hash is Grover.
+  // Quantum-impact classification (⚑4 honest tiers): asymmetric is Shor-broken;
+  // MD5/SHA-1 is classically weak (collision-broken without a quantum computer).
   assert.equal(a.inventory.find((r) => r.family === "ECC")?.quantumImpact, "Broken (Shor)");
-  assert.equal(a.inventory.find((r) => r.family === "HashLegacy")?.quantumImpact, "Weakened (Grover)");
+  assert.equal(a.inventory.find((r) => r.family === "HashLegacy")?.quantumImpact, "Classically weak");
+});
+
+test("assessment: SymmetricLegacy impact is derived from the findings present (⚑4)", () => {
+  // AES-128 alone → Grover-weakened, never lumped with the Shor-broken tier.
+  const aesOnly = build([
+    asset({ id: "aes", family: "SymmetricLegacy", priority: "medium", algorithm: "AES-128", patternId: "sym-aes128" }),
+  ]);
+  assert.equal(aesOnly.inventory.find((r) => r.family === "SymmetricLegacy")?.quantumImpact, "Weakened (Grover)");
+
+  // 3DES alone → classically weak (broken-tier for classical reasons, not Grover).
+  const desOnly = build([
+    asset({ id: "des", family: "SymmetricLegacy", priority: "high", algorithm: "DES/3DES", patternId: "sym-des-3des" }),
+  ]);
+  assert.equal(desOnly.inventory.find((r) => r.family === "SymmetricLegacy")?.quantumImpact, "Classically weak");
+
+  // Mixed AES-128 + 3DES → the row says so instead of overstating either.
+  const mixed = build([
+    asset({ id: "aes", family: "SymmetricLegacy", priority: "medium", algorithm: "AES-128", patternId: "sym-aes128" }),
+    asset({ id: "des", family: "SymmetricLegacy", priority: "high", algorithm: "DES/3DES", patternId: "sym-des-3des" }),
+  ]);
+  assert.equal(mixed.inventory.find((r) => r.family === "SymmetricLegacy")?.quantumImpact, "Grover / classically weak");
+
+  // A parsed PQC certificate row is quantum-SAFE — it must never read as Grover-affected.
+  const pqc = build([
+    asset({ id: "pqc", family: "PQC", priority: "low", algorithm: "ML-DSA-65", patternId: "x509-certificate", quantumVulnerable: false }),
+  ]);
+  assert.equal(pqc.inventory.find((r) => r.family === "PQC")?.quantumImpact, "None (post-quantum)");
 });
 
 // ------------------------------------------------------------ priority + KPIs

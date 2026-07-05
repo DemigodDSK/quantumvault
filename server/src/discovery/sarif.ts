@@ -1,5 +1,6 @@
 import type { CryptoAsset } from "../types.js";
 import { PATTERNS } from "./patterns.js";
+import { quantumExposure } from "./cryptoRef.js";
 import { VERSION } from "../version.js";
 
 const PATTERN_BY_ID = new Map(PATTERNS.map((p) => [p.id, p]));
@@ -46,11 +47,19 @@ export function assetsToSarif(assets: CryptoAsset[], meta: SarifMeta = {}): Reco
 
   const results = assets.map((a) => {
     const score = a.risk?.score ?? 0;
+    const exposure = quantumExposure(a);
+    // Honest per-tier copy (⚑4): calling AES-128 "quantum-vulnerable" would
+    // put a margin reduction in the same words as a Shor break.
+    const bits = a.keyBits ? ` (${a.keyBits}-bit)` : "";
+    const messageText =
+      exposure === "grover-weakened"
+        ? `${a.algorithm}${bits} is Grover-weakened: security margin reduced (~2^64 effective), not broken. Migrate to ${a.pqcReplacement} on your normal upgrade cycle — not a crypto emergency.`
+        : `${a.algorithm} is quantum-vulnerable${bits}. Replace with ${a.pqcReplacement}.`;
     return {
       ruleId: a.patternId,
       level: levelFor(a),
       message: {
-        text: `${a.algorithm} is quantum-vulnerable${a.keyBits ? ` (${a.keyBits}-bit)` : ""}. Replace with ${a.pqcReplacement}.`,
+        text: messageText,
       },
       locations: [
         {
@@ -63,6 +72,7 @@ export function assetsToSarif(assets: CryptoAsset[], meta: SarifMeta = {}): Reco
       properties: {
         family: a.family,
         confidence: a.confidence,
+        quantumExposure: exposure,
         ...(a.demotionReason ? { demotionReason: a.demotionReason } : {}),
         // An informational finding carries no security severity — it would
         // otherwise land in the GitHub Security tab at the same severity as an

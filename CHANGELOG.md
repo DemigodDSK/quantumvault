@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Engine: AES-128 reclassified as Grover-weakened (⚑4) — honest severity,
+  actionable set unchanged.** New four-tier `QuantumExposure` taxonomy
+  (`shor-broken` / `grover-weakened` / `classically-weak` / `none`) in
+  `quantumExposure()`. RSA/ECC/DSA/DH stay Shor-broken with HNDL urgency and
+  "Immediately migrate/Prioritize" language. AES-128 — the only Grover-only
+  primitive the pattern set emits — is a security-margin reduction (~2^64
+  effective), not a break: HNDL factor 35 → 20 (below classically-weak's 35,
+  since harvested AES-128 traffic has no practical decryption path), worst-case
+  score now caps at medium (was high), and the recommendation reads "migrate to
+  AES-256-GCM on your normal upgrade cycle — not a crypto emergency". DES/3DES,
+  RC4-era suites, and MD5/SHA-1 are `classically-weak`: urgent for classical
+  reasons, language unchanged. AES-128 keeps its confidence tier, score > 0, and
+  effort > 0 — **re-ranked, never hidden** — and remains in the actionable set
+  and every family-keyed compliance control (CNSA-2.0 CNSA2-SYM, CISA PQC-3,
+  SOC2 CC7.1, PCI-DSS 3.5, NIST-CSF PR.DS-01). The tier is surfaced in every
+  export: CBOM property `quantumvault:quantumExposure`, CSV column
+  `quantum_exposure`, SARIF per-result property + margin-reduction message text,
+  and the assessment report's inventory (impact now derived from the findings
+  present: "Weakened (Grover)" / "Classically weak" / mixed). `quantumCategory()`
+  still reports AES-128 as NIST category 1 — severity posture lives in the
+  exposure tier, not the category scale. Bench invariance proven: corpus
+  852/890 = 95.7% and SARD 68/68 = 100%, byte-identical per-repo rows; labels
+  untouched. 8 new tests pin the taxonomy, the medium ceiling, and the export
+  surfaces.
+
 ### Fixed
 
 - **One source of truth for migration effort (QA ISSUE-003).** The Risk Analysis

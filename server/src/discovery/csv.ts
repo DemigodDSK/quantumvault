@@ -1,4 +1,5 @@
 import type { CryptoAsset } from "../types.js";
+import { quantumExposure } from "./cryptoRef.js";
 
 /** RFC-4180 field escaping: quote fields containing comma, quote, or newline. */
 function csvField(value: unknown): string {
@@ -21,6 +22,10 @@ const COLUMNS: { header: string; get: (a: CryptoAsset) => unknown }[] = [
   // indistinguishable from an actionable one in a spreadsheet.
   { header: "confidence", get: (a) => a.confidence },
   { header: "demotion_reason", get: (a) => a.demotionReason ?? "" },
+  // Honest exposure tier (⚑4): shor-broken vs grover-weakened (AES-128) vs
+  // classically-weak — so a spreadsheet can tell a crypto emergency from a
+  // scheduled key-length upgrade.
+  { header: "quantum_exposure", get: (a) => quantumExposure(a) },
   { header: "risk_score", get: (a) => a.risk?.score ?? "" },
   { header: "priority", get: (a) => a.risk?.priority ?? "" },
   { header: "migration_effort_days", get: (a) => a.risk?.migrationEffortDays ?? "" },

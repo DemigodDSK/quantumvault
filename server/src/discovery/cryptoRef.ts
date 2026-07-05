@@ -169,6 +169,62 @@ export function isCertificateAsset(a: CryptoAsset): boolean {
 
 /**
  * ───────────────────────────────────────────────────────────────────────────
+ * QUANTUM-EXPOSURE TAXONOMY (⚑4, resolved 2026-07-04 — founder call).
+ *
+ * The scanner used to put every quantumVulnerable finding in one bucket, which
+ * over-classified AES-128: Grover's algorithm only square-roots symmetric
+ * strength (2^128 → ~2^64), and even that generic quadratic speedup is widely
+ * considered impractical at scale (it parallelizes badly and needs enormous
+ * serial circuit depth). AES-128 is "security margin reduced — move to a
+ * 256-bit key on your normal upgrade cycle", which is categorically different
+ * from RSA/ECC/DH, which a cryptographically-relevant quantum computer breaks
+ * OUTRIGHT via Shor. The four honest tiers:
+ *
+ *   • "shor-broken"       — RSA / ECC / DSA / DH / unspecified asymmetric.
+ *                           Broken outright by Shor; harvest-now-decrypt-later
+ *                           applies. This is the crypto emergency.
+ *   • "grover-weakened"   — AES-128 (128-bit symmetric). Only Grover applies:
+ *                           margin reduction, not a break. Migrate to AES-256
+ *                           on the normal upgrade cycle.
+ *   • "classically-weak"  — DES/3DES, RC4-era TLS suites, MD5/SHA-1. These
+ *                           stay in the broken/urgent tier for CLASSICAL
+ *                           reasons (56/112-bit strength, collision breaks) —
+ *                           a quantum computer is not required to attack them.
+ *   • "none"              — PQC algorithms and anything not quantum-vulnerable.
+ *
+ * Findings are re-ranked and re-labeled by this taxonomy, never hidden: a
+ * grover-weakened finding keeps its confidence tier and stays in every output.
+ */
+export type QuantumExposure = "shor-broken" | "grover-weakened" | "classically-weak" | "none";
+
+export function quantumExposure(
+  a: Pick<CryptoAsset, "family" | "algorithm" | "quantumVulnerable">,
+): QuantumExposure {
+  if (!a.quantumVulnerable) return "none";
+  switch (a.family) {
+    case "RSA":
+    case "ECC":
+    case "DSA":
+    case "DH":
+    case "Asymmetric":
+      return "shor-broken";
+    case "SymmetricLegacy":
+      // AES is the only Grover-only-affected primitive the pattern set emits in
+      // this family (sym-aes128). DES/3DES and the weak-TLS-suite postures are
+      // classically weak regardless of any quantum computer.
+      return /AES/.test(a.algorithm) ? "grover-weakened" : "classically-weak";
+    case "HashLegacy":
+      // MD5/SHA-1 are collision-broken today, classically.
+      return "classically-weak";
+    case "PQC":
+      return "none";
+    default:
+      return "none";
+  }
+}
+
+/**
+ * ───────────────────────────────────────────────────────────────────────────
  * POLICY SEAM — quantum security category. This function is intentionally the
  * one piece of judgment in the CBOM, and it is the founder's call to own/tune.
  *
@@ -187,10 +243,12 @@ export function isCertificateAsset(a: CryptoAsset): boolean {
  *     which lands at category 1; AES-256 would be category 5.
  *   • DES / 3DES → 0. Below AES-128 even before Grover.
  *
- * The live debate worth your judgment: do you treat AES-128 as a *passing*
- * category-1 algorithm (Grover is widely considered impractical), or flag it
- * as 0 to push customers to AES-256 (CNSA 2.0's stance)? Change the one line
- * below to encode whichever posture you want the product to take.
+ * ⚑4 resolution (2026-07-04): AES-128 stays category 1 here (that is simply
+ * what the NIST category scale says), and the product-level severity posture
+ * lives in `quantumExposure` above — AES-128 is "grover-weakened" (migrate to
+ * AES-256 on the normal upgrade cycle), NOT the same tier as Shor-broken
+ * public-key crypto. CNSA 2.0 non-conformance is still reported, by the
+ * CNSA2-SYM compliance control, not by inflating the finding's severity.
  * ───────────────────────────────────────────────────────────────────────────
  */
 export function quantumCategory(a: CryptoAsset): number {
@@ -204,7 +262,9 @@ export function quantumCategory(a: CryptoAsset): number {
     case "HashLegacy":
       return 0;
     case "SymmetricLegacy":
-      return /AES/.test(a.algorithm) ? 1 : 0; // ← AES-128 posture lives here
+      // grover-weakened (AES-128) meets category 1 by definition; the
+      // classically-weak ciphers (DES/3DES, RC4 suites) meet none.
+      return quantumExposure(a) === "grover-weakened" ? 1 : 0;
     case "PQC": {
       // FIPS 203/204/205 claimed categories by parameter set. The algorithm
       // label always names the set (it came from the OID), so the fallback of 1

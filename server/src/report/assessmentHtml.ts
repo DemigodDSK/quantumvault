@@ -170,8 +170,10 @@ export function renderAssessmentHtml(r: AssessmentReport): string {
 
 <section class="page page-break">
   <hr class="rule"><h2>Cryptographic Inventory</h2>
-  <p>Findings by algorithm family. Shor-broken asymmetric crypto is the priority;
-     symmetric/hash are Grover-affected and lower-urgency.</p>
+  <p>Findings by algorithm family. Shor-broken asymmetric crypto is the priority — a
+     cryptographically-relevant quantum computer breaks it outright. AES-128 is only
+     Grover-weakened (security margin reduced, not broken): migrate to AES-256 on your
+     normal upgrade cycle. DES/3DES and MD5/SHA-1 are classically weak already.</p>
   <table>
     <thead><tr><th>Family</th><th>Assets</th><th>Share</th><th>Quantum impact</th><th>NIST replacement</th></tr></thead>
     <tbody>${inventoryRows || `<tr><td colspan="5" class="small">No cryptographic assets discovered.</td></tr>`}</tbody>

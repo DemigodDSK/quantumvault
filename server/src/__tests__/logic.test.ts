@@ -10,6 +10,7 @@ import { normalizeRepo } from "../discovery/repo.js";
 import { scanDirectory } from "../discovery/scanner.js";
 import { assetsToCsv } from "../discovery/csv.js";
 import { assetsToCbom, validateCbom } from "../discovery/cbom.js";
+import { quantumExposure } from "../discovery/cryptoRef.js";
 import { assetsToSarif } from "../discovery/sarif.js";
 import { openApiDocument } from "../openapi.js";
 import { RateLimiter, rateLimit } from "../auth/rateLimit.js";
@@ -98,6 +99,64 @@ test("risk: Shor-broken asymmetric crypto gets a higher HNDL factor than symmetr
   const ecc = scoreAsset(asset({ family: "ECC", file: "transport/vpn/tls.ts" }));
   const sym = scoreAsset(asset({ family: "SymmetricLegacy", file: "transport/vpn/tls.ts" }));
   assert.ok(ecc.factors.hndlExposure > sym.factors.hndlExposure);
+});
+
+// ── ⚑4: AES-128 is Grover-weakened — a distinct, honestly-lower tier ─────────
+test("exposure taxonomy: shor-broken vs grover-weakened vs classically-weak vs none", () => {
+  assert.equal(quantumExposure(asset({ family: "RSA", algorithm: "RSA" })), "shor-broken");
+  assert.equal(quantumExposure(asset({ family: "Asymmetric", algorithm: "Private key (PKCS#8)" })), "shor-broken");
+  assert.equal(quantumExposure(asset({ family: "SymmetricLegacy", algorithm: "AES-128", patternId: "sym-aes128" })), "grover-weakened");
+  assert.equal(quantumExposure(asset({ family: "SymmetricLegacy", algorithm: "DES/3DES", patternId: "sym-des-3des" })), "classically-weak");
+  assert.equal(
+    quantumExposure(asset({ family: "SymmetricLegacy", algorithm: "Weak TLS cipher suite (RC4/DES/3DES or static-RSA key exchange)", patternId: "tls-weak-cipher-nginx" })),
+    "classically-weak",
+  );
+  assert.equal(quantumExposure(asset({ family: "HashLegacy", algorithm: "MD5/SHA-1" })), "classically-weak");
+  assert.equal(quantumExposure(asset({ family: "PQC", algorithm: "ML-DSA-65", quantumVulnerable: false })), "none");
+});
+
+test("risk (⚑4): AES-128 is weighted below Shor-broken AND below classically-weak ciphers", () => {
+  const mk = (algorithm: string, patternId: string) =>
+    scoreAsset(asset({ family: "SymmetricLegacy", algorithm, patternId, file: "transport/vpn/tls.ts" }));
+  const aes = mk("AES-128", "sym-aes128");
+  const des = mk("DES/3DES", "sym-des-3des");
+  const rsa = scoreAsset(asset({ family: "RSA", algorithm: "RSA", patternId: "rsa-keygen-openssl", file: "transport/vpn/tls.ts" }));
+  // No practical HNDL path against AES-128 — lower than 3DES (classically
+  // harvestable) which is lower than Shor-broken key material.
+  assert.ok(aes.factors.hndlExposure < des.factors.hndlExposure, `aes hndl ${aes.factors.hndlExposure} !< des ${des.factors.hndlExposure}`);
+  assert.ok(des.factors.hndlExposure < rsa.factors.hndlExposure);
+  assert.ok(aes.score < rsa.score, `aes ${aes.score} should be < rsa ${rsa.score}`);
+  // Score stays the weighted sum of the reported factors — no hidden discount.
+  const W = getRiskWeights();
+  const expected =
+    aes.factors.dataSensitivity * W.dataSensitivity +
+    aes.factors.retentionExposure * W.retentionExposure +
+    aes.factors.hndlExposure * W.hndlExposure +
+    aes.factors.complianceImpact * W.complianceImpact +
+    aes.factors.businessImpact * W.businessImpact;
+  assert.ok(Math.abs(aes.score - Math.round(expected)) <= 1, "score must equal weighted sum of reported factors");
+});
+
+test("risk (⚑4): AES-128 never reaches high/critical, even on the most sensitive path", () => {
+  // Worst-case path signals: every sensitivity hint the model knows about.
+  const worst = scoreAsset(
+    asset({ family: "SymmetricLegacy", algorithm: "AES-128", patternId: "sym-aes128",
+      file: "src/auth/payment/billing/key-secret-token.ts" }),
+  );
+  assert.ok(["low", "medium"].includes(worst.priority), `grover-weakened must not be ${worst.priority}`);
+  // …and it stays actionable: real effort, real recommendation, never zeroed out.
+  assert.ok(worst.score > 0);
+  assert.ok(worst.migrationEffortDays > 0);
+});
+
+test("risk (⚑4): AES-128 recommendation says normal upgrade cycle, not crypto emergency", () => {
+  const aes = scoreAsset(asset({ family: "SymmetricLegacy", algorithm: "AES-128", patternId: "sym-aes128", pqcReplacement: "AES-256-GCM" }));
+  assert.match(aes.recommendation, /normal upgrade cycle/);
+  assert.match(aes.recommendation, /not a crypto emergency/);
+  assert.doesNotMatch(aes.recommendation, /Immediately migrate/);
+  // 3DES keeps the standard urgency language — it is weak for classical reasons.
+  const des = scoreAsset(asset({ family: "SymmetricLegacy", algorithm: "DES/3DES", patternId: "sym-des-3des" }));
+  assert.doesNotMatch(des.recommendation, /not a crypto emergency/);
 });
 
 test("risk: scoreAssets mutates the batch in place and attaches risk", () => {
@@ -423,6 +482,19 @@ test("csv: header row + RFC-4180 escaping of commas, quotes, and newlines", () =
   assert.equal(csv.endsWith("\r\n"), true);
 });
 
+test("csv (⚑4): quantum_exposure column distinguishes AES-128 from Shor-broken findings", () => {
+  const csv = assetsToCsv([
+    asset({ family: "SymmetricLegacy", algorithm: "AES-128", patternId: "sym-aes128" }),
+    asset({ family: "RSA", algorithm: "RSA", patternId: "rsa-keygen-openssl" }),
+  ]);
+  const lines = csv.trim().split("\r\n");
+  const headers = lines[0].split(",");
+  const col = headers.indexOf("quantum_exposure");
+  assert.ok(col >= 0, "quantum_exposure column present");
+  assert.equal(lines[1].split(",")[col], "grover-weakened");
+  assert.equal(lines[2].split(",")[col], "shor-broken");
+});
+
 test("csv: empty inventory still emits a header row", () => {
   const csv = assetsToCsv([]);
   assert.match(csv, /^file,line,family,/);
@@ -495,6 +567,21 @@ test("cbom: AES-128 carries NIST quantum category 1 (Grover only square-roots st
   assert.equal(aes.classicalSecurityLevel, 128);
 });
 
+test("cbom (⚑4): every component carries its honest quantumExposure tier property", () => {
+  const cbom = assetsToCbom([
+    asset({ family: "RSA", algorithm: "RSA", file: "a.ts", patternId: "rsa" }),
+    asset({ family: "SymmetricLegacy", algorithm: "AES-128", file: "b.ts", patternId: "sym-aes128" }),
+    asset({ family: "SymmetricLegacy", algorithm: "DES/3DES", file: "c.ts", patternId: "sym-des-3des" }),
+  ]) as any;
+  const tierOf = (name: string) =>
+    cbom.components.find((c: any) => c.name === name)
+      .properties.find((p: any) => p.name === "quantumvault:quantumExposure")?.value;
+  assert.equal(tierOf("RSA"), "shor-broken");
+  assert.equal(tierOf("AES-128"), "grover-weakened");
+  assert.equal(tierOf("DES/3DES"), "classically-weak");
+  assert.equal(validateCbom(cbom).valid, true);
+});
+
 test("cbom: validator rejects a non-conformant document", () => {
   const broken = {
     bomFormat: "CycloneDX",
@@ -543,6 +630,22 @@ test("sarif: emits a valid SARIF 2.1.0 log with rules, results, and levels", () 
   assert.equal(result.locations[0].physicalLocation.region.startLine, 2);
   // GitHub security-severity is a 0–10 string derived from the risk score
   assert.match(result.properties["security-severity"], /^\d+(\.\d)?$/);
+});
+
+test("sarif (⚑4): AES-128 message is margin-reduction copy, not break language; tier is a property", () => {
+  const aes = asset({ family: "SymmetricLegacy", algorithm: "AES-128", patternId: "sym-aes128", pqcReplacement: "AES-256-GCM" });
+  aes.risk = scoreAsset(aes);
+  const rsa = asset({ family: "RSA", algorithm: "RSA", patternId: "rsa-keygen-openssl" });
+  rsa.risk = scoreAsset(rsa);
+  const sarif = assetsToSarif([aes, rsa]) as any;
+  const [aesR, rsaR] = sarif.runs[0].results;
+  assert.match(aesR.message.text, /Grover-weakened/);
+  assert.match(aesR.message.text, /normal upgrade cycle/);
+  assert.doesNotMatch(aesR.message.text, /is quantum-vulnerable/);
+  assert.equal(aesR.properties.quantumExposure, "grover-weakened");
+  // Shor-broken findings keep the break language.
+  assert.match(rsaR.message.text, /is quantum-vulnerable/);
+  assert.equal(rsaR.properties.quantumExposure, "shor-broken");
 });
 
 test("sarif: critical/high map to error level", () => {

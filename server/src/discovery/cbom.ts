@@ -4,6 +4,7 @@ import { VERSION } from "../version.js";
 import {
   algorithmDetails,
   quantumCategory,
+  quantumExposure,
   isCertificateAsset,
   protocolTypeFor,
   protocolVersionFor,
@@ -135,6 +136,11 @@ export function assetsToCbom(assets: CryptoAsset[], meta: CbomMeta = {}): Record
         { name: "quantumvault:confidence", value: a.confidence },
         ...(a.demotionReason ? [{ name: "quantumvault:demotionReason", value: a.demotionReason }] : []),
         { name: "quantumvault:quantumVulnerable", value: String(a.quantumVulnerable) },
+        // Honest exposure tier (⚑4): "shor-broken" (RSA/ECC/DSA/DH — broken
+        // outright by a CRQC) vs "grover-weakened" (AES-128 — security margin
+        // reduced, migrate on the normal upgrade cycle) vs "classically-weak"
+        // (DES/3DES/RC4/MD5/SHA-1 — attackable without any quantum computer).
+        { name: "quantumvault:quantumExposure", value: quantumExposure(a) },
         { name: "quantumvault:pqcReplacement", value: a.pqcReplacement },
         { name: "quantumvault:remediationStatus", value: a.status },
         ...(a.certKeyAlgorithm ? [{ name: "quantumvault:certKeyAlgorithm", value: a.certKeyAlgorithm }] : []),
