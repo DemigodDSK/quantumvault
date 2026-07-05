@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.1] - 2026-07-05
+
 ### Changed
 
 - **Engine: AES-128 reclassified as Grover-weakened (⚑4) — honest severity,
@@ -33,22 +35,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   852/890 = 95.7% and SARD 68/68 = 100%, byte-identical per-repo rows; labels
   untouched. 8 new tests pin the taxonomy, the medium ceiling, and the export
   surfaces.
-
-### Fixed
-
-- **One source of truth for migration effort (QA ISSUE-003).** The Risk Analysis
-  page summed effort client-side over *all* persisted assets (including stale
-  pre-informational-tier scores), while the Dashboard used the server's
-  actionable-only aggregation — 226d vs 175d on the same estate. The Risk page now
-  reads the same server aggregation as the Dashboard, and both effort cards state
-  their scope explicitly ("· actionable findings"). Informational findings still
-  appear in the roadmap list (never hidden) — they sort last at score 0.
-- **Mobile responsive pass (QA ISSUE-004).** The fixed 240px sidebar left ~135px of
-  content at 375px width; below `lg` it now becomes a wrapping top bar (desktop
-  unchanged). Stat-card labels no longer clip ("CRYP…", "ASS…"), and the Risk
-  Priority chart keeps a 220px minimum height instead of collapsing.
-
-### Changed
 
 - **Engine: bare Go import lines demoted to the informational tier.** A line that
   only *names* a crypto package — `import "crypto/ecdsa"`, aliased/`_`/`.` variants,
@@ -78,6 +64,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **One source of truth for migration effort (QA ISSUE-003).** The Risk Analysis
+  page summed effort client-side over *all* persisted assets (including stale
+  pre-informational-tier scores), while the Dashboard used the server's
+  actionable-only aggregation — 226d vs 175d on the same estate. The Risk page now
+  reads the same server aggregation as the Dashboard, and both effort cards state
+  their scope explicitly ("· actionable findings"). Informational findings still
+  appear in the roadmap list (never hidden) — they sort last at score 0.
+- **Mobile responsive pass (QA ISSUE-004).** The fixed 240px sidebar left ~135px of
+  content at 375px width; below `lg` it now becomes a wrapping top bar (desktop
+  unchanged). Stat-card labels no longer clip ("CRYP…", "ASS…"), and the Risk
+  Priority chart keeps a 220px minimum height instead of collapsing.
 - **Dashboard honesty: Risk Analysis subtitle no longer says "ML-weighted".** The
   risk model is a transparent, tunable 5-factor weighted heuristic — not machine
   learning — and every other surface (README, the dashboard's own Risk Model card)
