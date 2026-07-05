@@ -78,7 +78,7 @@ function AuthPanel({ onSignIn }: { onSignIn: () => void }) {
 
 function Sidebar({ onSignIn }: { onSignIn: () => void }) {
   return (
-    <aside className="fixed inset-y-0 left-0 flex w-60 flex-col border-r border-slate-800 bg-slate-950/80 px-4 py-6">
+    <aside className="flex flex-col border-b border-slate-800 bg-slate-950/80 px-4 py-4 lg:fixed lg:inset-y-0 lg:left-0 lg:w-60 lg:border-b-0 lg:border-r lg:py-6">
       <div className="flex items-center gap-2 px-2">
         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-cyan-400 text-lg font-black text-slate-950">
           U
@@ -89,7 +89,7 @@ function Sidebar({ onSignIn }: { onSignIn: () => void }) {
         </div>
       </div>
 
-      <nav className="mt-8 space-y-1">
+      <nav className="mt-4 flex flex-wrap gap-1 lg:mt-8 lg:block lg:space-y-1">
         {NAV.map((n) => (
           <NavLink
             key={n.to}
@@ -108,9 +108,9 @@ function Sidebar({ onSignIn }: { onSignIn: () => void }) {
         ))}
       </nav>
 
-      <div className="mt-auto space-y-3">
+      <div className="mt-4 space-y-3 lg:mt-auto">
         <AuthPanel onSignIn={onSignIn} />
-        <div className="rounded-lg border border-slate-800 bg-slate-900/60 p-3 text-[11px] text-slate-500">
+        <div className="hidden rounded-lg border border-slate-800 bg-slate-900/60 p-3 text-[11px] text-slate-500 lg:block">
           <div className="font-semibold text-slate-400">Post-Quantum Ready</div>
           NIST ML-KEM · ML-DSA · SLH-DSA migration tracking
         </div>
@@ -124,7 +124,7 @@ const IS_DEMO = __DEMO__;
 
 function DemoBanner() {
   return (
-    <div className="ml-60 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 border-b border-violet-500/30 bg-violet-500/10 px-6 py-2 text-center text-xs text-violet-100">
+    <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 border-b border-violet-500/30 bg-violet-500/10 px-6 py-2 text-center text-xs text-violet-100 lg:ml-60">
       <span className="font-semibold">Live demo</span>
       <span className="text-violet-200/80">
         — read-only, populated by scanning real OSS libraries (auth0/node-jsonwebtoken, pyjwt, golang-jwt, paramiko).
@@ -145,7 +145,7 @@ export default function App() {
     <div className="min-h-screen">
       <Sidebar onSignIn={() => setAuthOpen(true)} />
       {IS_DEMO ? <DemoBanner /> : <LicenseBanner />}
-      <main className="ml-60 px-8 py-7">
+      <main className="px-4 py-5 lg:ml-60 lg:px-8 lg:py-7">
         <Routes>
           <Route path="/" element={<Dashboard onRequireAuth={() => setAuthOpen(true)} />} />
           <Route path="/assets" element={<Assets />} />

@@ -65,7 +65,7 @@ export default function LicenseBanner() {
   }
 
   return (
-    <div className={`ml-60 border-b px-6 py-2 text-xs ${TONE[tone]}`}>
+    <div className={`border-b px-4 py-2 text-xs sm:px-6 lg:ml-60 ${TONE[tone]}`}>
       <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center">
         <span className="font-semibold">{heading}</span>
         <span className="opacity-90">{lic.message}</span>

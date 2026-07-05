@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **One source of truth for migration effort (QA ISSUE-003).** The Risk Analysis
+  page summed effort client-side over *all* persisted assets (including stale
+  pre-informational-tier scores), while the Dashboard used the server's
+  actionable-only aggregation — 226d vs 175d on the same estate. The Risk page now
+  reads the same server aggregation as the Dashboard, and both effort cards state
+  their scope explicitly ("· actionable findings"). Informational findings still
+  appear in the roadmap list (never hidden) — they sort last at score 0.
+- **Mobile responsive pass (QA ISSUE-004).** The fixed 240px sidebar left ~135px of
+  content at 375px width; below `lg` it now becomes a wrapping top bar (desktop
+  unchanged). Stat-card labels no longer clip ("CRYP…", "ASS…"), and the Risk
+  Priority chart keeps a 220px minimum height instead of collapsing.
+
 ### Changed
 
 - **Engine: bare Go import lines demoted to the informational tier.** A line that

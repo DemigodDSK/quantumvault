@@ -90,12 +90,14 @@ export function StatCard({
   accent?: string;
 }) {
   return (
-    <Card className="p-5">
-      <div className="text-xs font-medium uppercase tracking-wider text-slate-400">{label}</div>
-      <div className="mt-2 text-3xl font-bold" style={{ color: accent }}>
+    <Card className="min-w-0 p-4 sm:p-5">
+      <div className="break-words text-[11px] font-medium uppercase leading-snug tracking-wide text-slate-400 sm:text-xs sm:tracking-wider">
+        {label}
+      </div>
+      <div className="mt-2 text-2xl font-bold sm:text-3xl" style={{ color: accent }}>
         {value}
       </div>
-      {sub && <div className="mt-1 text-sm text-slate-400">{sub}</div>}
+      {sub && <div className="mt-1 text-xs text-slate-400 sm:text-sm">{sub}</div>}
     </Card>
   );
 }

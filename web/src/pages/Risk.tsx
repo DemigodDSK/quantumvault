@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
-import { getAssets, type CryptoAsset } from "../lib/api";
+import { getAssets, getDashboard, type CryptoAsset, type Dashboard } from "../lib/api";
 import { Card, SeverityBadge, StatCard, SEVERITY_COLOR } from "../components/ui";
 
 export default function Risk() {
   const [assets, setAssets] = useState<CryptoAsset[]>([]);
+  const [dash, setDash] = useState<Dashboard | null>(null);
 
   useEffect(() => {
     getAssets().then(setAssets);
+    getDashboard().then(setDash).catch(() => {});
   }, []);
 
   const ranked = useMemo(
@@ -14,14 +16,27 @@ export default function Risk() {
     [assets],
   );
 
-  const totalEffort = useMemo(
-    () => assets.reduce((s, a) => s + (a.risk?.migrationEffortDays ?? 0), 0),
-    [assets],
-  );
-  const critical = ranked.filter((a) => a.risk?.priority === "critical").length;
-  const high = ranked.filter((a) => a.risk?.priority === "high").length;
-  const avg = assets.length
-    ? Math.round(assets.reduce((s, a) => s + (a.risk?.score ?? 0), 0) / assets.length)
+  // Actionable = everything except informational (confidence "low") findings.
+  // Informational findings stay visible in the roadmap below, but they carry no
+  // migration effort and must not dilute the aggregate stats — this keeps every
+  // number on this page identical to the Dashboard, which uses the same scope.
+  const actionable = useMemo(() => assets.filter((a) => a.confidence !== "low"), [assets]);
+
+  // Single source of truth: the server's /dashboard aggregation (same endpoint
+  // the Dashboard page reads). The client-side sum is only a fallback while it
+  // loads, computed over the same actionable scope.
+  const totalEffort =
+    dash?.migrationEffortDays ??
+    actionable.reduce((s, a) => s + (a.risk?.migrationEffortDays ?? 0), 0);
+  const remainingEffort =
+    dash?.remainingEffortDays ??
+    actionable
+      .filter((a) => a.status !== "migrated" && a.status !== "accepted")
+      .reduce((s, a) => s + (a.risk?.migrationEffortDays ?? 0), 0);
+  const critical = actionable.filter((a) => a.risk?.priority === "critical").length;
+  const high = actionable.filter((a) => a.risk?.priority === "high").length;
+  const avg = actionable.length
+    ? Math.round(actionable.reduce((s, a) => s + (a.risk?.score ?? 0), 0) / actionable.length)
     : 0;
 
   return (
@@ -33,11 +48,16 @@ export default function Risk() {
         </p>
       </header>
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <StatCard label="Mean Risk Score" value={avg} accent="#fb923c" />
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        <StatCard label="Mean Risk Score" value={avg} sub="actionable findings" accent="#fb923c" />
         <StatCard label="Critical" value={critical} accent={SEVERITY_COLOR.critical} />
         <StatCard label="High" value={high} accent={SEVERITY_COLOR.high} />
-        <StatCard label="Total Migration Effort" value={`${totalEffort}d`} accent="#22d3ee" />
+        <StatCard
+          label="Total Migration Effort"
+          value={`${totalEffort}d`}
+          sub={`${remainingEffort}d remaining · actionable findings`}
+          accent="#22d3ee"
+        />
       </div>
 
       <Card className="p-5">

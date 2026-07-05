@@ -183,7 +183,7 @@ export default function Dashboard({ onRequireAuth }: { onRequireAuth: () => void
         </div>
       </Card>
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-5">
         <StatCard label="Crypto Assets" value={data.totalAssets} accent="#818cf8" />
         <StatCard
           label="Quantum-Vulnerable"
@@ -200,7 +200,7 @@ export default function Dashboard({ onRequireAuth }: { onRequireAuth: () => void
         <StatCard
           label="Migration Effort"
           value={`${data.remainingEffortDays}d`}
-          sub={`remaining of ${data.migrationEffortDays}d total`}
+          sub={`remaining of ${data.migrationEffortDays}d total · actionable findings`}
           accent="#22d3ee"
         />
         <StatCard
@@ -242,9 +242,9 @@ export default function Dashboard({ onRequireAuth }: { onRequireAuth: () => void
       </Card>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <Card className="p-5">
+        <Card className="min-w-0 p-5">
           <h2 className="mb-3 text-sm font-semibold text-slate-300">Assets by Algorithm Family</h2>
-          <ResponsiveContainer width="100%" height={220}>
+          <ResponsiveContainer width="100%" height={220} minWidth={0}>
             <PieChart>
               <Pie data={familyData} dataKey="value" nameKey="name" innerRadius={50} outerRadius={85} paddingAngle={2}>
                 {familyData.map((d) => (
@@ -264,20 +264,22 @@ export default function Dashboard({ onRequireAuth }: { onRequireAuth: () => void
           </div>
         </Card>
 
-        <Card className="p-5">
+        <Card className="min-w-0 p-5">
           <h2 className="mb-3 text-sm font-semibold text-slate-300">Risk Priority Distribution</h2>
-          <ResponsiveContainer width="100%" height={220}>
-            <BarChart data={priorityData}>
-              <XAxis dataKey="name" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
-              <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
-              <Tooltip cursor={{ fill: "#1e293b55" }} contentStyle={tooltipStyle} />
-              <Bar dataKey="value" radius={[6, 6, 0, 0]}>
-                {priorityData.map((d) => (
-                  <Cell key={d.name} fill={SEVERITY_COLOR[d.name as keyof typeof SEVERITY_COLOR]} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
+          <div className="min-h-[220px] w-full">
+            <ResponsiveContainer width="100%" height={220} minWidth={0}>
+              <BarChart data={priorityData}>
+                <XAxis dataKey="name" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
+                <Tooltip cursor={{ fill: "#1e293b55" }} contentStyle={tooltipStyle} />
+                <Bar dataKey="value" radius={[6, 6, 0, 0]}>
+                  {priorityData.map((d) => (
+                    <Cell key={d.name} fill={SEVERITY_COLOR[d.name as keyof typeof SEVERITY_COLOR]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </Card>
 
         <Card className="p-5">
