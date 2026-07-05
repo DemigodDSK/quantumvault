@@ -96,6 +96,23 @@ source never leaves your network.
   endpoints are throttled per organization. An unauthenticated demo org is seeded
   so the dashboard is populated out of the box.
 
+## Benchmarks — measured, not asserted
+
+Precision and recall are scored against public, reproducible benchmarks with
+every label published in-repo:
+
+- **95.7% precision** (852 TP / 38 FP) across **20 pinned public repos** — vault,
+  gitea, caddy, openssh, pyca and more — every actionable finding hand-adjudicated,
+  labels committed in [`bench/repos/labels/`](bench/repos/labels/). Findings demoted
+  by context (e.g. a bare Go `import "crypto/…"` line) are re-tiered to an
+  informational level with a machine-readable reason — never hidden.
+- **68/68 (100%) in-scope recall** on the NIST SARD suite (DES/3DES/MD5/SHA-1).
+- When fuller labeling made an earlier headline worse, we restated it publicly —
+  the full before/after accounting, including movements in both directions, is in
+  [`bench/REPORT.md`](bench/REPORT.md).
+
+Reproduce it yourself: see [`bench/`](bench/).
+
 ## Architecture
 
 ```
