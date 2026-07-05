@@ -17,6 +17,10 @@ const COLUMNS: { header: string; get: (a: CryptoAsset) => unknown }[] = [
   { header: "key_bits", get: (a) => a.keyBits ?? "" },
   { header: "language", get: (a) => a.language },
   { header: "pattern_id", get: (a) => a.patternId },
+  // Tier columns: without these, a demoted (informational) finding is
+  // indistinguishable from an actionable one in a spreadsheet.
+  { header: "confidence", get: (a) => a.confidence },
+  { header: "demotion_reason", get: (a) => a.demotionReason ?? "" },
   { header: "risk_score", get: (a) => a.risk?.score ?? "" },
   { header: "priority", get: (a) => a.risk?.priority ?? "" },
   { header: "migration_effort_days", get: (a) => a.risk?.migrationEffortDays ?? "" },

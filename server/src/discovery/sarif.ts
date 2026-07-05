@@ -5,8 +5,13 @@ import { VERSION } from "../version.js";
 const PATTERN_BY_ID = new Map(PATTERNS.map((p) => [p.id, p]));
 const INFO_URI = "https://github.com/uni-que-s/uniques";
 
-/** SARIF result level from the finding's risk priority. */
+/** SARIF result level from the finding's tier + risk priority. An informational
+ *  finding (confidence "low" — a demoted import declaration or a possible
+ *  mention) is always `note`, regardless of what the risk model would say:
+ *  the informational tier must survive into SARIF consumers (GitHub
+ *  code-scanning), not just the JSON export. */
 function levelFor(asset: CryptoAsset): "error" | "warning" | "note" {
+  if (asset.confidence === "low") return "note";
   const p = asset.risk?.priority;
   if (p === "critical" || p === "high") return "error";
   if (p === "medium") return "warning";
@@ -57,7 +62,12 @@ export function assetsToSarif(assets: CryptoAsset[], meta: SarifMeta = {}): Reco
       ],
       properties: {
         family: a.family,
-        "security-severity": (score / 10).toFixed(1),
+        confidence: a.confidence,
+        ...(a.demotionReason ? { demotionReason: a.demotionReason } : {}),
+        // An informational finding carries no security severity — it would
+        // otherwise land in the GitHub Security tab at the same severity as an
+        // actionable finding, erasing the tier.
+        "security-severity": a.confidence === "low" ? "0.0" : (score / 10).toFixed(1),
         riskScore: score,
         remediationStatus: a.status,
       },

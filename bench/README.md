@@ -78,13 +78,16 @@ The 73 MB Juliet archive is **not** vendored here — `download.sh` pulls it fro
 to an exact commit, scanned, and with **every actionable finding hand-labeled TP/FP
 by reading the cited source line**. Labels are published in `bench/repos/labels/` so
 anyone can check our adjudication. Findings labeled TP were additionally re-checked
-by an independent adversarial pass (skeptic-tries-to-refute). **Result: 88.6%
-precision (931 TP / 120 FP), full coverage — no per-repo cap**, with **four negative
-controls at zero findings**. (An earlier report quoted 95.9%, but only the first ~60
-findings per repo were labeled; removing that cap and labeling the whole tail is what
-moved the number — see [`REPORT.md`](REPORT.md) §2.) **683 X.509 certificates** are
-discovered and inventoried separately, excluded from the precision denominator (a DER
-parse is proof a cert exists, not a judgment call).
+by an independent adversarial pass (skeptic-tries-to-refute). **Result: 95.7%
+precision (852 TP / 38 FP), full coverage — no per-repo cap**, with **four negative
+controls at zero findings**. Two caveats travel with that number: (a) an earlier
+report quoted 95.9%, but only the first ~60 findings per repo were labeled; removing
+that cap measured 88.6%; (b) the current 95.7% follows the Go-import demotion, which
+moved 161 findings (82 labeled FP **and 79 labeled TP**) out of the actionable set
+into a still-visible informational tier — the set-shrink is disclosed, not hidden;
+see [`REPORT.md`](REPORT.md) §2 for the full accounting. **683 X.509 certificates**
+are discovered and inventoried separately, excluded from the precision denominator (a
+DER parse is proof a cert exists, not a judgment call).
 
 **Why this is the credible one for our actual task:** it's the exact job (find the
 crypto in a codebase), on real messy code we didn't write, at fixed commits, with
@@ -117,8 +120,10 @@ node run.mjs           # clones each pinned repo, scans, compares to published l
 
 UniQueS scores **100% recall on the in-scope NIST SARD legacy-crypto labels** (an
 external, government dataset — which also caught real gaps our own suite missed),
-and **88.6% precision across 20 pinned public repositories** — every actionable
-finding labeled, no cap — with per-finding labels published for audit, spanning
+and **95.7% precision across 20 pinned public repositories** (88.6% before the
+Go-import informational demotion, whose −79 labeled-TP set-shrink is disclosed in
+REPORT.md §2) — every actionable finding labeled, no cap — with per-finding labels
+published for audit, spanning
 libraries, applications, and four negative controls. SARD does not cover the RSA/ECC
 quantum core (it predates the threat model), so the real-repo corpus — not SARD — is
 the evidence for full-scope discovery quality. `qbench` is our regression gate and is

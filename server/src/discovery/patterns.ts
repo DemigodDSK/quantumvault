@@ -910,12 +910,18 @@ export function resolveConfidence(
     localeFile?: boolean;
     typeRef?: boolean;
     emptyPem?: boolean;
+    importDecl?: boolean;
   },
 ): Confidence {
   const base = confidenceFor(patternId);
   if (ctx.emptyPem) return "low"; // an empty PEM block (BEGIN/END, no body) is a placeholder, not material
   if (ctx.disabled) return "low"; // explicit disable beats even never-downgrade
   if (ctx.localeFile) return "low"; // i18n/localization catalog value — UI text, never a use or key
+  // A bare Go import declaration is a package dependency reference, not a crypto
+  // operation — informational tier. The import still corroborates the file's real
+  // call-site findings (it feeds hasCryptoContext), and in Go an unused import
+  // does not compile, so the operation finding lives on the call-site line.
+  if (ctx.importDecl) return "low";
   if (ctx.enumRef) return "low"; // a bare enum-constant read is a reference, not a use
   if (ctx.typeRef) return "low"; // a crypto type name in an annotation/subscript is a reference, not a use
   // An ambiguous SHAPE (`dh.generate`, `new DSA`, a bare `des3`/`md5sum`/`pkcs12`

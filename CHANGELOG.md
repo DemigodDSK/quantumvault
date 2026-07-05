@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Engine: bare Go import lines demoted to the informational tier.** A line that
+  only *names* a crypto package — `import "crypto/ecdsa"`, aliased/`_`/`.` variants,
+  or a member of a grouped `import ( … )` block — is a package dependency
+  declaration, not a crypto operation. It is now **re-tiered, never hidden**:
+  confidence `low` with a machine-readable `demotionReason: "import-declaration"`,
+  still present in JSON, SARIF (level `note`, zero security-severity), CSV (new
+  `confidence`/`demotion_reason` columns), CBOM (`quantumvault:demotionReason`
+  property), the server database (new nullable columns, additive migration), and the
+  dashboard's "possible mentions". The actionable finding is the call-site
+  (`ecdsa.GenerateKey(...)`), which keeps full confidence — guarded by qbench and
+  `server/src/__tests__/go-import.test.ts` (raw-string literals, composite literals,
+  dot imports, and cross-language non-regression). Informational findings also stop
+  earning risk scores/migration-effort days of their own (score 0, "verify usage"
+  recommendation) so the tier survives into every export, not just the JSON field.
+  Go only; Python/JS import handling unchanged. Zero new dependencies.
+- **Corpus precision moves 88.6% → 95.7% (852 TP / 38 FP) — with a disclosed
+  set-shrink.** This is the demotion the previous entry tracked as the "next honest
+  engine opportunity", now shipped. It removed 82 labeled-FP import lines from the
+  actionable set (vault 81, prometheus 1) **and** 79 labeled-TP import lines
+  (step-ca 49, gitea 11, caddy 6, syncthing 5, etcd 5, age 3) whose call-sites
+  remain actionable — so part of the headline move is measured-set shrink, not pure
+  FP removal (the imports-stay-actionable counterfactual is 96.1%). vault goes
+  67.3% → 94.5%. Labels in `bench/repos/labels/` are byte-identical — the
+  adjudications were not edited to lift the number. NIST SARD in-scope recall holds
+  at 68/68 (100%). Full accounting in `bench/REPORT.md` §2.
+
 ### Fixed
 
 - **Dashboard honesty: Risk Analysis subtitle no longer says "ML-weighted".** The

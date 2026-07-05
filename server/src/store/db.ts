@@ -62,6 +62,8 @@ db.exec(`
     snippet            TEXT NOT NULL,
     pattern_id         TEXT NOT NULL,
     quantum_vulnerable INTEGER NOT NULL,
+    confidence         TEXT,
+    demotion_reason    TEXT,
     pqc_replacement    TEXT NOT NULL,
     risk_score         INTEGER,
     risk_priority      TEXT,
@@ -115,6 +117,11 @@ db.exec(`
 for (const stmt of [
   `ALTER TABLE assets ADD COLUMN status TEXT NOT NULL DEFAULT 'open'`,
   `ALTER TABLE scans ADD COLUMN monitor_id TEXT`,
+  // Per-finding confidence + demotion reason (Go-import precision slice). NULL on
+  // rows written before these columns existed — readers fall back to the
+  // pattern's base tier for those legacy rows only.
+  `ALTER TABLE assets ADD COLUMN confidence TEXT`,
+  `ALTER TABLE assets ADD COLUMN demotion_reason TEXT`,
 ]) {
   try {
     db.exec(stmt);

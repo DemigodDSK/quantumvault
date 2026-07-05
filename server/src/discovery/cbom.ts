@@ -133,6 +133,7 @@ export function assetsToCbom(assets: CryptoAsset[], meta: CbomMeta = {}): Record
         { name: "quantumvault:family", value: a.family },
         { name: "quantumvault:patternId", value: a.patternId },
         { name: "quantumvault:confidence", value: a.confidence },
+        ...(a.demotionReason ? [{ name: "quantumvault:demotionReason", value: a.demotionReason }] : []),
         { name: "quantumvault:quantumVulnerable", value: String(a.quantumVulnerable) },
         { name: "quantumvault:pqcReplacement", value: a.pqcReplacement },
         { name: "quantumvault:remediationStatus", value: a.status },

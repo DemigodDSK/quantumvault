@@ -29,6 +29,7 @@ import {
   isLocaleResourceFile,
   isTypeReferenceAt,
   isEmptyPemBlockAt,
+  isGoImportDeclAt,
   tripleQuoteAt,
   tripleQuoteEnd,
 } from "./context.js";
@@ -502,6 +503,21 @@ export function scanDirectory(target: string, scanId: string): ScanResult {
         }
         if (!matched) continue;
 
+        // Go-import precision slice: a bare import declaration (`import
+        // "crypto/ecdsa"`, or a grouped-block member) is a package dependency
+        // reference, not a crypto operation — demoted to the informational tier
+        // with a machine-readable reason, never hidden. The import still
+        // corroborates the file's call-site findings via hasCryptoContext.
+        // Line-level, not per-occurrence: every match on an import line IS the
+        // import path. Go only; Python/JS import handling is unchanged.
+        // The line must START in code: an import-shaped line INSIDE a backtick
+        // raw-string literal (codegen template) is string content, not an import
+        // declaration — it stays with the mention machinery, unstamped.
+        const importDecl =
+          language === "go" &&
+          isCodeTokenAt(stringSpans, lineStart[i]) &&
+          isGoImportDeclAt(normalized, lineStart[i]);
+
         assets.push({
           id: nextAssetId(),
           scanId,
@@ -514,7 +530,8 @@ export function scanDirectory(target: string, scanId: string): ScanResult {
           snippet: line.trim().slice(0, 240),
           patternId: pattern.id,
           quantumVulnerable: pattern.quantumVulnerable,
-          confidence: resolveConfidence(pattern.id, { mention, disabled, enumRef, codeToken, docstring, ambiguous, cryptoContext, bareKeyName, proseMention, localeFile, typeRef, emptyPem }),
+          confidence: resolveConfidence(pattern.id, { mention, disabled, enumRef, codeToken, docstring, ambiguous, cryptoContext, bareKeyName, proseMention, localeFile, typeRef, emptyPem, importDecl }),
+          ...(importDecl ? { demotionReason: "import-declaration" } : {}),
           pqcReplacement: pattern.pqcReplacement,
           status: "open",
         });

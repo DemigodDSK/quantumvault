@@ -64,6 +64,11 @@ export interface CryptoAsset {
   quantumVulnerable: boolean;
   /** Detection confidence — how strongly the match implies real usage vs a mention. */
   confidence: Confidence;
+  /** Machine-readable reason a finding was demoted to the informational tier
+   *  ("low"), e.g. "import-declaration" for a bare Go import line. Demoted
+   *  findings are re-tiered, never hidden — they remain in every output. Absent
+   *  when the finding sits at its pattern's earned confidence. */
+  demotionReason?: string;
   pqcReplacement: string;
   /** Remediation status, defaults to "open" when an asset is first discovered. */
   status: AssetStatus;

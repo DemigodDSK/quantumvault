@@ -47,8 +47,16 @@ export const QBENCH: QCase[] = [
     code: `KeyPairGenerator kpg = KeyPairGenerator.getInstance("DSA");\n` },
   { id: "dotnet-rsa", ext: "cs", expect: ["rsa-dotnet"], why: ".NET RSA.Create",
     code: `var r = RSA.Create(2048);\n` },
-  { id: "go-rsa", ext: "go", expect: ["go-crypto-rsa"], why: "Go crypto/rsa import",
+  // v0.7.x Go-import precision slice: a BARE import line is a package dependency
+  // declaration, not a crypto operation — demoted to informational
+  // (demotionReason "import-declaration"), still visible in output. The
+  // actionable finding is the call-site. (The 20-repo benchmark's labels are not
+  // a blanket import=FP convention: corroborated imports were labeled TP,
+  // uncorroborated FP — the demotion re-tiers both; see bench/REPORT.md.)
+  { id: "go-rsa", ext: "go", expect: [], why: "a bare Go import ('import \"crypto/rsa\"') is a dependency declaration, not an operation — informational tier, kept visible; the operation finding is the call-site (go-rsa-usage)",
     code: `import "crypto/rsa"\n` },
+  { id: "go-rsa-usage", ext: "go", expect: ["go-crypto-rsa"], why: "Go rsa.GenerateKey call-site — the real operation stays actionable",
+    code: `key, _ := rsa.GenerateKey(rand.Reader, 2048)\n` },
   { id: "swift-p256", ext: "swift", expect: ["ecc-swift-cryptokit"], why: "Swift CryptoKit P256",
     code: `let key = P256.Signing.PrivateKey()\n` },
   { id: "mbedtls-rsa", ext: "c", expect: ["rsa-mbedtls"], why: "mbedTLS firmware RSA keygen",

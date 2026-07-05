@@ -130,6 +130,29 @@ test("store: scan delta reports new and removed findings vs the previous scan", 
   }
 });
 
+test("store: scan-time confidence and demotionReason survive persistence (server/dashboard path)", () => {
+  // A demoted Go import must come back from the DB at its DEMOTED tier with its
+  // machine-readable reason — not recomputed to the pattern's base tier. This is
+  // the surface enterprise buyers consume (API + dashboard), so the informational
+  // tier has to be real here, not only in the CLI's in-memory output.
+  const org = "org_demotion";
+  const src = mkdtempSync(join(tmpdir(), "qv-demote-src-"));
+  try {
+    writeFileSync(join(src, "wrapper.go"), 'package main\n\nimport "crypto/rsa"\n');
+    store.runScan(src, undefined, org);
+    const assets = store.getAssets(undefined, org);
+    const imp = assets.find((a) => a.patternId === "go-crypto-rsa");
+    assert.ok(imp, "the demoted import finding must remain visible via the store");
+    assert.equal(imp.confidence, "low", "persisted confidence must be the scan-time (demoted) tier");
+    assert.equal(imp.demotionReason, "import-declaration", "demotionReason must survive the DB round-trip");
+    assert.equal(imp.risk?.priority, "low", "informational findings carry no actionable priority");
+    assert.equal(imp.risk?.migrationEffortDays, 0, "informational findings carry no migration effort");
+    assert.equal(store.getAsset(imp.id, org)?.demotionReason, "import-declaration");
+  } finally {
+    rmSync(src, { recursive: true, force: true });
+  }
+});
+
 // ---------------------------------------------------------------- continuous monitoring
 test("monitor: create exposes defaults and is due immediately", () => {
   const org = "org_mon1";

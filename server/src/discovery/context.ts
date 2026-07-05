@@ -608,3 +608,57 @@ export function isUnquotedPathSlugAt(
   const token = content.slice(a, b);
   return token[0] === "/" || token.includes("://");
 }
+
+// A single-line Go import: `import "crypto/ecdsa"`, with an optional alias
+// (`ecdsakey "crypto/ecdsa"`), blank (`_`), or dot (`.`) name — including the
+// one-line grouped form `import ("crypto/ecdsa")`. Quoted with `"` or a raw
+// backtick literal (both are legal Go import paths).
+const GO_IMPORT_SINGLE = /^import\s+(?:\(\s*)?(?:[A-Za-z_.][\w]*\s+)?["`][^"`]+["`]/;
+// A member line INSIDE an `import ( … )` block: optional alias + quoted path,
+// then at most a trailing line comment. NO trailing comma — a composite-literal
+// element (`"crypto/ecdsa",` in a []string) always carries one in multi-line Go,
+// so the comma is the natural discriminator against slice/map literals.
+const GO_IMPORT_MEMBER = /^(?:[A-Za-z_.][\w]*\s+)?["`][^"`]+["`]\s*(?:\/\/.*)?$/;
+// How many lines to walk back looking for the block opener. Go import blocks sit
+// at the top of the file and rarely exceed a few dozen entries; 400 is generous.
+const GO_IMPORT_SCAN_LINES = 400;
+
+/**
+ * Is the line starting at `lineStartOff` a bare Go IMPORT DECLARATION — a
+ * package dependency reference, not a cryptographic operation? Covers the
+ * single-line form (`import "crypto/ecdsa"`, aliased / `_` / `.` variants) and
+ * a member line of a grouped `import ( … )` block.
+ *
+ * In Go an unused import does not compile, so the import IS real corroborating
+ * evidence that the file operates the package — which is exactly why it is
+ * demoted, not dropped: the operation finding is the call-site elsewhere in the
+ * file (and the import already corroborates ambiguous shapes file-wide via
+ * `hasCryptoContext`). NOTE the 20-repo benchmark's published labels are NOT a
+ * blanket "import = FP": an UNcorroborated bare import was labeled FP, while an
+ * import whose file shows real call-sites below was labeled TP. This demotion
+ * re-tiers BOTH classes to informational (the call-site stays actionable),
+ * which shrinks the benchmark's measured actionable set — disclosed in
+ * bench/REPORT.md; labels untouched.
+ *
+ * The grouped-member check walks BACK to the `import (` opener, crossing only
+ * lines that are legal inside an import block (members, `//` comments, blanks) —
+ * so a bare quoted path in a composite literal or function body never qualifies.
+ * Scoped to Go by the caller; a real usage line (`ecdsa.GenerateKey(…)`) or a
+ * call whose string argument merely contains the word "import" fails the
+ * line-shape tests and keeps its confidence.
+ */
+export function isGoImportDeclAt(content: string, lineStartOff: number): boolean {
+  const nl = content.indexOf("\n", lineStartOff);
+  const line = content.slice(lineStartOff, nl === -1 ? content.length : nl).trim();
+  if (GO_IMPORT_SINGLE.test(line)) return true;
+  if (!GO_IMPORT_MEMBER.test(line)) return false;
+  let end = lineStartOff - 1; // offset of the '\n' ending the previous line
+  for (let n = 0; n < GO_IMPORT_SCAN_LINES && end >= 0; n++) {
+    const prevStart = content.lastIndexOf("\n", end - 1) + 1;
+    const prev = content.slice(prevStart, end).trim();
+    if (/^import\s*\(/.test(prev)) return true;
+    if (prev !== "" && !prev.startsWith("//") && !GO_IMPORT_MEMBER.test(prev)) return false;
+    end = prevStart - 1;
+  }
+  return false;
+}

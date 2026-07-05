@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import type { AssetStatus, CryptoAsset, ComplianceReport, MonitorTarget, RiskScore, ScanJob } from "../types.js";
+import type { AssetStatus, Confidence, CryptoAsset, ComplianceReport, MonitorTarget, RiskScore, ScanJob } from "../types.js";
 import { ASSET_STATUSES, RESOLVED_STATUSES } from "../types.js";
 import { scanDirectory } from "../discovery/scanner.js";
 import { confidenceFor } from "../discovery/patterns.js";
@@ -19,6 +19,8 @@ interface AssetRow {
   snippet: string;
   pattern_id: string;
   quantum_vulnerable: number;
+  confidence: string | null;
+  demotion_reason: string | null;
   pqc_replacement: string;
   risk_json: string | null;
   status: string;
@@ -58,7 +60,12 @@ function rowToAsset(r: AssetRow): CryptoAsset {
     snippet: r.snippet,
     patternId: r.pattern_id,
     quantumVulnerable: !!r.quantum_vulnerable,
-    confidence: confidenceFor(r.pattern_id),
+    // The scan-time confidence is authoritative: it carries per-finding context
+    // demotions (mention/import-declaration/…) that the pattern's base tier does
+    // not. confidenceFor() is only the fallback for rows persisted before the
+    // confidence column existed.
+    confidence: (r.confidence as Confidence | null) ?? confidenceFor(r.pattern_id),
+    ...(r.demotion_reason ? { demotionReason: r.demotion_reason } : {}),
     pqcReplacement: r.pqc_replacement,
     status: (r.status as AssetStatus) ?? "open",
     risk: r.risk_json ? (JSON.parse(r.risk_json) as RiskScore) : undefined,
@@ -133,8 +140,8 @@ class Store {
   );
   private clearLatest = db.prepare(`UPDATE scans SET is_latest = 0 WHERE org_id = ?`);
   private insertAsset = db.prepare(
-    `INSERT INTO assets (id, scan_id, org_id, file, line, family, algorithm, key_bits, language, snippet, pattern_id, quantum_vulnerable, pqc_replacement, risk_score, risk_priority, risk_json, status)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO assets (id, scan_id, org_id, file, line, family, algorithm, key_bits, language, snippet, pattern_id, quantum_vulnerable, confidence, demotion_reason, pqc_replacement, risk_score, risk_priority, risk_json, status)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
   );
   private updateStatus = db.prepare(
     `UPDATE assets SET status = ? WHERE id = ? AND org_id = ?`,
@@ -228,6 +235,8 @@ class Store {
           a.snippet,
           a.patternId,
           a.quantumVulnerable ? 1 : 0,
+          a.confidence,
+          a.demotionReason ?? null,
           a.pqcReplacement,
           a.risk?.score ?? null,
           a.risk?.priority ?? null,

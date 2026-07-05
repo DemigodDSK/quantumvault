@@ -186,6 +186,27 @@ export function scoreAsset(asset: CryptoAsset): RiskScore {
       deploymentContext: ctx.label,
     };
   }
+  // An INFORMATIONAL finding (confidence "low" — a demoted Go import
+  // declaration, or a possible mention: a crypto name in a string/enum/doc) is
+  // visibility, not exposure. It stays in every output, but it must not earn a
+  // migration plan of its own: the actionable exposure lives on the corroborated
+  // call-site findings, which are scored normally. Without this, a demoted
+  // finding still exported at priority "medium" / 8 effort-days through CSV,
+  // SARIF, and the API — the tier existed only in the JSON confidence field.
+  if (asset.confidence === "low") {
+    return {
+      score: 0,
+      priority: "low",
+      factors: { dataSensitivity: 0, retentionExposure: 0, hndlExposure: 0, complianceImpact: 0, businessImpact: 0 },
+      recommendation:
+        `${asset.algorithm} at ${asset.file}:${asset.line} is informational` +
+        `${asset.demotionReason ? ` (${asset.demotionReason})` : " (possible mention)"} — ` +
+        `verify usage; actionable exposure is tracked at call-site findings.`,
+      migrationEffortDays: 0,
+      contextMultiplier: ctx.multiplier,
+      deploymentContext: ctx.label,
+    };
+  }
   // Apply the deployment-context discount to each factor so the reported
   // factors remain consistent with the final score (score = weighted sum).
   const factors: RiskFactorBreakdown = {
